@@ -1,0 +1,283 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" /> 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+<title>ILHAJOB :: 지원하기</title>
+
+<style>
+
+	#main{
+		padding-top: 10px;
+		padding-bottom: 0 !important;
+	}
+
+	#quick_apply_cont_wrap{
+		width:500px;
+		margin:0 auto;
+		text-align:center;
+	}
+	
+	#quick_apply_cont_wrap div:first-child{
+		margin-bottom:10px;
+	}
+	
+	#quick_apply_cont_wrap h2{
+		font-size:3em;
+		font-weight:300;
+		display:inline;
+	}
+	
+	#quick_apply_cont{
+		width:100%;height:500px;
+		background-color:white;
+		z-index:10002;
+	}
+	
+	<!-- 내부 -->
+	.apply-wrapper {
+  		width: 500px;
+  		padding-top: 14%;
+  		display: flex;
+  		flex-direction: column;
+  		align-items: center;
+  		align-content: center;
+  		margin: 0 20px;
+	}
+	
+	.apply-wrapper .resume_part {
+ 	 	margin: 0;
+  		width: 100%;
+  		text-align: center;
+	}
+	
+	.wrap{
+		padding:15px;
+	}
+	
+	#apply_form{
+    	margin-bottom: 0px;
+    	border: 0.5px solid black;
+    	padding: 10px;
+		padding-bottom: 20px;
+	}
+	
+	#apply_form p{
+		margin: 0 0 1em 0;
+	}
+	
+	.resume_part ul li {
+  		padding-left: 0px;
+  		/*display:inline;*/
+  		float:left;
+	}
+	
+	.resume_part>p{
+ 	   text-align: left;
+	}
+	
+	select {
+  		height: 52px;
+  		margin: 12px 0;
+  		background-color: white;
+  		border-radius: 0;
+  		display: inline-block;
+    	width: 90%;
+	}
+
+	select::placeholder {
+	  font-size: 17px;
+	}
+	
+	.select-docs{
+		text-align:center;
+	}
+	
+	div.resume{
+		height:50px;
+		position:relative;
+	}
+
+	.resume-wrap{
+		width:90%;
+		display:inline-block;
+		text-align:left;
+	}
+	.resume-wrap>*{
+		font-size:13.3333px;
+	}
+	.resume-wrap>div{
+		height:50px;
+	}
+	#selected-resume-div{
+		background-color:rgba(55,179,127,0.3);
+		margin:0 !important;
+	}
+	.resume>p{
+		padding-left:15px;
+		padding-top: 15px;
+		margin:0 !important;
+	}
+	.resume>a{
+		position:absolute;
+		padding:15px;
+		text-decoration:none;
+	}
+	.select-resume{
+		border:0.5px solid grey;
+		height:100px !important;
+	}
+	
+	#apply_button{
+    	background-color: rgb(230, 104, 66) !important;
+    	text-decoration: none;
+	    color: white;
+	    padding: 0 5%;
+	}
+	#company_name{
+		color:#37b37f;
+	}
+	.apply_button_wrap{
+		margin-top:40px;
+	}
+	.footer{
+		position:relative !important;
+	}
+	
+	/*미디어쿼리*/
+	
+	/* 태블릿 : 768px */
+	@media (max-width:768px) {
+		#quick_apply_cont_wrap{
+			width:70%;
+		}
+		#quick_apply_cont_wrap h2 {
+    		font-size: 2em;
+		}
+	}
+	
+	/* 모바일 : 480px */
+	@media (max-width:480px) {
+	
+		#quick_apply_cont_wrap{
+			width:100%;
+		}
+		#apply_form {
+    		border:0;
+		}
+		
+		.apply_button_wrap{
+			margin-top:0px;
+		}
+	
+	}
+
+</style>
+</head>
+<body class="is-preload">
+	<c:set var="comp_name" value="${requestScope.comp_name}"/>
+	<!-- Header -->
+	<jsp:include page="header.jsp" flush="true"/>
+
+	
+	<!-- Main -->
+	<section id="main">
+		
+		<div id="quick_apply_cont_wrap">
+			<div><h2><span id="company_name">${comp_name}</span><br> 지원하기</h2></div>
+			<div id="quick_apply_cont">
+				<div class="wrap">
+					<div class="apply-wrapper">
+					<form id="apply_form" name="apply_form" action="${pageContext.request.contextPath}/opening/OpeningApplyOk.opn" method="post">
+					<input type="hidden" name="opn_num" value="${opn_num}">
+						<div class="resume_part">
+							<p style="text-align:left;">지원 부문</p>
+							<select name="recruitArea" id="selected_resume_part">
+								<option value="-1">선택하기</option>
+								<c:forEach var="list" items="${list}">	
+								<option value="${list.getRecruitment_area()}">${list.getRecruitment_area()}</option>
+								</c:forEach>
+							</select>
+						</div>
+					
+						<div class="select-docs">
+							<p style="text-align:left;">제출서류 선택</p>
+							<c:if test="${title != null}">
+							<div class="resume-wrap">
+								<div class="select-resume" style="margin-bottom:0;">
+									<div class="resume" id="selected-resume-div">
+										<p id="selected-resume">${title}</p>
+									</div>
+									<div class="resume">
+										<a href="${pageContext.request.contextPath}/user/MyResume.us" target="_blank">이력서 수정하기</a>
+									</div>
+								</div>
+								<div style="color:#888;">
+									<p>※자기소개서와 첨부파일은 이력서에 포함됩니다. 첨부파일을 추가하려면 이력서를 수정해주세요.</p>
+								</div>
+							</div>
+							</c:if>
+							<c:if test="${title == null}">
+							<div class="resume-wrap" style="text-align: center;  margin-bottom: 30px">
+									<p>등록된 이력서가 없습니다</p>
+									<a href="${pageContext.request.contextPath}/user/UserResumeWrite.us" style="color: white; background-color: #37b37f; padding: 10px 20px; border-radius: 5px;">이력서 작성하러 가기</a>
+							</div>
+							</c:if>
+						</div>
+					</form>	
+						
+						<div class="apply_button_wrap">
+							<input type="button" id="apply_button" value="지원하기"/>
+						</div>
+					
+							
+				</div>
+			</div>
+		</div>
+	</div>
+		
+		
+	<!-- Footer -->
+	<jsp:include page="footer.jsp" flush="true"/>
+	</section>
+	
+	
+	
+	<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/pagination.js"></script>
+	
+</body>
+<script>
+
+	$('#apply_button').on('click', function(){
+		//지원 부문이 선택되지 않거나 이력서가 선택되지 않으면
+		if($("#selected_resume_part option:selected").val()=="-1"){
+			alert("지원 부문을 선택하세요");
+			return false;
+		}else if($("#selected-resume").text()==""){
+			alert("이력서를 선택하세요")
+			return false;
+		}else{
+			$('#apply_form').submit();
+			return true;
+		}
+	
+	
+	})
+
+
+</script>
+</html>

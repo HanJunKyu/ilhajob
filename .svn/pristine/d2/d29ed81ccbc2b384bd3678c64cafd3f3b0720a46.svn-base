@@ -1,0 +1,435 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>일하잡 :: 기업채용공고</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+	</head>	
+
+	<style>
+		.recommend-table-wrapper {
+		border-top: 1px solid rgb(41, 41, 41) !important;
+	}
+	
+	form{
+		margin:0 !important;
+	}
+	
+	#write-opening{
+		display: inline;
+    	width: fit-content;
+    	padding: 15px;
+	}
+	
+
+	@media (max-width:970px) {
+
+		.my-menu-container {
+			margin-bottom: 20px;
+		}
+
+		.login-edit {
+			width: 90vw;
+			margin-top: 0px;
+		}
+
+		.login-edit li a {
+			padding: 0 40px !important;
+		}
+
+		.check-td {
+			position: absolute;
+
+		}
+
+		.comp-name-td {
+			margin-bottom: 3px;
+			margin-top: 13px;
+		}
+
+		.first-tr td {
+			line-height: 1.6;
+		}
+
+		.first-tr td a,
+		.recommend-info {
+
+			margin-left: 40px;
+
+		}
+
+		.recommend-info {
+			margin-bottom: 10px;
+		}
+
+	}
+
+	@media (max-width:480px) {
+
+		.recommend-table-wrapper {
+			margin-bottom: 11px;
+		}
+
+		.first-tr td {
+			font-size: 11px !important;
+		}
+
+		.first-tr td a,
+		.recommend-info {
+
+			margin-left: 30px;
+
+		}
+
+		.comp-name-td {
+			margin-bottom: 0px;
+		}
+
+		.recommend-info {
+			font-size: 10px;
+		}
+
+		#recommend_date {
+			font-size: 12px;
+			padding-left: 185px;
+		}
+
+		.recommend-table-wrapper .primary {
+			margin-top: -37px;
+			font-size: 12px;
+		}
+
+		.login-edit li input {
+			font-size: 12px !important;
+			padding: 0 25px !important;
+			height: 35px;
+		}
+
+		.my-menu-container {
+			margin-bottom: 0;
+		}
+
+		.comp-name-td {
+			margin-top: 10px;
+		}
+
+		.button-div {
+			height: 0 !important;
+		}
+
+	}
+	
+	td#no_opening{
+		text-align:center;
+	}
+	</style>
+	<body class="is-preload">
+		<!-- Header -->
+		<%@ include file="header.jsp" %>
+
+		<!-- 아이디랑 tbody 개수 넘기기 -->
+		<form method="post" id="hidden_form">
+			<input type="hidden" name="opn_comp_id" value="${sessionScope.session_id}">
+			<input type="hidden" name="tbody_cnt" id="tbody_cnt">
+			<input type="hidden" name="context" value="${pageContext.request.contextPath}">
+		</form>
+
+		<!-- Main -->
+		<div class="my-menu-container">
+			<ul class="my-menu">
+				<li><a href="${pageContext.request.contextPath}/comp/CompMain.co" class="menu">홈</a></li>
+				<li><a href="${pageContext.request.contextPath}/comp/CompInfo.co" class="menu">기업 정보</a></li>
+				<li><a href="${pageContext.request.contextPath}/comp/CompResume.co" class="menu">지원 현황</a></li>
+				<li><a href="${pageContext.request.contextPath}/comp_apply.jsp" class="menu-on">나의 공고</a></li>
+			</ul>
+		</div>
+
+		<div class="login-edit">
+			 <p style="text-align: right;"><a href="${pageContext.request.contextPath}/opening/OpeningWrite.opn" id="write-opening" class="button primary">공고 작성</a></p> 
+		</div>
+
+		<div class="recommend" style="margin-bottom: 0px;">
+		<div class="recommend-header" style=" height: 0;">
+			<div style="width: 100%;"></div>
+		</div>
+		<div class="recommend-table-wrapper" >
+			<form action="삭제url" name="delete_form">
+				<table>
+			
+				</table>
+			</form>
+		</div>
+		<div style="text-align:right;border-bottom:0.5px solid grey;height:50px;background-color: rgba(1.5,1.5,1.5,0.05);"><a href="javascript:void(0);" id="more">더보기</a></div>
+	</div>
+
+	<div class="login-edit" style="margin-bottom: 50px;">
+		<li><input type="button" class="button primary" value="삭제" id="delete_button"></li>
+	</div>
+
+
+		<!-- Footer -->
+		<%@ include file="footer.jsp" %>
+		
+		<!-- Scripts -->
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+			<script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+
+	</body>
+	<script>
+
+
+	$('#tbody_cnt').value=$('tbody').length;
+		
+		var opn_cnt=0;
+		//토탈 카운트가 필요함
+		//불러온 게시물 개수(data length 누적)와 게시물 토탈 개수가 일치하면 더보기칸을 없앰
+		$( document ).ready(function() {
+			//loadList();
+			
+			//시작
+			var tbody_cnt = $('tbody').length+1;  
+			 var opn_comp_id=$('input[name="opn_comp_id"]').val();
+			 var addListHtml = "";
+			 
+			 //form 전송
+			 $.ajax({
+			        url : $('input[name="context"]').val()+"/opening/OpeningList.opn",
+			        type : "post",
+			        data : {"opn_comp_id":opn_comp_id,"tbody_cnt":tbody_cnt},
+			        dataType : "json",
+			        success : function(data) {
+			        	var total_cnt = data[0].total_cnt;
+			        	
+			        	if(total_cnt==0){
+			        		addListHtml+="<tbody><tr class='first-tr'><td id='no_opening'>작성한 공고가 없습니다.<br><a style='margin-top:20px;' href='${pageContext.request.contextPath}/opening/OpeningWrite.opn' class='button primary'>공고 작성</a></td></tr></tbody>";
+			        		$("table").append(addListHtml);
+			        		$("#more").parent().remove();
+			        		$("a#write-opening").remove();
+			        		$("input#delete_button").remove();
+			        	}else{
+			        		if(data.length > 1 && data.length <= 6){
+			        			addListHtml+="<tbody>"
+			        		    for(var i=1; i<data.length;i++) {
+			        		    	 opn_cnt = opn_cnt+1;
+			        	 	      	 addListHtml += "<tr class='first-tr'>";
+			       		   	      	 addListHtml += "<td class='check-td'><div class='col-6 col-12-medium' style='width: 32px; margin-bottom: 10px;'><input type='checkbox' id='"+opn_cnt+"' name='delete_check'><label for='"+opn_cnt+"'></label></div></td>";
+			       		   	   		 if(data[i].is_recruiting=='T'){
+			       		   	      	 	addListHtml += "<td class='comp-name-td'><p>채용중</p></td>";
+		       		    	      	 }else if(data[i].is_recruiting=='F'){
+			       		   	      	 	addListHtml += "<td class='comp-name-td'><p>채용중 아님</p></td>";
+		       		    	     	 }else{
+		       		    	    		addListHtml += "<td class='comp-name-td'><p>채용상태 알수없음</p></td>";
+		       		    	    	 }
+			       		   	      	 addListHtml += "<td><div><a id='recommend_title' "+"href='${pageContext.request.contextPath}/opening/OpeningView.opn?opn_num="+data[i].opn_num+"'>";
+			       	    		     addListHtml += data[i].opn_title+"</a></div>";
+			       	    		     addListHtml += "<div class='recommend-info'>";
+			       	    		     if(data[i].opn_career!=null){addListHtml += "<span>"+data[i].opn_career+"</span>";}
+			       	    		     if(data[i].opn_edu!=null){addListHtml += "<span>"+data[i].opn_edu+"</span>";}
+			       	    		  	 if(data[i].opn_work_type!=null){addListHtml += "<span><i class='fas fa-user'></i>"+data[i].opn_work_type+"</span>";}
+			       	    		  	 if(data[i].work_location1!=null || data[i].work_location2!=null || data[i].work_location3!=null){addListHtml += "<span><i class='fas fa-map-marker-alt'></i>";}
+		        	    		     if(data[i].work_location1!=null){addListHtml += data[i].work_location1+"  ";}
+		        	    		     if(data[i].work_location2!=null){addListHtml += data[i].work_location2+"  ";}
+		        	    		     if(data[i].work_location3!=null){addListHtml += data[i].work_location3;}
+		        	    		     if(data[i].work_location1!=null || data[i].work_location2!=null || data[i].work_location3!=null){addListHtml += "</span>";}
+		        	    		     if(data[i].opn_end_date!=null){addListHtml += "</div></td><td><p id='recommend_date'>"+"~"+data[i].opn_end_date+"</p></td>";}			        	    	     
+			        		    }
+			        			addListHtml+="</tbody>"
+			            		$("table").append(addListHtml);
+			       	    	}
+			        		if(opn_cnt==total_cnt){
+			        			$("#more").parent().remove();
+			        		}
+			        	}
+			        	
+					}
+			})
+			
+			
+			//끝
+			
+		})
+		
+		$('#more').on('click', function () {
+			//loadList();
+			
+			 var tbody_cnt = $('tbody').length+1;  
+			 var opn_comp_id=$('input[name="opn_comp_id"]').val();
+			 var addListHtml = "";
+			 
+			 //form 전송
+			 $.ajax({
+			        url : $('input[name="context"]').val()+"/opening/OpeningList.opn",
+			        type : "post",
+			        data : {"opn_comp_id":opn_comp_id,"tbody_cnt":tbody_cnt},
+			        dataType : "json",
+			        success : function(data) {
+			        	var total_cnt = data[0].total_cnt;
+			        	
+			        	if(total_cnt==0){
+			        		addListHtml+="<tbody><tr class='first-tr'><td id='no_opening'>작성한 공고가 없습니다.<br><a style='margin-top:20px;' href='${pageContext.request.contextPath}/opening/OpeningWrite.opn' class='button primary'>공고 작성</a></td></tr></tbody>";
+			        		$("table").append(addListHtml);
+			        		$("#more").parent().remove();
+			        		$("a#write-opening").remove();
+			        		$("input#delete_button").remove();
+			        	}else{
+			        		if(data.length > 1 && data.length <= 6){
+			        			addListHtml+="<tbody>"
+			        		    for(var i=1; i<data.length;i++) {
+			        		    	 opn_cnt = opn_cnt+1;
+			        	 	      	 addListHtml += "<tr class='first-tr'>";
+			       		   	      	 addListHtml += "<td class='check-td'><div class='col-6 col-12-medium' style='width: 32px; margin-bottom: 10px;'><input type='checkbox' id='"+opn_cnt+"' name='delete_check'><label for='"+opn_cnt+"'></label></div></td>";
+			       		   	   		 if(data[i].is_recruiting=='T'){
+			       		   	      	 	addListHtml += "<td class='comp-name-td'><p>채용중</p></td>";
+		       		    	      	 }else if(data[i].is_recruiting=='F'){
+			       		   	      	 	addListHtml += "<td class='comp-name-td'><p>채용중 아님</p></td>";
+		       		    	     	 }else{
+		       		    	    		addListHtml += "<td class='comp-name-td'><p>채용상태 알수없음</p></td>";
+		       		    	    	 }
+			       		   	      	 addListHtml += "<td><div><a id='recommend_title' "+"href='${pageContext.request.contextPath}/opening/OpeningView.opn?opn_num="+data[i].opn_num+"'>";
+			       	    		     addListHtml += data[i].opn_title+"</a></div>";
+			       	    		     addListHtml += "<div class='recommend-info'>";
+			       	    		     if(data[i].opn_career!=null){addListHtml += "<span>"+data[i].opn_career+"</span>";}
+			       	    		     if(data[i].opn_edu!=null){addListHtml += "<span>"+data[i].opn_edu+"</span>";}
+			       	    		  	 if(data[i].opn_work_type!=null){addListHtml += "<span><i class='fas fa-user'></i>"+data[i].opn_work_type+"</span>";}
+			       	    		  	 if(data[i].work_location1!=null || data[i].work_location2!=null || data[i].work_location3!=null){addListHtml += "<span><i class='fas fa-map-marker-alt'></i>";}
+		        	    		     if(data[i].work_location1!=null){addListHtml += data[i].work_location1+"  ";}
+		        	    		     if(data[i].work_location2!=null){addListHtml += data[i].work_location2+"  ";}
+		        	    		     if(data[i].work_location3!=null){addListHtml += data[i].work_location3;}
+		        	    		     if(data[i].work_location1!=null || data[i].work_location2!=null || data[i].work_location3!=null){addListHtml += "</span>";}
+		        	    		     if(data[i].opn_end_date!=null){addListHtml += "</div></td><td><p id='recommend_date'>"+"~"+data[i].opn_end_date+"</p></td>";}			        	    	     
+			        		    }
+			        			addListHtml+="</tbody>"
+			            		$("table").append(addListHtml);
+			       	    	}
+			        		if(opn_cnt==total_cnt){
+			        			$("#more").parent().remove();
+			        		}
+			        	}
+			        	
+					}
+			})
+			
+		})
+		
+		var delete_array=[];
+		var delete_result_array=[];
+		var final_check=true;
+		$('#delete_button').on('click', function () {
+			//선택된 공고 번호를 배열에 저장함
+			for(var i=0;i<opn_cnt;i++){
+				if($("input:checkbox[name=delete_check]#"+(i+1)).is(":checked")==true){
+					var selected_opn_num=$("input:checkbox[name=delete_check]#"+(i+1)).parent().parent().parent().find("#recommend_title").attr('href').split('opn_num=')[1];
+					delete_array.push(selected_opn_num);
+				}
+			}
+			
+			//삭제
+			for(var j=0;j<delete_array.length;j++){
+			
+				$.ajax({
+			        url : $('input[name="context"]').val()+"/opening/OpeningDelete.opn",
+			        type : "post",
+			        data : {"opn_num":delete_array[j]},
+			        success : function() {
+			        	delete_result_array.push(true);
+			        },
+			        error : function(){
+			        	delete_result_array.push(false);
+			        }
+				})
+
+			}
+			for(var t=0;t<delete_result_array.length;t++){
+				if(delete_result_array[i]==false){
+					final_check=false;
+				}
+			}
+			delete_array=[];
+			delete_result_array=[];
+			
+			if(final_check){
+				location.reload();
+			}else{
+				alert('잠시 후 다시 시도해주세요.');
+				 return false;
+			}
+			
+		})
+		
+		
+		function loadList(){
+			var tbody_cnt = $('tbody').length+1;  
+			 var opn_comp_id=$('input[name="opn_comp_id"]').val();
+			 var addListHtml = "";
+			 console.log('loadList입니다')
+			 $.ajax({
+			        url : $('input[name="context"]').val()+"/opening/OpeningList.opn",
+			        type : "post",
+			        data : {"opn_comp_id":opn_comp_id,"tbody_cnt":tbody_cnt},
+			        dataType : "json",
+			        success : function(data) {
+			        	var total_cnt = data[0].total_cnt;
+			        	if(total_cnt==0){
+			        		addListHtml+="<tbody><tr class='first-tr'><td id='no_opening'>작성한 공고가 없습니다.<br><a style='margin-top:20px;' href='${pageContext.request.contextPath}/opening/OpeningWrite.opn' class='button primary'>공고 작성</a></td></tr></tbody>";
+			        		$("table").append(addListHtml);
+			        		$("#more").parent().remove();
+			        		$("a#write-opening").remove();
+			        		$("input#delete_button").remove();
+			        	}else{
+			        		if(data.length >= 1 && data.length < 6){
+			        			addListHtml+="<tbody>"
+			        		    for(var i=1; i<data.length;i++) {
+			        		    	opn_cnt = opn_cnt+1;
+			        	 	      	 addListHtml += "<tr class='first-tr'>";
+			       		   	      	 addListHtml += "<td class='check-td'><div class='col-6 col-12-medium' style='width: 32px; margin-bottom: 10px;'><input type='checkbox' id='"+opn_cnt+"' name='delete_check'><label for='"+opn_cnt+"'></label></div></td>";
+			       		    	     if(data[i].is_recruiting=='T'){
+				       		   	      	 addListHtml += "<td class='comp-name-td'><p>채용중</p></td>";
+			       		    	     }else if(data[i].is_recruiting=='F'){
+				       		   	      	 addListHtml += "<td class='comp-name-td'><p>채용중이 아님</p></td>";
+			       		    	     }else{
+			       		    	    	addListHtml += "<td class='comp-name-td'><p>채용상태 알수없음</p></td>";
+			       		    	     }
+			       		   	      	 addListHtml += "<td><div><a id='recommend_title' "+"href='${pageContext.request.contextPath}/opening/OpeningView.opn?opn_num="+data[i].opn_num+"'>";
+			       	    		     addListHtml += data[i].opn_title+"</a></div>";
+			       	    		     addListHtml += "<div class='recommend-info'>";
+			       	    		     if(data[i].career!=null){addListHtml += "<span>"+data[i].career+"</span>";}
+			       	    		     if(data[i].edu!=null){addListHtml += "<span>"+data[i].edu+"</span>";}
+			       	    		  	 if(data[i].opn_work_type!=null){addListHtml += "<span><i class='fas fa-user'></i>"+data[i].opn_work_type+"</span>";}
+			       	    		  	 //if(data[i].work_location1!=null || data[i].work_location2!=null || data[i].work_location3!=null){addListHtml += "<span><i class='fas fa-map-marker-alt'></i>";}
+		        	    		     //if(data[i].work_location1!=null){addListHtml += data[i].work_location1+"  ";}
+		        	    		     //if(data[i].work_location2!=null){addListHtml += data[i].work_location2+"  ";}
+		        	    		     //if(data[i].work_location3!=null){addListHtml += data[i].work_location3;}
+		        	    		     //if(data[i].work_location1!=null || data[i].work_location2!=null || data[i].work_location3!=null){addListHtml += "</span>";}
+		        	    		   	 if(data[i].opn_end_date!=null){addListHtml += "</div></td><td><p id='recommend_date'>"+"~"+data[i].opn_end_date+"</p></td>";}			        	    	     
+			        		    }
+			        			addListHtml+="</tbody>";
+			        			console.log(addListHtml)
+			            		$("table").append(addListHtml);
+			       	    	}
+			        	
+			        		if(opn_cnt==total_cnt){
+			        			$("#more").parent().remove();
+			        		}
+			        	}
+			        	
+					}
+				})
+		}
+		
+	</script>
+</html>

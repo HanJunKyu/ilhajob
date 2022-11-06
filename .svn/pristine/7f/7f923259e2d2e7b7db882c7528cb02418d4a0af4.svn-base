@@ -1,0 +1,893 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+
+<head>
+<title>일하잡 :: 이력서작성</title>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+<script src="https://kit.fontawesome.com/3087aeb32d.js"
+	crossorigin="anonymous"></script>
+</head>
+<style>
+.edit-input .address-btn {
+	background-color: rgb(55, 179, 127) !important;
+	color: white !important;
+	width: 120px !important;
+}
+
+#remove-img:focus {
+	border: none;
+	outline: none;
+}
+
+.edit-input .portfolio-btn {
+	background-color: rgb(55, 179, 127) !important;
+	color: white !important;
+}
+
+.edit-input .remove-url {
+  font-family: FontAwesome;
+  width: 50px !important;
+  padding: 0;
+  position: absolute;
+  margin-left: 865px;
+  margin-top: -12px;
+  background-color: transparent !important;
+}
+
+.edit-input .remove-url:focus,.edit-input .remove-file:focus {
+	outline: none;
+}
+
+.edit-input .remove-file {
+  font-family: FontAwesome;
+  width: 50px;
+  padding: 0;
+  position: absolute;
+  margin-left: 875px;
+  margin-top: -12px;
+  background-color: transparent !important;
+}
+</style>
+
+<body class="is-preload" style="padding: 0;">
+
+	<!-- Header -->
+<div id="header" style="position: relative;">
+				<h1 id="logo"><a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/images/main_logo2.png" alt="" height="100%" style="margin-left: -6%;"></a></h1>
+				<nav id="nav">
+					<ul>
+						<li><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
+						<li>
+							<a href="${pageContext.request.contextPath}/community_main.jsp">커뮤니티</a>
+							<ul>
+								<li><a href="${pageContext.request.contextPath}/q_a_list_page.jsp">질문 게시판</a></li>
+			
+								<li><a href="${pageContext.request.contextPath}/no-sidebar.jsp">면접 후기</a></li>
+							</ul>
+						</li>
+						<li>
+							<a href="${pageContext.request.contextPath}/user/MyMain.us">마이페이지</a>
+							<ul>
+								<li><a href="${pageContext.request.contextPath}/user/MyMain.us">홈</a></li>
+								<li><a href="${pageContext.request.contextPath}/my_info.jsp">내 정보</a></li>
+								<li><a href="${pageContext.request.contextPath}/my_resume.jsp">이력서</a></li>
+								<li><a href="${pageContext.request.contextPath}/my_apply.jsp">내 지원</a></li>
+								<li><a href="${pageContext.request.contextPath}/my_like.jsp">스크랩</a></li>
+							</ul>
+						</li>
+					<li><a href="${pageContext.request.contextPath}/index.jsp" class="button alt">로그아웃</a></li>
+					</ul>
+				</nav>
+			</div>
+	<!-- Main -->
+
+
+	<!-- <div class="resume-edit" >
+			<li><a href="#" class="button primary" style="width: 15%">이력서 수정</a></li>
+		</div> -->
+
+	<!-- 인적사항 -->
+
+	<div class="resume-edit-container">
+		<form name="resumeForm" method="post"
+			action="${pageContext.request.contextPath}/user/UserResumeWriteOk.us" enctype="multipart/form-data">
+			<input type="text" placeholder="이력서 제목을 입력하세요"
+				class="resume-title-input" name="title">
+			<div class="resume-title"
+				style="margin-bottom: 30px; margin-top: 20px;">
+				<p>인적사항</p>
+			</div>
+			<div style="display: flex;" class="information">
+				<div class="resume-form">
+					<div class="edit-input">
+						<span>이름</span> <input type="text" name="name" id="name" />
+						<div style="width: 75px; margin-left: 20px;">
+							<input type="radio" id="woman" name="gender" value="여자" checked
+								style="height: 13px;"> <label for="woman"
+								style="padding: 0; padding-left: 30px;">여자</label>
+						</div>
+						<div style="width: 100px;">
+							<input type="radio" id="man" name="gender" value="남자"
+								style="height: 13px;"> <label for="man"
+								style="padding: 0; padding-left: 30px;">남자</label>
+						</div>
+					</div>
+					<div class="edit-input">
+						<span>이메일</span> <input type="email" name="email" id="email" />
+					</div>
+					<div class="edit-input">
+						<span>휴대폰</span> <input type="text" name="phone" id="phone" />
+					</div>
+					<div class="edit-input">
+						<span>생년월일</span> <input type="text" name="birth" id="birth" placeholder="19980207"/>
+					</div>
+					<div class="edit-input">
+						<div style="display: flex;">
+							<span>주소</span>
+							<div>
+								<div style="display: flex; margin-bottom: 15px;">
+									<input type="text" id="sample4_roadAddress" placeholder="회사주소"
+										name="address" readonly> <input class="address-btn"
+										type="button" onclick="sample4_execDaumPostcode()" value="찾기"
+										style="width: 100px; font-size: 14px;">
+								</div>
+								<input type="text" id="sample4_detailAddress"
+									name="address_detail" placeholder="상세주소" style="width: 690px;">
+							</div>
+						</div>
+					</div>
+				</div>
+				<div class="img-div"></div>
+				<input type="button" value="&#xf00d;" id="remove-img"
+					onclick="removeImg('photo')"> <label class="btn-file"> <i
+					class="fas fa-plus"></i><input id=prof-img type=file
+					accept="images/*" onchange="showImage(event);" name="photo">
+				</label>
+			</div>
+			<div class="resume-edit-education" style="display: none;" id="E">
+				<div class="resume-title">
+					<p>학력</p>
+				</div>
+				<div class="resume-wrapper education_form" style="display: none;">
+					<input type="button" value="&#xf00d;" class="delete-btn"
+						onclick="delete_resume(this)" style="color: black !important;">
+					<div class="edit-input">
+						<span>학교명</span> <input type="text" name="education_name"
+							id="school_name" disabled /> <select name="education_status"
+							id="category" disabled>
+							<option value="졸업">졸업</option>
+							<option value="졸업예정">졸업예정</option>
+							<option value="재학중">재학중</option>
+							<option value="중퇴">중퇴</option>
+							<option value="휴학">휴학</option>
+						</select>
+					</div>
+					<div class="edit-input">
+						<span>재학기간</span> <input type="text" name="education_start"
+							id="school_start" placeholder="2012.05" class="resume-date"
+							disabled /> <span class="split">-</span>
+						<input type="text" name="education_end" id="school_end"
+							placeholder="2012.05" class="resume-date"
+							disabled />
+					</div>
+					<div class="edit-input">
+						<span>전공</span> <input type="text" name="education_major"
+							id="education_specialty" disabled /> <input type="text"
+							name="education_grade" id="school_grade" placeholder="학점"
+							disabled />
+					</div>
+				</div>
+				<div class="resume-wrapper education">
+					<input type="button" value="&#xf00d;" class="delete-btn"
+						onclick="delete_resume(this)" style="color: black !important;">
+					<div class="edit-input">
+						<span>학교명</span> <input type="text" name="education_name"
+							id="school_name" disabled /> <select name="education_status"
+							id="category" disabled>
+							<option value="졸업">졸업</option>
+							<option value="졸업예정">졸업예정</option>
+							<option value="재학중">재학중</option>
+							<option value="중퇴">중퇴</option>
+							<option value="휴학">휴학</option>
+						</select>
+					</div>
+					<div class="edit-input">
+						<span>재학기간</span> <input type="text" name="education_start"
+							id="school_start" placeholder="2012.05" class="resume-date"
+							 disabled /> <span class="split">-</span>
+						<input type="text" name="education_end" id="school_end"
+							placeholder="2012.05" class="resume-date"
+							disabled />
+					</div>
+					<div class="edit-input">
+						<span>전공</span> <input type="text" name="education_major"
+							id="education_specialty" disabled /> <input type="text"
+							name="education_grade" id="school_grade" placeholder="학점"
+							disabled />
+					</div>
+				</div>
+			</div>
+			<div class="resume-add">
+				<input type="button" id="education-add" onclick="edu_add()"
+					value="추가" style="display: none;">
+			</div>
+			<div class="resume-edit-career" style="display: none;" id="C">
+				<div class="resume-title">
+					<p>경력</p>
+				</div>
+				<div class="resume-wrapper career_form" style="display: none;">
+					<input type="button" value="&#xf00d;" class="delete-btn"
+						onclick="delete_resume(this)" style="color: black !important;">
+					<div class="edit-input">
+						<span>회사명</span> <input type="text" name="career_name"
+							id="career_name" disabled /> <select name="career_rank"
+							id="category" disabled>
+							<option value="">직급</option>
+							<option value="-">없음</option>
+							<option value="사원">사원</option>
+							<option value="사원">사원</option>
+							<option value="대리">대리</option>
+							<option value="과장">과장</option>
+							<option value="차장">차장</option>
+							<option value="부장">부장</option>
+						</select> <select name="career_position" id="category" disabled>
+							<option value="">직책</option>
+							<option value="-">없음</option>
+							<option value="팀원">팀원</option>
+							<option value="팀장">팀장</option>
+							<option value="매니저">매니저</option>
+							<option value="파트장">파트장</option>
+							<option value="지점장">지점장</option>
+						</select>
+					</div>
+					<div class="edit-input">
+						<span>근무기간</span> <input type="text" name="career_start"
+							id="career_start" placeholder="2012.05" class="resume-date"
+							disabled /> <span class="split">-</span> <input type="text"
+							name="career_end" id="career_end" placeholder="2012.05"
+							class="resume-date" disabled />
+					</div>
+					<div class="edit-input">
+						<span>업무내용</span> <input type="text" name="career_detail"
+							id="career_content" disabled />
+					</div>
+				</div>
+				<div class="resume-wrapper career">
+					<input type="button" value="&#xf00d;" class="delete-btn"
+						onclick="delete_resume(this)" style="color: black !important;">
+					<div class="edit-input">
+						<span>회사명</span> <input type="text" name="career_name"
+							id="career_name" disabled /> <select name="career_rank"
+							id="category" disabled>
+							<option value="">직급</option>
+							<option value="-">없음</option>
+							<option value="사원">사원</option>
+							<option value="주임">주임</option>
+							<option value="대리">대리</option>
+							<option value="과장">과장</option>
+							<option value="차장">차장</option>
+							<option value="부장">부장</option>
+						</select> <select name="career_position" id="category" disabled>
+							<option value="">직책</option>
+							<option value="-">없음</option>
+							<option value="팀원">팀원</option>
+							<option value="팀장">팀장</option>
+							<option value="매니저">매니저</option>
+							<option value="파트장">파트장</option>
+							<option value="지점장">지점장</option>
+						</select>
+					</div>
+					<div class="edit-input">
+						<span>근무기간</span> <input type="text" name="career_start"
+							id="career_start" placeholder="2012.05" class="resume-date" disabled/> <span
+							class="split">-</span> <input type="text" name="career_end"
+							id="career_end" placeholder="2012.05" class="resume-date" disabled/>
+					</div>
+					<div class="edit-input">
+						<span>업무내용</span> <input type="text" name="career_detail"
+							id="career_content" disabled/>
+					</div>
+				</div>
+			</div>
+			<div class="resume-add">
+				<input type="button" id="career-add" value="추가"
+					onclick="career_add()" style="display: none;">
+			</div>
+			<div class="resume-edit-activity" style="display: none;" id="A">
+				<div class="resume-title">
+					<p>대외활동</p>
+				</div>
+				<div class="resume-wrapper activity_form" style="display: none;">
+					<input type="button" value="&#xf00d;" class="delete-btn"
+						onclick="delete_resume(this)" style="color: black !important;">
+					<div class="edit-input">
+						<span>기관/장소</span> <input type="text" name="activity_place"
+							id="activity_name" disabled /> <select name="activity_type"
+							id="category" disabled>
+							<option value="">구분</option>
+							<option value="인턴">인턴</option>
+							<option value="동아리">동아리</option>
+							<option value="자원봉사">자원봉사</option>
+							<option value="사회활동">사회활동</option>
+							<option value="교내활동">교내활동</option>
+						</select>
+					</div>
+					<div class="edit-input">
+						<span>기간</span> <input type="text" name="activity_start"
+							id="activity_start" placeholder="2012.05" class="resume-date"
+							disabled /> <span class="split">-</span> <input type="text"
+							name="activity_end" id="activity_end" placeholder="2012.05"
+							class="resume-date" disabled />
+					</div>
+					<div class="edit-input">
+						<span>내용</span> <input type="text" name="activity_detail"
+							id="activity_content" disabled />
+					</div>
+				</div>
+				<div class="resume-wrapper activity">
+					<input type="button" value="&#xf00d;" class="delete-btn"
+						onclick="delete_resume(this)" style="color: black !important;">
+					<div class="edit-input">
+						<span>기관/장소</span> <input type="text" name="activity_place"
+							id="activity_name" disabled/> <select name="activity_type" id="category" disabled>
+							<option value="">구분</option>
+							<option value="인턴">인턴</option>
+							<option value="동아리">동아리</option>
+							<option value="자원봉사">자원봉사</option>
+							<option value="사회활동">사회활동</option>
+							<option value="교내활동">교내활동</option>
+						</select>
+					</div>
+					<div class="edit-input">
+						<span>기간</span> <input type="text" name="activity_start"
+							id="activity_start" placeholder="2012.05" class="resume-date" disabled/>
+						<span class="split">-</span> <input type="text"
+							name="activity_end" id="activity_end" placeholder="2012.05"
+							class="resume-date" disabled/>
+					</div>
+					<div class="edit-input">
+						<span>내용</span> <input type="text" name="activity_detail"
+							id="activity_content" disabled/>
+					</div>
+				</div>
+			</div>
+			<div class="resume-add">
+				<input type="button" id="activity-add" value="추가"
+					onclick="activity_add()" style="display: none;">
+			</div>
+			<div class="resume-edit-lisense" style="display: none;" id="L">
+				<div class="resume-title">
+					<p>자격증/어학/수상내역</p>
+				</div>
+				<div class="resume-wrapper lisense_form" style="display: none;">
+					<input type="button" value="&#xf00d;" class="delete-btn"
+						onclick="delete_resume(this)" style="color: black !important;">
+					<div class="edit-input">
+						<span>자격/어학/수상명</span> <input type="text" name="lisense_name"
+							id="lisense_name" disabled /> <select name="lisense_type"
+							id="category" disabled>
+							<option value="">구분</option>
+							<option value="어학시험">어학시험</option>
+							<option value="자격증/면허증">자격증/면허증</option>
+							<option value="수상내역">수상내역</option>
+							<option value="공모전">공모전</option>
+						</select>
+					</div>
+					<div class="edit-input">
+						<span>취득일</span> <input type="text" name="lisense_date"
+							id="lisense_date" placeholder="2012.05" class="resume-date"
+							disabled />
+					</div>
+					<div class="edit-input">
+						<span>발행처/기관/언어</span> <input type="text" name="lisensePublisher"
+							id="lisense_place" disabled/> <input type="text" name="lisense_result"
+							id="lisense_score" placeholder="합격여부/점수" disabled />
+					</div>
+				</div>
+				<div class="resume-wrapper lisense">
+					<input type="button" value="&#xf00d;" class="delete-btn"
+						onclick="delete_resume(this)" style="color: black !important;">
+					<div class="edit-input">
+						<span>자격/어학/수상명</span> <input type="text" name="lisense_name"
+							id="lisense_name" disabled/> <select name="lisense_type" id="category" disabled>
+							<option value="">구분</option>
+							<option value="어학시험">어학시험</option>
+							<option value="자격증/면허증">자격증/면허증</option>
+							<option value="수상내역">수상내역</option>
+							<option value="공모전">공모전</option>
+						</select>
+					</div>
+					<div class="edit-input">
+						<span>취득일</span> <input type="text" name="lisense_date"
+							id="lisense_date" placeholder="2012.05" class="resume-date" disabled/>
+					</div>
+					<div class="edit-input">
+						<span>발행처/기관/언어</span> <input type="text" name="lisensePublisher"
+							id="lisense_place" disabled/> <input type="text" name="lisense_result"
+							id="lisense_score" placeholder="합격여부/점수" disabled/>
+					</div>
+				</div>
+			</div>
+			<div class="resume-add">
+				<input type="button" id="lisense-add" value="추가"
+					onclick="lisense_add()" style="display: none;">
+			</div>
+			<div class="resume-edit-introduce"
+				style="display: none; margin-bottom: 30px;" id="I">
+				<div class="resume-title">
+					<p>자기소개서</p>
+				</div>
+				<textarea name="introduce" id="introduce_textarea" rows="10"
+					class="resume" disabled></textarea>
+				<p class="text-count">
+					총 글자수 <span>0</span>자
+				</p>
+			</div>
+			<div class="resume-edit-portfolio"
+				style="display: none; margin-bottom: 30px;" id="P">
+				<div class="resume-title">
+					<p>포트폴리오</p>
+				</div>
+				<div class="edit-input">
+					<input type="button" value="URL 추가" class="portfolio-btn"
+						onclick="addURL()" style="margin-right: 20px;"> <input
+						type="button" value="파일 추가" class="portfolio-btn"
+						onclick="addFile()">
+				</div>
+				<div class="edit-input" id="URL_form" style="display: none;">
+					<select name="url_type" id="category"
+						style="margin-left: 0; margin-right: 20px;" disabled>
+						<option value="">구분</option>
+						<option value="이력서">이력서</option>
+						<option value="포트폴리오">포트폴리오</option>
+						<option value="증명서">증명서</option>
+						<option value="자격증">자격증</option>
+						<option value="추천서">추천서</option>
+						<option value="기획서">기획서</option>
+						<option value="기타">기타</option>
+					</select> <input type="text" name="url" id="portfolio_url"
+						value="https://" style="width: 695px !important;" disabled /> <input
+						type="button" value="&#xf00d;" class="remove-url"
+						onclick="delete_resume(this)" style="color: black !important;">
+				</div>
+				<div class="edit-input" id="file_form" style="display: none;">
+					<select name="portfolio_type" id="category"
+						style="margin-left: 0; margin-right: 20px;" disabled>
+						<option value="">구분</option>
+						<option value="이력서">이력서</option>
+						<option value="포트폴리오">포트폴리오</option>
+						<option value="증명서">증명서</option>
+						<option value="자격증">자격증</option>
+						<option value="추천서">추천서</option>
+						<option value="기획서">기획서</option>
+						<option value="기타">기타</option>
+					</select>
+					<div class="file_input">
+						<input type="text" id="file_route"
+							style="width: 590px !important;" readonly> <label>
+							<input type="file" name="portfolio_name"
+							onchange="showFile(this)" disabled> <span>찾아보기</span>
+						</label>
+					</div>
+					<input type="button" value="&#xf00d;" class="remove-file"
+						onclick="delete_resume(this)"
+						style="color: black !important; width: 30px;">
+				</div>
+			</div>
+			<div class="resume-edit-military" style="display: none;" id="M">
+				<div class="resume-title">
+					<p>병역사항</p>
+				</div>
+				<div class="resume-wrapper">
+					<div class="edit-input">
+						<span>병역 정보</span> <select name="military_name" id="category"
+							disabled>
+							<option value="">병역</option>
+							<option value="군필">군필</option>
+							<option value="미필">미필</option>
+							<option value="면제">면제</option>
+						</select> <select name="military_type" id="category" disabled>
+							<option value="">군별</option>
+							<option value="해군">해군</option>
+							<option value="공군">공군</option>
+							<option value="해병">해병</option>
+							<option value="전경">전경</option>
+							<option value="의경">의경</option>
+							<option value="공익">공익</option>
+							<option value="기타">기타</option>
+						</select> <input type="text" name="military_rank" id="military_level"
+							placeholder="제대 계급" disabled />
+					</div>
+					<div class="edit-input">
+						<span>기간</span> <input type="text" name="military_start"
+							id="military_start" placeholder="2012.05" class="resume-date"
+							disabled /> <span class="split">-</span> <input type="text"
+							name="military_end" id="military_end" placeholder="2012.05"
+							class="resume-date" disabled />
+					</div>
+					<div class="edit-input">
+						<span>면제사유</span> <input type="text" name="military_reason"
+							id="military_content" disabled />
+					</div>
+				</div>
+			</div>
+		</form>
+		<div class="resume-items">
+			<p style="font-size: 20px; margin-bottom: 0; color: rgb(66, 66, 66);">이력서
+				항목</p>
+			<hr style="margin: 15px 0;">
+			<div>
+				<a class="" id="edu_item">학력</a>
+				<button class="education-remove" onclick="addEducation(this)">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+			<div>
+				<a class="" id="career_item">경력</a>
+				<button class="career-remove" onclick="addCareer(this)">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+			<div>
+				<a class="" id="activity_item">대외활동</a>
+				<button class="activity-remove" onclick="addActivity(this)">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+			<div>
+				<a class="" id="lisense_item">자격증/어학/수상</a>
+				<button class="lisense-remove" onclick="addLisense(this)">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+			<div>
+				<a class="" id="introduce_item">자기소개서</a>
+				<button class="introduce-remove" onclick="addIntroduce(this)">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+			<div>
+				<a class="" id="portfolio_item">포트폴리오</a>
+				<button class="portfolio-remove" onclick="addPortfolio(this)">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+			<div>
+				<a class="" id="military_item">병력사항</a>
+				<button class="military-remove" onclick="addMilitary(this)">
+					<i class="fas fa-plus"></i>
+				</button>
+			</div>
+			<input type="button" value="작성완료" id="resume_submit"
+				onclick="submit()">
+		</div>
+	</div>
+
+	<%@ include file="footer.jsp"%>
+
+	<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/resume_edit.js"></script>
+	<script src="//code.jquery.com/jquery-3.4.1.min.js"></script>
+
+</body>
+<script
+	src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+
+
+	function submit() {
+		
+		var check = true;
+
+		if ($(".resume-title-input").val() == "") {
+			alert("이력서 제목을 입력하세요")
+			return false;
+		}
+		if(check){
+			
+		$(".information").each(function() {
+			$(this).find("input").each(function() {
+				if ($(this).attr("type") == "file") {
+					return true;
+				}
+				if ($(this).val() == "") {
+					$(this).css("border-color", "red")
+					alert("인적사항을 모두 입력해주세요")
+					check = false;
+					return false;
+				} else {
+					$(this).css("border-color", "rgba(144, 144, 144, 0.25)")
+					check = true;
+				}
+			})
+		}) 
+		}
+		
+		if(check){
+			
+		var birth = /[0-9]{8}/;
+		if(!birth.test($("#birth").val())){
+			$("#birth").css("border-color", "red")
+			alert("입력 형식에 맞춰주세요")
+			check = false;
+			return false;
+		} else {
+			$("#birth").css("border-color",
+					"rgba(144, 144, 144, 0.25)")
+					check = true;
+		}
+		}
+
+		if(check){
+			
+		if (edu_check) {
+			$("input[name='education_major']").each(function() {
+
+				if ($(this).val() == "") {
+					$(this).val("-");
+				}
+			});
+
+			$("input[name='education_grade']").each(function() {
+
+				if ($(this).val() == "") {
+					$(this).val("-");
+				}
+			});
+
+			$(".education").each(
+					function() {
+						$(this).find("input,select").each(
+								function() {
+									if ($(this).val() == "") {
+										$(this).css("border-color", "red")
+										alert("학력사항을 모두 입력해주세요")
+										check = false;
+										return false;
+									} else {
+										$(this).css("border-color",
+												"rgba(144, 144, 144, 0.25)")
+												check = true;
+									}
+									return check;
+								})
+					})
+		}
+		}
+		
+			
+
+		if(check){
+			
+		if (career_check) {
+
+			$(".career").each(
+					function() {
+						$(this).find("input,select").each(
+								function() {
+									if ($(this).val() == "") {
+										$(this).css("border-color", "red")
+										alert("경력사항을 모두 입력해주세요")
+										check = false;
+										return false;
+									} else {
+										$(this).css("border-color",
+												"rgba(144, 144, 144, 0.25)")
+												check=true;
+									}
+								})
+									return check;
+					})
+		}
+								}
+		
+		
+
+		if (activity_check) {
+			if(check){
+				
+			$(".activity").each(
+					function() {
+						$(this).find("input,select").each(
+								function() {
+									if ($(this).val() == "") {
+										$(this).css("border-color", "red")
+										alert("대외활동 사항을 모두 입력해주세요")
+										check = false;
+										return false;
+									} else {
+										$(this).css("border-color",
+												"rgba(144, 144, 144, 0.25)")
+									}
+									return check;
+								})
+			
+					})
+					
+			}
+		}
+			
+		
+		if(check){
+			
+		if (lisense_check) {
+
+			$(".lisense").each(
+					function() {
+						$(this).find("input,select").each(
+								function() {
+									if ($(this).val() == "") {
+										$(this).css("border-color", "red")
+										alert("자격증/어학/수상 사항을 모두 입력해주세요")
+										check = false;
+										return false;
+									} else {
+										$(this).css("border-color",
+												"rgba(144, 144, 144, 0.25)")
+									}
+								})
+					})
+		}
+		}
+
+		if (introduce_check) {
+
+			if ($("#introduce_textarea").val() == "") {
+				alert("자기소개서를 입력해주세요")
+				check = false;
+				return false;
+			}
+		}
+
+		/* if (portfolio_check) {
+
+			$(".resume-edit-portfolio").each(
+					function() {
+						$(this).find("input,select").each(
+								function() {
+									if ($(this).val() == "") {
+										$(this).css("border-color", "red")
+										alert("포트폴리오 사항을 모두 입력해주세요")
+										check = false;
+										return false;
+									} else {
+										$(this).css("border-color",
+												"rgba(144, 144, 144, 0.25)")
+									}
+								})
+					})
+		} */
+
+		if (military_check) {
+			
+				if ($("input[name='military_reason']").val() == "") {
+					$("input[name='military_reason']").val("-");
+				}
+
+			$(".resume-edit-military").each(
+					function() {
+						$(this).find("input,select").each(
+								function() {
+									if ($(this).val() == "") {
+										$(this).css("border-color", "red")
+										alert("병역사항을 모두 입력해주세요")
+										check = false;
+										return false;
+									} else {
+										$(this).css("border-color",
+												"rgba(144, 144, 144, 0.25)")
+												check = true;
+									}
+								})
+					})
+
+		}
+		
+		if(check){
+			$(".resume-date").each(
+					function() {
+					var reg = /[0-9]{4}.[0-9]{2}/;
+					if($(this).val() != ""){
+						
+					if (!reg.test($(this).val())) {
+						$(this).css("border-color", "red")
+						alert("입력 형식에 맞춰주세요")
+						check = false;
+						return false;
+					} else {
+						$(this).css("border-color",
+								"rgba(144, 144, 144, 0.25)")
+						check = true;
+					}
+					}
+				})
+}
+	
+		if(check){
+			resumeForm.submit();
+			
+		}else {
+			return false;
+		}
+	}
+
+	//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+	function sample4_execDaumPostcode() {
+		new daum.Postcode(
+				{
+					oncomplete : function(data) {
+						// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+						// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+						// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+						var roadAddr = data.roadAddress; // 도로명 주소 변수
+						var extraRoadAddr = ''; // 참고 항목 변수
+
+						// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+						// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+						if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+							extraRoadAddr += data.bname;
+						}
+						// 건물명이 있고, 공동주택일 경우 추가한다.
+						if (data.buildingName !== '' && data.apartment === 'Y') {
+							extraRoadAddr += (extraRoadAddr !== '' ? ', '
+									+ data.buildingName : data.buildingName);
+						}
+						// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+						if (extraRoadAddr !== '') {
+							extraRoadAddr = ' (' + extraRoadAddr + ')';
+						}
+
+						// 우편번호와 주소 정보를 해당 필드에 넣는다.
+						// document.getElementById('sample4_postcode').value = data.zonecode;
+						document.getElementById("sample4_roadAddress").value = roadAddr;
+						// document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+
+						// 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+						// if(roadAddr !== ''){
+						//     document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+						// } else {
+						//     document.getElementById("sample4_extraAddress").value = '';
+						// }
+
+						var guideTextBox = document.getElementById("guide");
+						// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+						if (data.autoRoadAddress) {
+							var expRoadAddr = data.autoRoadAddress
+									+ extraRoadAddr;
+							guideTextBox.innerHTML = '(예상 도로명 주소 : '
+									+ expRoadAddr + ')';
+							guideTextBox.style.display = 'block';
+						}
+						// } else if(data.autoJibunAddress) {
+						//     var expJibunAddr = data.autoJibunAddress;
+						//     guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+						//     guideTextBox.style.display = 'block';
+						// } else {
+						//     guideTextBox.innerHTML = '';
+						//     guideTextBox.style.display = 'none';
+						// }
+					}
+				}).open();
+	}
+</script>
+
+</html>

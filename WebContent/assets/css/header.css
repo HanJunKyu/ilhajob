@@ -1,0 +1,57 @@
+@charset "UTF-8";
+
+#logo_img { 
+	margin-top: 15px;
+	height: 47px;
+    width: 180px;
+}
+/*미디어쿼리*/
+/* 데스크탑 : 1220px */
+@media (max-width:1220px) {
+	
+		#logo_img {
+
+	margin-top: 5px;
+	height: 47px;
+    width: 180px;
+}
+	}
+
+/* 태블릿 : 768px */
+@media (max-width:768px) {
+    
+    #logo_img {
+
+margin-top: 3px;
+height: 35px;
+width: 130px;
+}}
+
+@media (max-width:735px){
+	#logo_img {
+margin: 5px auto;
+height: 32px;
+width: 35%;
+}
+	img{
+	margin-top: 10px;
+/* 	height:40px; */
+	width:35%;
+	object-fit:cover;
+	}
+}
+
+@media (max-width:480px) {
+    
+    #logo_img {
+margin: 5px auto;
+height: 32px;
+width: 35%;
+
+}
+	img{
+	height:32px;
+	width:35%;
+	}
+}
+

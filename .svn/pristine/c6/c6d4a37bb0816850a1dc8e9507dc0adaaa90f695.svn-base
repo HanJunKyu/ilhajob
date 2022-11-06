@@ -1,0 +1,434 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+
+<head>
+	<title>일하잡 :: 기업회원가입</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+</head>
+<style>
+
+		#idCheck_text {
+			font-size: 15px;
+			margin-top: 0;
+		}
+
+		.actions li input {
+			margin: 0;
+			font-size: 13px;
+			
+		}
+		
+		.address-btn {
+			font-size: 13px;
+		}
+	@media screen and (max-width: 736px) {
+		#titleBar {
+			display: none;
+		}
+	}
+</style>
+
+<body class="is-preload" style="padding: 0; background-color: rgb(61, 61, 61) ;">
+
+	<!-- Header -->
+		<div class="join-logo"><a href="${pageContext.request.contextPath}/index.jsp"><img src="${pageContext.request.contextPath}/images/logo_white1.png" alt=""></a></div>
+
+	<div class="join-type">
+		<ul class="actions stacked join-not-selected" id="user_join" style="width: 35%;">
+			<li><a href="${pageContext.request.contextPath}/user/UserJoin.us" class="button fit">개인회원</a></li>
+		</ul>
+		<ul class="actions stacked join-selected" id="comp_join" style="width: 65%;">
+			<li><a href="${pageContext.request.contextPath}/comp/CompJoin.co" class="button alt fit"
+					style="border-left: 1px solid rgb(102, 102, 102); color: rgb(55, 179, 127) !important;">기업회원</a>
+			</li>
+		</ul>
+	</div>
+	<form  name="compJoinForm" action="${pageContext.request.contextPath}/comp/CompJoinOk.co" class="join-form" method="post">
+	<div class="join-container">
+		<p>기업정보</p>
+		<div class="col-6 col-12-small">
+			<select name="comp_type" id="category">
+				<option value="">기업형태</option>
+				<option value="대기업">대기업</option>
+				<option value="대기업 계열사/자회사">대기업 계열사/자회사</option>
+				<option value="중소기업(300명 이하)">중소기업(300명 이하)</option>
+				<option value="중견기업(300명 이상)">중견기업(300명 이상)</option>
+				<option value="벤처기업">벤처기업</option>
+				<option value="국내 공공기관/공기업">국내 공공기관/공기업</option>
+			</select>
+		</div>
+		<div class="col-6 col-12-small">
+			<input type="text" name="comp_crn" id="crn" value="" placeholder="사업자등록번호" />
+		</div>
+		<div class="col-6 col-12-small" style="display: flex; ">
+			<input type="text" name="comp_name" id="name" value="" placeholder="회사명"
+				style="margin: 0; margin-right: 10px; width: 70%;" />
+			<input type="text" name="comp_ceo" id="ceo" value="" placeholder="대표자명" style="margin: 0; width: 30%;" />
+
+		</div>
+		<div style="display: flex;">
+			<input type="text" id="sample4_roadAddress" placeholder="회사주소" name="comp_location" readonly>
+			<input class="address-btn" type="button" onclick="sample4_execDaumPostcode()" value="찾기">
+
+		</div>
+	</div>
+	<div class="join-container2">
+		<p>인사담당자 정보</p>
+		<div class="col-6 col-12-small">
+			<input type="text" name="comp_user_name" id="comp_user_name" value="" placeholder="가입자명" />
+		</div>
+		<div class="col-6 col-12-small">
+			<input type="text" name="comp_id" id="id" value="" placeholder="아이디" />
+			<p id="idCheck_text"></p>
+		</div>
+		<div class="col-6 col-12-small" style="display: flex; ">
+			<input type="password" name="comp_pw" id="pw" value="" placeholder="비밀번호(6~16자의 영문, 숫자, 특수기호)"
+				style="margin: 0;" />
+			<div class="col-6 col-12-medium"
+				style="width: 20%; display: flex; justify-content: center; align-items: center;">
+				<input type="checkbox" id="show" name="show" style="margin: 0; height: 25px;" onclick="password()">
+				<label for="show" style="margin: 0; padding-left: 40%; padding-right: 0;" id="pw_label">표시</label>
+			</div>
+		</div>
+		<div class="col-6 col-12-small">
+			<input type="email" name="comp_email" id="email" value="" placeholder="이메일" />
+		</div>
+		<div class="col-6 col-12-small" style="display: flex;">
+					<input type="text" name="comp_phone" id="phone" value="" placeholder="휴대폰" style="margin: 0;"/>
+					<ul class="actions" style="margin-bottom: 0;">
+						<li><input onclick="sendSMS()" type="button" class="button primary" style="border-radius: 0;" value="인증번호 전송"></li>
+					</ul>
+				</div>
+				<div class="col-6 col-12-small" style="display: flex; margin-top: 10px">
+					<input type="text" name="cert_num" id="cert_num" value="" placeholder="인증번호" style="margin: 0;"/>
+					<ul class="actions" style="margin-bottom: 0;">
+						<li><input type="button" class="button primary" id="smsCheck" style="border-radius: 0;" value="확인"></li>
+					</ul>
+				</div>
+	</div>
+
+	<div class="main-term-container">
+		<div class="agree-all">
+			<p>필수동의 항목 및 개인정보 수집 및 이용 동의(선택), 마케팅 정보 수신
+				(선택)에 모두 동의합니다.</p>
+
+			<div class="col-6 col-12-medium">
+				<input type="checkbox" id="agree_all" name="agree_all">
+				<label for="agree_all"></label>
+			</div>
+		</div>
+	</div>
+	<div class="term-container">
+		<div class="agree">
+			<p><span class="red">[필수]</span> 이용약관 동의</p>
+			<div class="col-6 col-12-medium" style="width: 32px;">
+				<input type="checkbox" id="agree1" name="agree" onclick="check()">
+				<label for="agree1"></label>
+			</div>
+		</div>
+		<div class="agree">
+			<p><span class="red">[필수]</span> 개인정보 수집 및 이용 동의</p>
+			<div class="col-6 col-12-medium" style="width: 32px;">
+				<input type="checkbox" id="agree2" name="agree" onclick="check()">
+				<label for="agree2"></label>
+			</div>
+
+		</div>
+		<div class="agree">
+			<p>[선택] 개인정보 수집 및 이용 동의</p>
+			<div class="col-6 col-12-medium" style="width: 32px;">
+				<input type="checkbox" id="agree3" name="agree" onclick="check()">
+				<label for="agree3"></label>
+			</div>
+
+		</div>
+		<div class="agree">
+
+			<p>[선택]마케팅 정보 이메일 수신 동의</p>
+			<div class="col-6 col-12-medium" style="width: 32px;">
+				<input type="checkbox" id="agree4" name="agree" onclick="check()">
+				<label for="agree4"></label>
+			</div>
+		</div>
+		<div class="agree">
+
+			<p>[선택] 마케팅 정보 SMS 수신 동의</p>
+			<div class="col-6 col-12-medium" style="width: 32px;">
+				<input type="checkbox" id="agree5" name="agree" onclick="check()">
+				<label for="agree5"></label>
+			</div>
+		</div>
+	</div>
+
+	<div class=" join-submit">
+		<ul class="actions">
+			<li><input onclick="formSubmit()" type="button" class="button primary" style="border-radius: 0;" value="가입하기"></li>
+		</ul>
+	</div>
+</form>
+
+
+
+	<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+
+</body>
+<script>var contextPath = "${pageContext.request.contextPath}";</script>
+<script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+<script>
+
+smsCheck = false;
+
+$(function(){ 
+	//전체선택 체크박스 클릭 
+	$("#agree_all").click(function(){ 
+		//만약 전체 선택 체크박스가 체크된상태일경우 
+		if($("#agree_all").prop("checked")) { 
+			//해당화면에 전체 checkbox들을 체크해준다 
+			$("input[name=agree]").prop("checked",true); 
+			// 전체선택 체크박스가 해제된 경우 
+		} else { 
+			//해당화면에 모든 checkbox들의 체크를해제시킨다. 
+			$("input[name=agree]").prop("checked",false); 
+		} 
+	}) 
+})
+
+function check(){
+	var checkCnt = 0;
+	$("input:checkbox[name=agree]").each(function() {
+		 if(!this.checked){
+			 checkCnt++;
+		 };
+	});
+	if(checkCnt>0) {
+		$("input[name=agree_all]:checkbox").prop("checked", false);
+	} else if(checkCnt === 0) {
+		$("input[name=agree_all]:checkbox").prop("checked", true);
+	}
+}
+
+function password() {
+	if($("input:checkbox[id=show]").is(":checked") == true ){
+		$("#pw").attr("type", "text");
+		$("#pw_label").text("숨김");
+	}else {
+		$("#pw").attr("type", "password");
+		$("#pw_label").text("표시");
+		
+	}
+}
+
+
+function formSubmit(){
+	var form = document.compJoinForm;
+
+	if(form.comp_type.value == ""){
+		alert("기업형태를 선택하세요");
+		form.comp_type.focus();
+		return false;
+	}
+	if(form.comp_crn.value == ""){
+		alert("사업자등록번호를 입력하세요");
+		form.comp_crn.focus();
+		return false;
+	}
+	if(form.comp_name.value == ""){
+		alert("기업명 입력하세요");
+		form.comp_name.focus();
+		return false;
+	}
+	if(form.comp_ceo.value == ""){
+		alert("대표자명을 입력하세요");
+		form.comp_ceo.focus();
+		return false;
+	}
+	if(form.comp_location.value == ""){
+		alert("기업주소를 입력하세요");
+		form.comp_location.focus();
+		return false;
+	}
+	if(form.comp_user_name.value == ""){
+		alert("가입자명을 입력하세요");
+		form.comp_user_name.focus();
+		return false;
+	}
+	//아이디 검사
+	if(form.comp_id.value == "" || !check){
+		alert("아이디를 확인해주세요.");
+		form.comp_id.focus();
+		return false;
+	}
+	if(form.comp_pw.value == ""){
+		alert("비밀번호를 입력하세요");
+		form.comp_pw.focus();
+		return false;
+	}else {
+		//8자리 이상, 대문자/소문자/숫자/특수문자 모두 포함되어 있는 지 검사
+		var reg = /^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{6,}$/;
+		var hangleCheck = /[ㄱ-ㅎ||ㅏ-ㅣ|가-힣]/;
+		
+		if(!reg.test(form.comp_pw.value)){
+			alert("비밀번호는 6자리 이상이어야 하며, 영문/숫자/특수문자 모두 포함해야 합니다.");
+			form.comp_pw.focus();
+			return false;
+		}
+	}
+	if(form.comp_email.value == ""){
+		alert("이메일을 입력하세요");
+		form.comp_pw.focus();
+		return false;
+	}
+	if(form.comp_phone.value == ""){
+		alert("휴대폰 번호를 입력하세요");
+		form.comp_pw.focus();
+		return false;
+	}
+	
+	if(!smsCheck){
+		alert("휴대폰 인증을 완료해주세요");
+		form.cert_num.focus();
+		return false;
+	}
+	if($("input:checkbox[id=agree1]").is(":checked") == false || $("input:checkbox[id=agree2]").is(":checked") == false ) {
+		  alert("필수 항목을 체크해주세요")
+		  return false;
+	}
+	alert("일하잡 회원이 되셨습니다! 로그인 후 이용해주세요!")
+	form.submit();
+}
+
+function checkId(id){
+	check = false;
+	if(id == ""){
+		$("#idCheck_text").text("아이디를 작성해주세요.");
+	}else{
+		$.ajax({
+			url:contextPath + "/comp/CompCheckIdOk.co?id="+id,
+			type:"get",
+			dataType:"text",
+			success:function(result){
+				if(result.trim() == "ok"){
+					check = true;
+					$("#idCheck_text").text("사용할 수 있는 아이디입니다.");
+				}else{
+					$("#idCheck_text").text("중복된 아이디입니다.");
+				}
+			},
+			error:function(){
+				console.log("오류");
+			}
+		});
+	}
+}
+$("input[name='comp_id']").keyup(function(event){
+	var id = $("input[name='comp_id']").val();
+	checkId(id);
+});
+
+function sendSMS(){
+	var phoneNumber = $("#phone").val();
+	
+	if(phoneNumber == ""){
+		alert("인증받을 휴대폰 번호를 작성해주세요!")
+	}else{
+		alert("인증번호 발송 완료!");
+		$.ajax({
+			url:contextPath + "/user/SendSMS.us?phone="+phoneNumber,
+			type:"get",
+			dataType:"text",
+			success:
+				function(result){
+				$("#smsCheck").click(function(){
+				if($.trim(result) == $("#cert_num").val()){
+					alert("인증 성공!")
+					smsCheck=true;
+				}else{
+					console.log(result)
+					console.log($("#cert_num").val())
+					alert("인증 실패!\n인증번호가 올바르지 않습니다")
+				}
+			})},
+			error:function(){
+				console.log("오류");
+			}
+		});
+	} 
+	
+}
+
+
+	//본 예제에서는 도로명 주소 표기 방식에 대한 법령에 따라, 내려오는 데이터를 조합하여 올바른 주소를 구성하는 방법을 설명합니다.
+	function sample4_execDaumPostcode() {
+		new daum.Postcode({
+			oncomplete: function (data) {
+				// 팝업에서 검색결과 항목을 클릭했을때 실행할 코드를 작성하는 부분.
+
+				// 도로명 주소의 노출 규칙에 따라 주소를 표시한다.
+				// 내려오는 변수가 값이 없는 경우엔 공백('')값을 가지므로, 이를 참고하여 분기 한다.
+				var roadAddr = data.roadAddress; // 도로명 주소 변수
+				var extraRoadAddr = ''; // 참고 항목 변수
+
+				// 법정동명이 있을 경우 추가한다. (법정리는 제외)
+				// 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+				if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+					extraRoadAddr += data.bname;
+				}
+				// 건물명이 있고, 공동주택일 경우 추가한다.
+				if (data.buildingName !== '' && data.apartment === 'Y') {
+					extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+				}
+				// 표시할 참고항목이 있을 경우, 괄호까지 추가한 최종 문자열을 만든다.
+				if (extraRoadAddr !== '') {
+					extraRoadAddr = ' (' + extraRoadAddr + ')';
+				}
+
+				// 우편번호와 주소 정보를 해당 필드에 넣는다.
+				// document.getElementById('sample4_postcode').value = data.zonecode;
+				document.getElementById("sample4_roadAddress").value = roadAddr;
+				// document.getElementById("sample4_jibunAddress").value = data.jibunAddress;
+
+				// 참고항목 문자열이 있을 경우 해당 필드에 넣는다.
+				// if(roadAddr !== ''){
+				//     document.getElementById("sample4_extraAddress").value = extraRoadAddr;
+				// } else {
+				//     document.getElementById("sample4_extraAddress").value = '';
+				// }
+
+				var guideTextBox = document.getElementById("guide");
+				// 사용자가 '선택 안함'을 클릭한 경우, 예상 주소라는 표시를 해준다.
+				if (data.autoRoadAddress) {
+					var expRoadAddr = data.autoRoadAddress + extraRoadAddr;
+					guideTextBox.innerHTML = '(예상 도로명 주소 : ' + expRoadAddr + ')';
+					guideTextBox.style.display = 'block';
+				}
+				// } else if(data.autoJibunAddress) {
+				//     var expJibunAddr = data.autoJibunAddress;
+				//     guideTextBox.innerHTML = '(예상 지번 주소 : ' + expJibunAddr + ')';
+				//     guideTextBox.style.display = 'block';
+				// } else {
+				//     guideTextBox.innerHTML = '';
+				//     guideTextBox.style.display = 'none';
+				// }
+			}
+		}).open();
+	}
+</script>
+
+</html>

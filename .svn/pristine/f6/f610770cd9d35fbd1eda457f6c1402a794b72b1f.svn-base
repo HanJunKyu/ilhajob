@@ -1,0 +1,299 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+
+<head>
+	<title>일하잡 :: 내스크랩</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/main2.css">
+
+</head>
+<style>
+	.recommend-table-wrapper {
+		border-top: 1px solid rgb(41, 41, 41) !important;
+	}
+
+	@media (max-width:970px) {
+
+		.my-menu-container {
+			margin-bottom: 20px;
+		}
+
+		.login-edit {
+			width: 90vw;
+			margin-top: 0px;
+		}
+
+		.login-edit li a {
+			padding: 0 40px !important;
+		}
+
+		.check-td {
+			position: absolute;
+
+		}
+
+		.comp-name-td {
+			margin-bottom: 3px;
+			margin-top: 13px;
+		}
+
+		.first-tr td {
+			line-height: 1.6;
+		}
+
+		.first-tr td a,
+		.recommend-info {
+
+			margin-left: 40px;
+
+		}
+
+		.recommend-info {
+			margin-bottom: 10px;
+		}
+
+
+	}
+
+	@media (max-width:480px) {
+
+		.recommend-table-wrapper {
+			margin-bottom: 11px;
+		}
+
+		.first-tr td {
+			font-size: 11px !important;
+		}
+
+		.first-tr td a,
+		.recommend-info {
+
+			margin-left: 30px;
+
+		}
+
+		.comp-name-td {
+			margin-bottom: 0px;
+		}
+
+		.recommend-info {
+			font-size: 10px;
+		}
+
+		#recommend_date {
+			font-size: 12px;
+			padding-left: 185px;
+		}
+
+		.recommend-table-wrapper .primary {
+			margin-top: -37px;
+			font-size: 12px;
+		}
+
+		.login-edit li input {
+			font-size: 12px !important;
+			padding: 0 25px !important;
+			height: 35px;
+		}
+
+		.my-menu-container {
+			margin-bottom: 0;
+		}
+
+		.comp-name-td {
+			margin-top: 10px;
+		}
+
+		.button-div {
+			height: 0 !important;
+		}
+
+	}
+</style>
+
+<body class="is-preload">
+	<!-- Header -->
+	<%@ include file="header.jsp" %>
+
+	<!-- Main -->
+	<div class="my-menu-container">
+		<ul class="my-menu">
+			<li><a href="my_main.jsp" class="menu">홈</a></li>
+			<li><a href="my_info.jsp" class="menu">내 정보</a></li>
+			<li><a href="my_resume.jsp" class="menu">이력서</a></li>
+			<li><a href="my_apply.jsp" class="menu">내 지원</a></li>
+			<li><a href="my_like.jsp" class="menu-on">스크랩 공고</a></li>
+		</ul>
+	</div>
+
+	<div class="login-edit">
+		<li><input type="button" class="button primary" value="삭제"></li>
+	</div>
+
+	<form action="" name="scrapForm">
+	<div class="recommend" style="margin-bottom: 0px;">
+		<div class="recommend-header" style=" height: 0;">
+			<div style="width: 100%;"></div>
+		</div>
+		<div class="recommend-table-wrapper">
+			<table>
+				<tbody>
+					<tr class="first-tr">
+						<td class="check-td">
+							<div class="col-6 col-12-medium" style="width: 32px; margin-bottom: 10px;">
+								<input type="checkbox" id="0" name="checkDl">
+								<label for="0"></label>
+							</div>
+						</td>
+						<td class="comp-name-td">
+							<a id="recommend_company" href="show_comp_info.jsp">에스케이하이닉스</a></td>
+						<td>
+							<div><a id="recommend_title" href="job-opening-page.jsp">2020년 각 부문 신입 및 경력직원 채용</a></div>
+							<div class="recommend-info">
+								<span>신입 · 경력</span>
+								<span></i>고졸↑</span>
+								<span><i class="fas fa-user"></i>정규직 · 계약직</span>
+								<span><i class="fas fa-map-marker-alt"></i>충북 청주시</span>
+								<!-- <span style="padding-right: 7px; border-right: 1px solid #e6e6e6;">해외영업·무역영업</span>
+								<span style="padding: 0 7px; border-right: 1px solid #e6e6e6;">기획·전략·경영</span>
+								<span style="padding: 0 7px;">사무보조·문서작성 외</span> -->
+							</div>
+						</td>
+						<td>
+							<p id="recommend_date">~ 11/29(일)</p>
+						</td>
+						<td class="button-div">
+							<a href="#" class="button primary">즉시 지원</a>
+						</td>
+					</tr>
+					<tr class="first-tr">
+						<td class="check-td">
+							<div class="col-6 col-12-medium" style="width: 32px; margin-bottom: 10px;">
+								<input type="checkbox" id="0" name="checkDl">
+								<label for="0"></label>
+							</div>
+						</td>
+						<td class="comp-name-td">
+							<a id="recommend_company" href="show_comp_info.jsp">에스케이하이닉스</a></td>
+						<td>
+							<div><a id="recommend_title" href="job-opening-page.jsp">2020년 각 부문 신입 및 경력직원 채용</a></div>
+							<div class="recommend-info">
+								<span>신입 · 경력</span>
+								<span></i>고졸↑</span>
+								<span><i class="fas fa-user"></i>정규직 · 계약직</span>
+								<span><i class="fas fa-map-marker-alt"></i>충북 청주시</span>
+								<!-- <span style="padding-right: 7px; border-right: 1px solid #e6e6e6;">해외영업·무역영업</span>
+								<span style="padding: 0 7px; border-right: 1px solid #e6e6e6;">기획·전략·경영</span>
+								<span style="padding: 0 7px;">사무보조·문서작성 외</span> -->
+							</div>
+						</td>
+						<td>
+							<p id="recommend_date">~ 11/29(일)</p>
+						</td>
+						<td class="button-div">
+							<a href="#" class="button primary">즉시 지원</a>
+						</td>
+					</tr>
+					<tr class="first-tr">
+						<td class="check-td">
+							<div class="col-6 col-12-medium" style="width: 32px; margin-bottom: 10px;">
+								<input type="checkbox" id="0" name="checkDl">
+								<label for="0"></label>
+							</div>
+						</td>
+						<td class="comp-name-td">
+							<a id="recommend_company" href="show_comp_info.jsp">에스케이하이닉스</a></td>
+						<td>
+							<div><a id="recommend_title" href="job-opening-page.jsp">2020년 각 부문 신입 및 경력직원 채용</a></div>
+							<div class="recommend-info">
+								<span>신입 · 경력</span>
+								<span></i>고졸↑</span>
+								<span><i class="fas fa-user"></i>정규직 · 계약직</span>
+								<span><i class="fas fa-map-marker-alt"></i>충북 청주시</span>
+								<!-- <span style="padding-right: 7px; border-right: 1px solid #e6e6e6;">해외영업·무역영업</span>
+								<span style="padding: 0 7px; border-right: 1px solid #e6e6e6;">기획·전략·경영</span>
+								<span style="padding: 0 7px;">사무보조·문서작성 외</span> -->
+							</div>
+						</td>
+						<td>
+							<p id="recommend_date">~ 11/29(일)</p>
+						</td>
+						<td class="button-div">
+							<a href="#" class="button primary">즉시 지원</a>
+						</td>
+					</tr>
+					<tr class="first-tr">
+						<td class="check-td">
+							<div class="col-6 col-12-medium" style="width: 32px; margin-bottom: 10px;">
+								<input type="checkbox" id="0" name="checkDl">
+								<label for="0"></label>
+							</div>
+						</td>
+						<td class="comp-name-td">
+							<a id="recommend_company" href="show_comp_info.jsp">에스케이하이닉스</a></td>
+						<td>
+							<div><a id="recommend_title" href="job-opening-page.jsp">2020년 각 부문 신입 및 경력직원 채용</a></div>
+							<div class="recommend-info">
+								<span>신입 · 경력</span>
+								<span></i>고졸↑</span>
+								<span><i class="fas fa-user"></i>정규직 · 계약직</span>
+								<span><i class="fas fa-map-marker-alt"></i>충북 청주시</span>
+								<!-- <span style="padding-right: 7px; border-right: 1px solid #e6e6e6;">해외영업·무역영업</span>
+								<span style="padding: 0 7px; border-right: 1px solid #e6e6e6;">기획·전략·경영</span>
+								<span style="padding: 0 7px;">사무보조·문서작성 외</span> -->
+							</div>
+						</td>
+						<td>
+							<p id="recommend_date">~ 11/29(일)</p>
+						</td>
+						<td class="button-div">
+							<a href="#" class="button primary">즉시 지원</a>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</div>
+
+	<div class="login-edit" style="margin-top: 10px; margin-bottom: 50px;">
+		<li><input type="button" class="button primary" value="삭제" onclick="deleteScrap()"></li>
+	</div>
+	</form>
+	<%@ include file="footer.jsp" %>
+
+	<!-- Scripts -->
+	<script src="assets/js/jquery.min.js"></script>
+	<script src="assets/js/jquery.dropotron.min.js"></script>
+	<script src="assets/js/jquery.poptrox.min.js"></script>
+	<script src="assets/js/browser.min.js"></script>
+	<script src="assets/js/breakpoints.min.js"></script>
+	<script src="assets/js/util.js"></script>
+	<script src="assets/js/main.js"></script>
+
+</body>
+<script>
+function deleteScrap() {
+   
+    if ($("input:checkbox:checked").length > 0) {
+		$("input:checkbox:checked").each(function (i){
+			$(i).remove();
+		})
+
+	  
+    } else {
+		alert("개별 삭제하실 항목을 적어도 하나는 체크해 주십시오.");
+    }
+   }
+
+</script>
+
+</html>

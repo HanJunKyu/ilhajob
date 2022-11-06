@@ -1,0 +1,172 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+<head>
+<title>일하잡담 :: 받은쪽지함</title>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/message.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer1.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/pagination1.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header1.css" />
+</head>
+<body class="is-preload">
+	<c:if test="${session_id eq null}">
+		<script>
+			alert("로그인 후 이용해주세요");
+			location
+					.replace("${pageContext.request.contextPath}/user/UserLogin.us");
+		</script>
+	</c:if>
+	<c:set var="list" value="${requestScope.messageRcvList}" />
+	<c:set var="nowPage" value="${requestScope.nowPage}" />
+	<c:set var="startPage" value="${requestScope.startPage}" />
+	<c:set var="endPage" value="${requestScope.endPage}" />
+	<c:set var="totalCnt" value="${requestScope.totalCnt}" />
+	<c:set var="realEndPage" value="${requestScope.realEndPage}" />
+	<!-- Header -->
+	<jsp:include page="header.jsp" flush="true" />
+
+	<!-- Main -->
+
+	<section id="main">
+		<div class="container">
+			<div class="col-3 col-6-large col-12-medium"></div>
+			<header class="major">
+				<h2>받은 쪽지함</h2>
+			</header>
+
+			<!-- Table -->
+			<div class="table-wrapper" style="width: 75%; margin: 0 auto">
+				<ul id="actionlist" class="actions stacked" style="float: right">
+					<li><span><a
+							href="${pageContext.request.contextPath}/message/Message_SendList.ms"
+							class="button alt small" style="margin-right: 1em">보낸 쪽지함</a> <a
+							href="${pageContext.request.contextPath}/message/MessageWrite.ms"
+							class="button primary small">쪽지 보내기</a></span></li>
+				</ul>
+				<table id="message_table">
+					<thead>
+						<tr>
+							<th class="col-1">번호</th>
+							<th class="col-2">제목</th>
+							<th class="col-3">보낸이</th>
+							<th class="col-4">등록일</th>
+						</tr>
+					</thead>
+					<tbody>
+						<c:choose>
+							<c:when test="${list != null and fn:length(list) > 0}">
+								<c:forEach var="m_bean" items="${list}">
+									<tr align="center" valign="middle"
+										onmouseover="this.style.backgroundColor='F8F8F8'"
+										onmouseout="this.style.backgroundColor=''">
+										<td class="col-1">${m_bean.getMessage_num()}</td>
+										<td class="col-2"><a
+											href="${pageContext.request.contextPath}/message/Message_Check2.ms?seq=${m_bean.getMessage_num()}">${m_bean.getMessage_title()}</a></td>
+										<td class="col-3">${m_bean.getMessage_send_id()}</td>
+										<td class="col-4">${m_bean.getMessage_date()}</td>
+									</tr>
+								</c:forEach>
+							</c:when>
+							<c:otherwise>
+								<tr height="50px">
+									<td colspan="5" align="center">등록된 게시물이 없습니다.</td>
+								</tr>
+							</c:otherwise>
+						</c:choose>
+					</tbody>
+				</table>
+				<div class="pagination" id="search_company_pagination"
+					style="margin-top: 10px; text-align: center;">
+					<div id="pagination_div">
+						<c:choose>
+							<c:when test="${nowPage > 1}">
+								<a href="${pageContext.request.contextPath}/message/Message_RcvList.ms?page=${nowPage - 1}" class="prevpage pbtn"><img
+									src="${pageContext.request.contextPath}/images/btn_prevpage.png"
+									alt="이전 페이지로 이동"></a>
+							</c:when>
+						</c:choose>
+						<c:forEach var="i" begin="${startPage}" end="${endPage}">
+							<c:choose>
+								<c:when test="${i eq nowPage}">
+									<a href="javascript:void(0);"><span
+										class="pagenum one currentPage">${i}</span></a>
+								</c:when>
+								<c:otherwise>
+									<a
+										href="${pageContext.request.contextPath}/message/Message_RcvList.ms?page=${i}"><span
+										class="pagenum two">${i}</span></a>
+								</c:otherwise>
+							</c:choose>
+						</c:forEach>
+						<c:choose>
+							<c:when test="${nowPage != realEndPage}">
+								<a
+									href="${pageContext.request.contextPath}/message/Message_RcvList.ms?page=${nowPage + 1}"><img
+									src="${pageContext.request.contextPath}/images/btn_nextpage.png"
+									alt="다음 페이지로 이동"></a>
+							</c:when>
+						</c:choose>
+					</div>
+				</div>
+			</div>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<div class="push">
+		<div class="footer">
+			<div class="footer-menu">
+				<ul class="labeled-icons">
+					<li><span>회사소개</span></li>
+					<li><span>광고문의</span></li>
+					<li><span>이용약관</span></li>
+					<li><span>개인정보처리방침</span></li>
+					<li><span>고객센터</span></li>
+				</ul>
+			</div>
+			<div class="footer-info">
+				<ul class="labeled-icons">
+					<li><span>someone@untitled.tld</span></li>
+					<li style="padding-left: 0;"><span>(000) 000-0000
+							x12345</span></li>
+					<li style="padding-left: 0; margin-right: 15px;"><span>서울시
+							강남구 ooo - oo</span></li>
+					<li class="icon_li" style="margin-left: 10px;"><a href="#"><h4
+								class="icon brands fa-twitter">
+								<span class="label">Twitter</span>
+							</h4></a></li>
+					<li class="icon_li"><a href="#"><h4
+								class="icon brands fa-facebook-f">
+								<span class="label">Facebook</span>
+							</h4></a></li>
+				</ul>
+			</div>
+			<div class="copyright">Copyright ⓒ ILHAJOB Corp. All Right
+				Reserved.</div>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/pagination.js"></script>
+
+</body>
+</html>

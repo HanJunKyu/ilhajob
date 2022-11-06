@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://xmlns.jcp.org/xml/ns/javaee" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" id="WebApp_ID" version="3.1">
+  <display-name>ilhajob</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+
+<servlet>
+	<servlet-name>BbsFrontController</servlet-name>
+	<servlet-class>com.ilhajob.app.bbs.BbsFrontController</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>BbsFrontController</servlet-name>
+	<url-pattern>*.bo</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>ReviewFrontController</servlet-name>
+	<servlet-class>com.ilhajob.app.reviews.ReviewFrontController</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>ReviewFrontController</servlet-name>
+	<url-pattern>*.re</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>UserFrontController</servlet-name>
+	<servlet-class>com.ilhajob.app.user.UserFrontController</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>UserFrontController</servlet-name>
+	<url-pattern>*.us</url-pattern>
+</servlet-mapping>
+
+<servlet>
+	<servlet-name>CompFrontController</servlet-name>
+	<servlet-class>com.ilhajob.app.comp.CompFrontController</servlet-class>
+</servlet>
+<servlet-mapping>
+	<servlet-name>CompFrontController</servlet-name>
+	<url-pattern>*.co</url-pattern>
+</servlet-mapping>
+<servlet>
+  	<servlet-name>MessageFrontController</servlet-name>
+  	<servlet-class>com.ilhajob.app.message.MessageFrontController</servlet-class>
+</servlet>
+<servlet-mapping>
+  	<servlet-name>MessageFrontController</servlet-name>
+  	<url-pattern>*.ms</url-pattern>
+</servlet-mapping>
+
+<servlet>
+  	<servlet-name>OpeningFrontController</servlet-name>
+  	<servlet-class>com.ilhajob.app.opening.OpeningFrontController</servlet-class>
+</servlet>
+<servlet-mapping>
+  	<servlet-name>OpeningFrontController</servlet-name>
+  	<url-pattern>*.opn</url-pattern>
+</servlet-mapping>
+
+</web-app>

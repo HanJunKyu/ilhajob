@@ -1,0 +1,170 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" /> 
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css" />
+<title>ILHAJOB :: 지원완료</title>
+
+<style>
+
+	#main{
+		padding-top: 10px;
+	}
+
+	#quick_apply_cont_wrap{
+		width:500px;
+		margin:0 auto;
+		text-align:center;
+	}
+	
+	#quick_apply_cont_wrap div:first-child{
+		margin-bottom:10px;
+	}
+	
+	#quick_apply_cont_wrap h2{
+		font-size:3em;
+		font-weight:300;
+		display:inline;
+	}
+	
+	#quick_apply_cont{
+		width:100%;
+		height:200px;
+		background-color:white;
+		z-index:10002;
+	}
+	
+	
+	.wrap{
+		padding:15px;
+	}
+	
+	
+	#submit_text{
+		color:#37b37f;
+	}
+	
+	ul.button-div{
+		list-style:none;
+	}
+	
+	.button-div li{
+		display:inline-block;
+	}
+	
+	li .my-button{
+    	border-radius: 0;
+    	color: #37b37f !important;
+    	background: white;
+    	border: 0.5px solid #37b37f; 
+	}
+	
+	
+	/*미디어쿼리*/
+	
+	/* 태블릿 : 768px */
+	@media (max-width:768px) {
+		#quick_apply_cont_wrap{
+			width:70%;
+		}
+		#quick_apply_cont_wrap h2 {
+    		font-size: 2em;
+		}
+		
+		li .my-button{
+		    padding: 0 10%;
+		}
+		
+		#quick_apply_cont {
+    		height:150px;
+		}
+	
+	/* 모바일 : 480px */
+	@media (max-width:480px) {
+	
+		#quick_apply_cont_wrap{
+			width:100%;
+		}
+		
+		#my_apply{
+			margin-right: 10px;
+		}
+		
+		.button-div{
+			padding: 0;
+		}
+		
+		#main{
+			height: 300px;
+		}
+	
+	}
+
+</style>
+</head>
+<body class="is-preload">
+
+	<!-- Header -->
+	<jsp:include page="header.jsp" flush="true"/>
+	
+	<!-- Main -->
+	<section id="main">
+		
+		<div id="quick_apply_cont_wrap">
+			<div><h2 id="submit_text">지원 완료!</h2></div>
+			<div id="quick_apply_cont">
+				<div class="wrap">
+					<div class="apply-wrapper">
+						<p>지원 현황은 '나의 지원'에서 확인할 수 있습니다.</p>
+						<div>
+							<ul class="button-div">
+								<li><input type="button" id="my_apply" class="my-button" onClick="location.href='${pageContext.request.contextPath}/user/MyApply.us'" value="지원 현황"/></li>
+								<li><input type="button" id="another_opening" class="my-button" onClick="location.href='${pageContext.request.contextPath}/index.jsp'" value="다른 공고"/></li>
+							</ul>
+						</div>
+							
+					</div>
+				</div>
+			</div>
+		</div>
+		
+		
+	</section>
+	
+	
+			<!-- Footer -->
+		<jsp:include page="footer.jsp" flush="true"/>
+	
+	<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/pagination.js"></script>
+	
+</body>
+<script>
+
+	$('#apply_button').on('click', function(){
+		//지원 부문이 선택되지 않거나 이력서가 선택되지 않으면
+		if($("#selected_resume_part option:selected").val()=="-1"){
+			alert("지원 부문을 선택하세요")
+		}else if($("#selected-resume").text()==""){
+			alert("이력서를 선택하세요")
+		}else{
+			$('#apply-form').submit();
+		}
+	
+	
+	})
+
+
+</script>
+</html>

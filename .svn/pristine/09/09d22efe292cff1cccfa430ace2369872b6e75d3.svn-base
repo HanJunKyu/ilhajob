@@ -1,0 +1,128 @@
+/* Main */
+#main {
+	padding: 6em 0 6em 0;
+}
+
+#main header.major {
+	text-align: center;
+	margin: 0 0 2em 0;
+}
+
+/* 쪽지 쓰기 페이지 */
+#message_write .write_col-1, .text_col-1 {
+	vertical-align: middle;
+	width: 20%;
+}
+
+#message_content {
+	resize: none !important;
+}
+
+/* 송,수신 메세지함 각 칸(컬룸)마다 가로사이즈 지정 */
+#message_table .col-1 {
+	width: 10%;
+	text-align: center;
+}
+
+#message_table .col-2 {
+	width: 45%;
+	text-align: left;
+}
+
+#message_table .col-3 {
+	width: 17%;
+	text-align: center;
+}
+
+#message_table .col-4 {
+	width: 20%;
+	text-align: center;
+}
+
+#message_table th {
+	background-color: rgba(144, 144, 144, 0.075);
+	text-align: center;
+	padding: 0.75em 0.75em 0.75em 0.75em;
+}
+
+#message_table a {
+	color: #888888;
+}
+
+/* 전체 게시판 테이블 */
+.table-wrapper {
+	width: 75%;
+	margin: 0 auto;
+}
+
+table tbody tr:nth-child(2n + 1) {
+	background-color: white;
+}
+
+#table_col-1 {
+  -moz-appearance: none;
+  -webkit-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  background: white;
+  border-radius: 4px;
+  border: none;
+  color: inherit;
+  display: block;
+  outline: 0;
+  padding: 0;
+  text-decoration: none;
+  width: 100%;
+}
+
+@media screen and (max-width: 736px) {
+	body, input, select, textarea {
+		font-size: 12px !important;
+		width: 100%;
+		float: right;
+	}
+	#message_write .write_col-1, .text_col-1 {
+		width: 25%;
+	}
+
+	/* 송, 수신 게시판 번호  */
+	#message_table .col-1 {
+		display: none;
+	}
+}
+
+/* XSmall */
+@media screen and (max-width: 480px) {
+	
+	body, input, select, textarea {
+		font-size: 10px !important;
+		width: 100%;
+		float: right;
+	}
+
+	#message_write .write_col-1, .text_col-1 {
+		width: 32%;
+	}
+	
+	#actionlist {
+		-moz-flex-direction: column;
+		-webkit-flex-direction: column;
+		-ms-flex-direction: column;
+		flex-direction: column;
+		margin-left: 0;
+		width: auto !important;
+	}
+	
+	a.button.primary.small, a.button.alt.small {
+		padding: 0 1em;
+		width: auto !important;
+	}
+
+	/* 송, 수신 게시판 번호  */
+	#message_table .col-1 {
+		display: none;
+	}
+	#message_write .text_col-1 {
+		display: table-cell;
+	}
+}

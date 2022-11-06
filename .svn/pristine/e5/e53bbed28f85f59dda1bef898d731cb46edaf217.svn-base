@@ -1,0 +1,195 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>일하잡</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="apple-touch-icon" sizes="57x57" href="${pageContext.request.contextPath}/images/favicon/apple-icon-57x57.png">
+		<link rel="apple-touch-icon" sizes="60x60" href="${pageContext.request.contextPath}/images/favicon/apple-icon-60x60.png">
+		<link rel="apple-touch-icon" sizes="72x72" href="${pageContext.request.contextPath}/images/favicon/apple-icon-72x72.png">
+		<link rel="apple-touch-icon" sizes="76x76" href="${pageContext.request.contextPath}/images/favicon/apple-icon-76x76.png">
+		<link rel="apple-touch-icon" sizes="114x114" href="${pageContext.request.contextPath}/images/favicon/apple-icon-114x114.png">
+		<link rel="apple-touch-icon" sizes="120x120" href="${pageContext.request.contextPath}/images/favicon/apple-icon-120x120.png">
+		<link rel="apple-touch-icon" sizes="144x144" href="${pageContext.request.contextPath}/images/favicon/apple-icon-144x144.png">
+		<link rel="apple-touch-icon" sizes="152x152" href="${pageContext.request.contextPath}/images/favicon/apple-icon-152x152.png">
+		<link rel="apple-touch-icon" sizes="180x180" href="${pageContext.request.contextPath}/images/favicon/apple-icon-180x180.png">
+		<link rel="icon" type="image/png" sizes="192x192"  href="${pageContext.request.contextPath}/images/favicon/android-icon-192x192.png">
+		<link rel="icon" type="image/png" sizes="32x32" href="${pageContext.request.contextPath}/images/favicon/favicon-32x32.png">
+		<link rel="icon" type="image/png" sizes="96x96" href="${pageContext.request.contextPath}/images/favicon/favicon-96x96.png">
+		<link rel="icon" type="image/png" sizes="16x16" href="${pageContext.request.contextPath}/images/favicon/favicon-16x16.png">
+		<link rel="manifest" href="${pageContext.request.contextPath}/images/favicon/manifest.json">
+		<meta name="msapplication-TileColor" content="#ffffff">
+		<meta name="msapplication-TileImage" content="/ms-icon-144x144.png">
+		<meta name="theme-color" content="#ffffff">
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+	</head>
+	<body class="landing is-preload " style="padding: 0;">
+
+		<div class="main-body" >
+			<!-- Header -->
+			<c:if test="${session_id eq null}">
+			
+			<div id="header" class="alt main2-header" >	
+				<nav id="nav">
+					<ul>
+						<li><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
+						<li>
+							<a href="${pageContext.request.contextPath}/community_main.jsp">커뮤니티</a>
+							<ul>
+								<li><a href="${pageContext.request.contextPath}/bbs/BbsList.bo">질문 게시판</a></li>
+								<li><a href="${pageContext.request.contextPath}/review/ReviewListAction.re">면접 후기</a></li>
+							</ul>
+						</li>
+						<!-- <li>
+							<a href="my_main.jsp">마이페이지</a>
+							<ul>
+								<li><a href="my_main.jsp">홈</a></li>
+								<li><a href="my_info.jsp">내 정보</a></li>
+								<li><a href="my_resume.html.jsp">이력서</a></li>
+								<li><a href="my_apply.jsp">내 지원</a></li>
+								<li><a href="my_like.jsp">스크랩</a></li>
+							</ul>
+						</li> -->
+						<li><a href="${pageContext.request.contextPath}/user/UserLogin.us">Login</a></li>
+						<li><a href="${pageContext.request.contextPath}/user/UserJoin.us" class="button alt" style="color: white !important;">Sign up</a></li>
+					</ul>
+				</nav>
+			</div>
+			</c:if>
+			<c:if test="${session_id != null}">
+			
+			<div id="header" class="alt main2-header" >
+				<nav id="nav">
+					<ul>
+						<li><a href="${pageContext.request.contextPath}/index.jsp">Home</a></li>
+						<c:if test="${sessionScope.type == 'user' }">
+						<li>
+							<a href="${pageContext.request.contextPath}/community_main.jsp">커뮤니티</a>
+							<ul>
+								<li><a href="${pageContext.request.contextPath}/bbs/BbsList.bo">질문 게시판</a></li>
+								<li><a href="${pageContext.request.contextPath}/review/ReviewListAction.re">면접 후기</a></li>
+								<li><a href="${pageContext.request.contextPath}/message/Message_RcvList.ms">쪽지</a>
+							</ul>
+						</li>
+						<li>
+							<a href="${pageContext.request.contextPath}/user/MyMain.us">마이페이지</a>
+							<ul>
+								<li><a href="${pageContext.request.contextPath}/user/MyMain.us">홈</a></li>
+								<li><a href="${pageContext.request.contextPath}/user/MyInfo.us">내 정보</a></li>
+								<li><a href="${pageContext.request.contextPath}/user/MyResume.us">이력서</a></li>
+								<li><a href="${pageContext.request.contextPath}/user/MyApply.us">내 지원</a></li>
+								<li><a href="${pageContext.request.contextPath}/user/MyScrap.us">스크랩</a></li>
+							</ul>
+						</li>
+						</c:if>
+						<c:if test="${sessionScope.type == 'company' }">
+						<!-- <li>
+							<a href="${pageContext.request.contextPath}/community_main.jsp">커뮤니티</a>
+							<ul>
+								<li><a href="${pageContext.request.contextPath}/bbs/BbsList.bo">질문 게시판</a></li>
+							</ul>
+						</li> -->
+						<li>
+							<a href="${pageContext.request.contextPath}/comp/CompMain.co">마이페이지</a>
+							<ul>
+								<li><a href="${pageContext.request.contextPath}/comp/CompMain.co">홈</a></li>
+								<li><a href="${pageContext.request.contextPath}/comp/CompInfo.co">기업 정보</a></li>
+								<li><a href="${pageContext.request.contextPath}/comp/CompResume.co">지원 현황</a></li>
+								<li><a href="${pageContext.request.contextPath}/comp_apply.jsp">나의 공고</a></li>
+							</ul>
+						</li>
+						</c:if>
+						<li><a href="${pageContext.request.contextPath}/user/UserLogOut.us">Logout</a></li>
+						<%-- <li><a href="${pageContext.request.contextPath}/user/UserJoin.us" class="button alt" style="color: white !important;">Sign up</a></li> --%>
+					</ul>
+				</nav>
+			</div>
+			</c:if>
+
+	<!-- Banner -->
+
+		<div class="logo-div">
+			<img src="${pageContext.request.contextPath}/images/logo_white1.png" alt="" style="padding-right: 3%;">
+		</div>
+		<div class="main-warning">
+			<p><i class="fas fa-exclamation-circle"></i>정확한 검색을 위해 검색칸을 채워주세요</p>
+		</div>
+				<div class="inner">
+					<form method="post" action="" class="search-bar" id="search_form">
+						<input type="text" name="keyword" id="email" placeholder="검색어" class="keyword"/>
+						<input type="text" name="location" id="email" placeholder="지역" class="location"/>
+						<input type="text" name="job" id="email" placeholder="직업" class="job"/>
+						<!-- <select name="" id="category">
+							<option value="">직업</option>
+							<option value="1">대기업</option>
+							<option value="1">대기업 계열사/자회사</option>
+							<option value="1">중소기업(300명 이하)</option>
+							<option value="1">중견기업(300명 이상)</option>
+							<option value="1">벤처기업</option>
+							<option value="1">국내 공공기관/공기업</option>
+						</select> -->
+						<button class="search-button"><i class="fas fa-search"></i></button>
+						<!-- <input type="submit" class="search-button" value="&#xf002;"/> -->
+						<!-- 테스트용, 수정 예정 -->
+						<input type="hidden" name="comp_id" value="${session_id}">
+					</form>
+						
+						<div class="col-3 col-6-large col-12-medium">
+							<ul class="actions stacked my-term-div">							
+								<li><a href="#" class="my-term button fit">나의 맞춤형 채용 보러가기
+									<i class="fas fa-mouse-pointer" style="font-size: 30px; padding-left: 10px;"></i></a></li>
+							</ul>
+						</div>
+				</div>
+				<!-- <div id="one" class="features-grid special" style="background-color: transparent; width: 49vw; justify-content: space-between; box-shadow: none; ">
+					<div class="feature" style="background-color: rgba(61,61,61, 0.5); border-radius: 55%; width: 21vw; ">
+						<span class="icon" style="margin-bottom: 20%;"><i class="far fa-user" style="color: white; font-size: 60px;"></i></span>
+						<ul class="actions">
+							<li><a href="#" class="button" style="padding-left: 30px; background-color: white; font-size: 20px; width: 10vw; border-radius: 20px;  color: rgb(61,61,61) !important;">로그인</a></li>
+						</ul>
+					</div>	
+					<div class="feature" style=" background-color:rgba(61,61,61,0.5); border-radius: 55%; width: 21vw; ">
+						<span class="icon" style="margin-bottom: 20%;"><i class="far fa-comments" style="color: white; font-size: 60px;"></i></span>
+						<ul class="actions">
+							<li><a href="#" class="button" style="padding-left: 30px; background-color: white; font-size: 20px; width: 10vw; border-radius: 20px;  color: rgb(61,61,61) !important;">커뮤니티</a></li>
+						</ul>
+					</div>			
+				</div> -->
+				<form id="hidden-form">
+					<input type="hidden" name="context" value="${pageContext.request.contextPath}">
+					
+				</form>
+		</div>
+		
+		<%@ include file="footer.jsp"%>
+
+		<!-- Scripts -->
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+
+	</body>
+	<script>
+	var context=$("input[name='context']").val();
+		$('.search-button').on('click', function () {
+			var form=$('#search_form');
+			form.attr("action",context+"/opening/OpeningSearch.opn");
+			form.submit();
+		})
+	</script>
+	
+	
+</html>

@@ -1,0 +1,282 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+	
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/footer.css" />
+
+<style>
+
+
+
+.recommend {
+    width: 100%;
+}
+
+.recommend-header {
+  justify-content: center;
+  height: 50px;
+  display: flex;
+}
+
+.span-div {
+  width: 13%;
+  /* padding: 13px 4.9% !important; */
+  font-size: 20px;
+  border: 1px solid rgb(41, 41, 41);
+  border-bottom-style: none;
+  color: rgb(66, 66, 66);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.recommend-header .div {
+  border-bottom: 1px solid rgb(41, 41, 41);
+  width: 87%;
+}
+
+.recommend-table-wrapper tbody:first-child tr td:first-child{
+    width:25%;
+}
+
+.recommend-table-wrapper table {
+  margin: 0 auto;
+}
+
+.recommend-table-wrapper table td {
+  vertical-align: middle;
+  padding: 1.5vw 0;
+}
+
+.recommend-table-wrapper #recommend_company {
+  padding: 0 20px;
+  font-weight: 600;
+  font-size: 2vw;
+}
+
+.recommend-table-wrapper tbody:first-child tr {
+  border-top-style: none;
+}
+
+.recommend-table-wrapper #recommend_title, .recommend-table-wrapper #recommend_company {
+  font-weight: 600;
+  font-size: 20px;
+}
+
+
+.recommend-info {
+    font-size: 1.5vw;
+    line-height: 1.3em;
+}
+
+.recommend-info span {
+  margin: 0;
+  padding-right: 18px;
+}
+
+.recommend-info i {
+  margin-right: 5px;
+  color: #808080;
+}
+
+#recommend_date {
+    font-size: 1.5vw;
+    margin: 0;
+}
+
+.td-div{
+    width:60%;
+}
+.td-div>div{
+    display: inline-block;
+}
+
+.recommend-table-wrapper .button-div {
+    text-align: left !important;
+    padding: 1.5vw 0;
+    /* vertical-align: middle; */
+}
+
+.recommend-table-wrapper .primary {
+    min-width: 130px;
+    background-color: rgb(230, 104, 66) !important;
+    margin-right:20px;
+}
+
+.first-tr>*{
+    padding:0;
+}
+
+table tbody tr {
+    border-left: solid 0.5px rgba(144, 144, 144, 0.25) !important;
+}
+
+
+@media (min-width: 0px) and (max-width: 768px) {
+
+    .start>h2{
+        display: inline-block;
+    }
+    
+    .recommend-table-wrapper #recommend_company {
+	  font-size: 2vw;
+	}
+
+    .recommend-table-wrapper .primary {
+    /* width: 15vw; */
+    background-color: rgb(230, 104, 66) !important;
+    font-size: 1vw;
+	}
+	
+	.recommend-table-wrapper #recommend_title, .recommend-table-wrapper #recommend_company {
+    font-size: 2vw;
+  	}
+
+}
+
+@media (min-width: 0px) and (max-width: 480px) {
+
+	.recommend-table-wrapper .primary {
+	    margin-right:10px;
+	}	
+	
+
+    .recommend>*{
+        display: inline-block;
+        font-size: 0.8em;
+        min-width: 288px;
+    }
+
+  .span-div {
+    width: 20%;
+  }
+
+  .recommend-header .div {
+    width: 80%;
+  }
+
+  .recommend {
+    width: 90vw;
+  }
+
+  .recommend-table-wrapper table {
+    margin: 0 auto;
+    margin-left: 10px;
+    margin-right: 10px;
+  }
+
+  .recommend-table-wrapper table td {
+    padding: 0;
+    /*display: block;*/
+    text-align: left;
+  }
+
+  .recommend-table-wrapper #recommend_company {
+    padding: 0;
+    /*font-size: 17px;*/
+    font-weight: normal;
+    font-size: 3vw;
+  }
+
+  .recommend-table-wrapper #recommend_title {
+    color: rgb(61, 61, 61);
+    /*font-size: 17px;*/
+    font-weight: normal;
+    font-size: 2.5vw;
+  }
+  .recommend-table-wrapper tbody:first-child tr td:first-child {
+    line-height: 1.3em;
+    }
+  .recommend-info{
+    font-size: 2vw;
+    margin-bottom: 1.0vh;
+  }
+  .recommend-info span {
+    padding-right: 1%;
+  }
+
+
+  .td-div {
+    margin-bottom: 10px;
+  }
+
+  .td-div>div{
+    height: 3vh;
+  }
+
+  .first-tr td:first-child {
+    margin-top: 10px;
+    width: 30%;
+  }
+
+	.recommend-table-wrapper table{
+		margin-left:0;
+	}
+  .recommend-table-wrapper .button-div {
+    text-align: right;
+    position: relative;
+  }
+
+  .recommend-table-wrapper .primary {
+    width: 15vw;
+    position: absolute;
+    /* margin-top: -60px; */
+    top: 6%;
+    right: 3%;
+    background-color: transparent !important;
+    color: rgb(230, 104, 66) !important;
+    padding: 0;
+    font-size: 2.5vw;
+    border: 0.5px solid rgb(230,104,66);
+    border-radius: 0;
+    max-height: 4vh;
+  }
+
+  .date-div{
+      position:relative;
+  }
+  #recommend_date{
+      position: absolute;
+      /*top:0;*/
+      right:0;
+      font-size: 3vw;
+      margin: 0 !important;
+  }
+
+}
+
+</style>
+
+</head>
+<body>
+    <c:set var="openingBeans" value="${requestScope.openingBeans}"/>
+    <div class="recommend">
+        <div class="recommend-table-wrapper">
+            
+		</div>
+	</div>
+
+</body>
+<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/pagination.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+	
+</script>
+</html>

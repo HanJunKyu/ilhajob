@@ -1,0 +1,66 @@
+section {
+  display: flex;
+  flex-direction: column;
+}
+
+.community-banner {
+  text-align: left;
+  color: rgb(61, 61, 61);
+  padding-top: 30px;
+  display: flex;
+  text-align: center;
+  justify-content: center;
+  padding-left: 70px;
+  /* background-color: rgb(55, 179, 127); */
+}
+
+.hashtag {
+  font-size: 30px;
+  margin-bottom: 40px;
+  /* color: rgb(55, 179, 127); */
+}
+
+.hashtag {
+  font-family: "Sunflower";
+  line-height: 4;
+}
+
+.community-title {
+  font-family: "Do Hyeon";
+  font-size: 120px;
+  margin-top: 20px;
+  margin-bottom: 0;
+}
+
+.community-btns {
+  /* font-family: "Sunflower"; */
+  font-family: "Gothic A1";
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+}
+
+.community-btns div {
+  margin: 30px 40px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border: 2px solid rgb(55, 179, 127);
+  padding: 20px 0;
+}
+
+#ask {
+  width: 100px;
+}
+
+#review {
+  width: 65px;
+}
+
+.community-btns a {
+  color: rgb(61, 61, 61) !important;
+  font-size: 35px;
+  padding: 20px 40px;
+  border-radius: 15px;
+}

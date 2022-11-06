@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<!--
+	파라미터로 받은 값에 접근할 때에는 #{} 또는 ${}를 사용하여 가져온다.
+	
+	1.#{}
+		받아온 파라미터의 타입에 상관 없이 String 타입으로 변경된다.
+		사용자가 직접 입력한 값에 사용하는 것이 좋다(보안에 유리하다)
+	
+	2.${}
+		받아온 파라미터의 타입을 그대로 유지한다.
+		사용자가 직접 입력한 값을 전달받을 때에는 사용하지 않는 것이 좋다(쿼리 주입때문에 보안에 취약하다)
+		테이블이나 컬러명을 파라미터로 받을 때에 사용한다(#{}는 자동으로 따옴표가 붙기 때문)
+-->
+
+<mapper namespace="Bbs">
+	<select id="listAll" parameterType="map" resultType="bbsVO">
+		SELECT * FROM
+			(SELECT ROWNUM R, D.* FROM 
+				(SELECT * FROM TABLE_BBS ORDER BY BBS_NUM DESC) D) B
+		WHERE B.R BETWEEN ${startRow} AND ${endRow}
+	</select>
+	
+	<select id="getBbsCnt" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_BBS
+	</select>
+	
+	<update id="updateBbsReadCount" parameterType="_int">
+		UPDATE TABLE_BBS 
+		SET BBS_READCOUNT = BBS_READCOUNT + 1 
+		WHERE BBS_NUM = ${bbs_num}
+	</update>
+	
+	<select id="getSeq" resultType="_int">
+		SELECT BBS_NUM_SEQ.CURRVAL FROM DUAL
+	</select>
+	
+	<insert id="insertBbs" parameterType="bbsVO">
+		INSERT INTO TABLE_BBS VALUES (#{user_id}, BBS_NUM_SEQ.NEXTVAL, SYSDATE, #{bbs_title}, #{bbs_job}, #{bbs_category}, #{bbs_content}, 0)
+	</insert>
+
+	<!-- 게시글 번호를 전달받아서 해당 게시글 전체 내용을 리턴 -->
+	<select id="getDetail" parameterType="_int" resultType="bbsVO">
+		SELECT * FROM TABLE_BBS WHERE BBS_NUM = #{bbs_num}
+	</select>
+	
+	<delete id="deleteBbs" parameterType="_int">
+		DELETE FROM TABLE_BBS WHERE BBS_NUM = ${bbs_num}
+	</delete>
+	
+	<update id="updateBbs" parameterType="bbsVO">
+		UPDATE TABLE_BBS 
+		SET BBS_TITLE = #{bbs_title}, BBS_CONTENT = #{bbs_content}, BBS_JOB = #{bbs_job}, BBS_CATEGORY = #{bbs_category}
+		WHERE BBS_NUM = ${bbs_num}
+	</update>
+	
+	<!-- 댓글 -->
+	<select id="getBbsReplyList" parameterType="_int" resultType="bbsReplyVO">
+		SELECT * FROM TABLE_BBS_REPLY WHERE BBS_NUM = ${bbs_num} ORDER BY BBS_REPLY_NUM DESC
+	</select>
+	
+	<insert id="insertBbsReply" parameterType="bbsReplyVO">
+		INSERT INTO TABLE_BBS_REPLY
+		VALUES(BBS_REPLY_SEQ.NEXTVAL, ${bbs_num}, #{user_id}, #{bbs_reply_content})
+	</insert>
+	
+	<delete id="deleteBbsReply" parameterType="_int">
+		DELETE FROM TABLE_BBS_REPLY WHERE BBS_REPLY_NUM = ${bbs_reply_num}
+	</delete>
+	
+	<update id="updateBbsReply" parameterType="bbsReplyVO">
+		UPDATE TABLE_BBS_REPLY 
+		SET BBS_REPLY_CONTENT = #{bbs_reply_content}
+		WHERE BBS_REPLY_NUM = ${bbs_reply_num}
+	</update>
+	
+	<delete id="deleteBbsReplyAll" parameterType="_int">
+		DELETE FROM TABLE_BBS_REPLY WHERE BBS_NUM = #{bbs_num}
+	</delete>
+	
+	
+	<!-- 라디오처리 -->
+	<select id="getBbsRadioList" parameterType="map" resultType="bbsVO">
+		SELECT * FROM 
+			(SELECT ROWNUM R, D.* FROM 
+				(SELECT * FROM TABLE_BBS WHERE BBS_CATEGORY = #{bbs_category} ORDER BY BBS_NUM DESC) D) B 
+		WHERE B.R BETWEEN 1 AND 10
+	</select>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

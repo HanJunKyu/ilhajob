@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Opening">
+	<!-- 데이터 인서트 -->
+	<!-- 중복없는 공고 데이터 -->
+	<insert id="insertOnlyData" parameterType="openingVO">
+	INSERT INTO TABLE_OPN(OPN_NUM,OPN_COMP_ID,OPN_VIEWS,OPN_TITLE,OPN_CAREER,OPN_EDU,OPN_WORK_TYPE,OPN_WORK_TIME,OPN_SALARY,OPN_RECRUIT_METHOD,OPN_RECRUIT_NAME,OPN_RECRUIT_CONTACT,OPN_WRITE_DATE,OPN_RECRUIT_START,OPN_RECRUIT_END,OPN_URL,OPN_COMP_NAME) 
+	VALUES(OPN_SEQ.NEXTVAL,#{opn_comp_id},0,#{opn_title},#{opn_career},#{opn_edu},#{opn_work_type},#{opn_work_time},#{opn_salary},#{opn_recruit_method},#{opn_recruit_name},#{opn_recruit_contact},SYSDATE,TO_DATE(#{opn_recruit_start, jdbcType=VARCHAR},'YYYY-MM-DD-HH24:MI'),TO_DATE(#{opn_recruit_end, jdbcType=VARCHAR},'YYYY-MM-DD-HH24:MI'),#{opn_url, jdbcType=VARCHAR},#{opn_comp_name, jdbcType=VARCHAR})
+	</insert>
+	
+	<update id="updateIsRecruiting1" parameterType="_int">
+		UPDATE TABLE_OPN SET IS_RECRUITING='F'  
+		WHERE OPN_NUM = ${opn_num}	
+	</update>
+	<update id="updateIsRecruiting2" parameterType="_int">
+		UPDATE TABLE_OPN SET IS_RECRUITING='T'  
+		WHERE OPN_NUM = ${opn_num} AND TO_DATE(OPN_RECRUIT_END)>SYSDATE AND SYSDATE>TO_DATE(OPN_RECRUIT_START)
+	</update>
+	
+	<select id="getRecruitingOpnCnt" parameterType="String" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_OPN WHERE OPN_COMP_ID='${comp_id}' AND IS_RECRUITING='T'
+	</select>
+	
+	<!-- 모집 분야 -->
+	<insert id="insertRecruitmentArea" parameterType="recruitmentAreaVO">
+		INSERT INTO TABLE_RECRUITMENT_AREA(OPN_NUM,RECRUITMENT_AREA_NUM,RECRUITMENT_AREA) VALUES(#{opn_num},RECRUITMENT_AREA_SEQ.NEXTVAL,#{recruitment_area})
+	</insert>
+	
+	<!-- 우대사항 -->
+	<insert id="insertPreference" parameterType="preferenceVO">
+		INSERT INTO TABLE_PREFERENCE (OPN_NUM,PREFERENCE_NUM,PREFERENCE) VALUES(#{opn_num},PREFERENCE_SEQ.NEXTVAL,#{preference})
+	</insert>
+
+	<!-- 채용분야 -->
+	<insert id="insertRecruitmentInfo" parameterType="recruitmentInfoVO">
+		INSERT INTO TABLE_RECRUITMENT_INFO(OPN_NUM,RECRUITMENT_INF1,RECRUITMENT_INF2,RECRUITMENT_INF3) VALUES(#{opn_num},#{recruitment_inf1},#{recruitment_inf2},#{recruitment_inf3})
+	</insert>
+	
+	<!-- 근무지역 -->
+	<insert id="insertWorkLocation" parameterType="workLocationVO">
+		INSERT INTO TABLE_WORK_LOCATION(OPN_NUM,WORK_LOCATION1,WORK_LOCATION2,WORK_LOCATION3) VALUES(#{opn_num},#{work_location1},#{work_location2},#{work_location3})
+	</insert>
+
+	<!-- 상세정보 : 시퀀스 지우기 -->
+	<insert id="insertDetail" parameterType="openingDetailVO">
+		INSERT INTO TABLE_OPN_DETAIL(OPN_NUM,OPN_DETAIL_NUM,OPN_DETAIL_TITLE,OPN_DETAIL_CONTENT) VALUES(#{opn_num},#{opn_detail_num},#{opn_detail_title},#{opn_detail_content})
+	</insert>
+	
+	<!-- 상세정보 테이블 : 시퀀스 지우기 -->
+	<insert id="insertDetailTable" parameterType="openingDetailTableVO">
+		INSERT INTO TABLE_OPN_DETAIL_TABLE (OPN_NUM,OPN_DETAIL_TABLE_NUM,OPN_DETAIL_TABLE_TITLE) VALUES(#{opn_num},#{opn_detail_table_num},#{opn_detail_table_title, jdbcType=VARCHAR})
+	</insert>
+	
+	<!-- 상세정보 테이블 셀 -->
+	<insert id="insertDetailTableColumn" parameterType="openingDetailTableColumnVO">
+		INSERT INTO TABLE_OPN_DETAIL_TABLE_COLUMN (OPN_NUM,OPN_DETAIL_TABLE_NUM,ROW_NUM,COLUMN1,COLUMN2) VALUES(#{opn_num},#{opn_detail_table_num},#{row_num},#{column1},#{column2})
+	</insert>
+
+	<!-- 공고 넘버 조회 메소드 -->
+	<select id="selectOpeningNum" resultType="_int">
+		SELECT OPN_NUM FROM TABLE_OPN WHERE OPN_WRITE_DATE=(SELECT MAX(OPN_WRITE_DATE) FROM TABLE_OPN)
+	</select>
+
+	
+	<!-- 조회수 -->
+	<update id="updateReadCount" parameterType="_int">
+		UPDATE TABLE_OPN SET OPN_VIEWS = OPN_VIEWS+1 WHERE OPN_NUM = ${opn_num}
+	</update>
+	
+	
+	<!-- 데이터 조회 -->
+	<!-- 중복 없는 데이터 -->
+	<select id="getOnlyData" parameterType="_int" resultType="openingVO">
+		SELECT * FROM TABLE_OPN WHERE OPN_NUM=${opn_num}
+	</select>
+	
+	<!-- 모집분야 -->
+	<select id="getRecruitmentArea" parameterType="_int" resultType="recruitmentAreaVO">
+		SELECT * FROM TABLE_RECRUITMENT_AREA WHERE OPN_NUM=${opn_num}
+	</select>
+	
+	<!-- 우대사항 -->
+	<select id="getPreference" parameterType="_int" resultType="preferenceVO">
+		SELECT * FROM TABLE_PREFERENCE WHERE OPN_NUM=${opn_num}
+	</select>
+	
+	<!-- 채용분야 -->
+	<select id="getRecruitmentInfo" parameterType="_int" resultType="recruitmentInfoVO">
+		SELECT * FROM TABLE_RECRUITMENT_INFO WHERE OPN_NUM=${opn_num}
+	</select>
+	
+	<!-- 근무지역 -->
+	<select id="getWorkLocation" parameterType="_int" resultType="workLocationVO">
+		SELECT * FROM TABLE_WORK_LOCATION WHERE OPN_NUM=${opn_num}
+	</select>
+	
+	<!-- 상세정보 -->
+	<select id="getOpnDetail" parameterType="_int" resultType="openingDetailVO">
+		SELECT * FROM TABLE_OPN_DETAIL WHERE OPN_NUM=${opn_num}
+	</select>
+	
+	<!-- 상세정보 테이블 -->
+	<select id="getDetailTable" parameterType="_int" resultType="openingDetailTableVO">
+		SELECT * FROM TABLE_OPN_DETAIL_TABLE WHERE OPN_NUM=${opn_num}
+	</select>
+	
+	<!-- 상세정보 테이블 셀 -->
+	<select id="getDetailTableColumn" parameterType="HashMap" resultType="openingDetailTableColumnVO">
+		SELECT * FROM TABLE_OPN_DETAIL_TABLE_COLUMN WHERE OPN_NUM=${opn_num} AND OPN_DETAIL_TABLE_NUM=${detail_table_num}
+	</select>
+	
+	<!-- 기업 이름 가져오기 -->
+	<select id="getCompName" parameterType="String" resultType="String">
+		SELECT COMP_NAME FROM TABLE_COMP_USER WHERE COMP_USER_ID=#{comp_user_id}
+	</select>
+	
+	<!-- 마이페이지 리스트 -->
+	<select id="listOpening" parameterType="map" resultType="OpeningVO">
+		SELECT tr.*,twl.WORK_LOCATION1,twl.WORK_LOCATION2,twl.WORK_LOCATION3 FROM(
+		SELECT * FROM (SELECT ROWNUM R, D.* FROM (SELECT * FROM TABLE_OPN WHERE OPN_COMP_ID=#{opn_comp_id} ORDER BY OPN_WRITE_DATE DESC NULLS LAST) D) B
+		WHERE B.R BETWEEN #{start_row} AND #{end_row})tr, TABLE_WORK_LOCATION twl WHERE tr.OPN_NUM = twl.OPN_NUM(+)
+ 	</select>
+ 	
+ 	<!-- 스크랩 리스트 -->
+ 	<select id="listOpeningByOpnNum" parameterType="_int" resultType="OpeningVO">
+ 		SELECT to2.*,twl.WORK_LOCATION1,twl.WORK_LOCATION2,twl.WORK_LOCATION3 FROM TABLE_OPN to2, TABLE_WORK_LOCATION twl 
+		WHERE to2.OPN_NUM = twl.OPN_NUM(+) AND to2.OPN_NUM=${opn_num}
+ 	</select>
+ 	
+ 	<!-- 공고 개수 -->
+ 	<select id="getOpeningTotalCnt" parameterType="String" resultType="_int">
+ 		SELECT COUNT(*) FROM TABLE_OPN WHERE OPN_COMP_ID=#{opn_comp_id} ORDER BY OPN_WRITE_DATE DESC NULLS LAST
+ 	</select>
+ 	
+ 	<!-- 공고 번호로 공고 작성한 기업 이름 가져오기 -->
+ 	<select id="getCompNameByOpnNum" parameterType="String" resultType="String">
+ 		SELECT OPN_COMP_NAME FROM TABLE_OPN WHERE OPN_NUM=${opn_num}
+ 	</select>
+	
+	<!-- 삭제 -->
+	<delete id="deleteRecruitmentArea" parameterType="_int">
+		DELETE FROM TABLE_RECRUITMENT_AREA WHERE OPN_NUM=${opn_num}
+	</delete>
+	<delete id="deletePreference" parameterType="_int">
+		DELETE FROM TABLE_PREFERENCE WHERE OPN_NUM=${opn_num}
+	</delete>
+	<delete id="deleteRecruitmentInfo" parameterType="_int">
+		DELETE FROM TABLE_RECRUITMENT_INFO WHERE OPN_NUM=${opn_num}
+	</delete>
+	<delete id="deleteWorkLocation" parameterType="_int">
+		DELETE FROM TABLE_WORK_LOCATION WHERE OPN_NUM=${opn_num}
+	</delete>
+	<delete id="deleteOpnDetail" parameterType="_int">
+		DELETE FROM TABLE_OPN_DETAIL WHERE OPN_NUM=${opn_num}
+	</delete>
+	<delete id="deleteOpnDetailTable" parameterType="_int">
+		DELETE FROM TABLE_OPN_DETAIL_TABLE WHERE OPN_NUM=${opn_num}
+	</delete>
+	<delete id="deleteOpnDetailTableColumn" parameterType="_int">
+		DELETE FROM TABLE_OPN_DETAIL_TABLE_COLUMN WHERE OPN_NUM=${opn_num}
+	</delete>
+	<delete id="deleteOpnFiles" parameterType="_int">
+		DELETE FROM TABLE_OPN_FILES WHERE OPN_NUM=${opn_num}
+	</delete>
+	<delete id="deleteOpn" parameterType="_int">
+		DELETE FROM TABLE_OPN WHERE OPN_NUM=${opn_num}
+	</delete>
+	
+	<!-- 통합 검색 -->
+	<select id="searchAll" parameterType="map" resultType="OpeningVO">
+	SELECT tr.*,twl.WORK_LOCATION1,twl.WORK_LOCATION2,twl.WORK_LOCATION3 FROM(
+	SELECT * FROM (SELECT ROWNUM R, D.* FROM  
+		(SELECT * FROM TABLE_OPN 
+			WHERE OPN_NUM IN 
+				(SELECT OPN_NUM FROM 
+					(SELECT * FROM TABLE_WORK_LOCATION
+		<if test="work_location!=''">
+			WHERE WORK_LOCATION1 LIKE '%${work_location}%'
+			AND WORK_LOCATION2 LIKE '%${work_location}%'
+			AND WORK_LOCATION3 LIKE '%${work_location}%'
+		</if>
+		
+		)INTERSECT 
+		SELECT OPN_NUM FROM (SELECT * FROM TABLE_RECRUITMENT_AREA)
+			<choose>
+				<when test="recruitment_area!=''">
+					WHERE RECRUITMENT_AREA LIKE '%${recruitment_area}%'
+						<choose>
+							<when test="keyword!=''">
+								AND OPN_TITLE LIKE '%${keyword}%'))D)B
+							</when>
+							<otherwise>
+								))D)B
+							</otherwise>
+						</choose>
+				</when>
+				<otherwise>
+					<choose>
+						<when test="keyword!=''">
+							WHERE OPN_TITLE LIKE '%${keyword}%'))D)B
+						</when>
+						<otherwise>
+							))D)B
+						</otherwise>
+					</choose>
+				</otherwise>
+			</choose>
+		WHERE B.R BETWEEN ${start} AND ${end})tr, TABLE_WORK_LOCATION twl WHERE tr.OPN_NUM = twl.OPN_NUM(+)
+	</select>
+	
+	<!-- 기업 검색 : 키워드 null이면 기업검색은 하지말기 -->
+	<select id="searchComp" parameterType="map" resultType="CompVO">
+		SELECT * FROM (SELECT ROWNUM R, D.* FROM
+		(SELECT COMP_USER_ID, COMP_NAME FROM TABLE_COMP_USER
+		<choose>
+			<when test="keyword!=''">
+				WHERE COMP_NAME LIKE '%${keyword}%') D) B
+			</when>
+			<otherwise>
+				WHERE COMP_NAME IS NULL) D) B
+			</otherwise>
+		</choose>
+		WHERE B.R BETWEEN ${start} AND ${end}
+	</select>
+	
+	
+	<!-- 통합 검색 개수 -->
+	<select id="searchAllCount" parameterType="map" resultType="int">
+		SELECT COUNT(*) FROM TABLE_OPN 
+			WHERE OPN_NUM IN 
+				(SELECT OPN_NUM FROM 
+					(SELECT * FROM TABLE_WORK_LOCATION
+		<if test="work_location!=''">
+			WHERE WORK_LOCATION1 LIKE '%${work_location}%'
+			AND WORK_LOCATION2 LIKE '%${work_location}%'
+			AND WORK_LOCATION3 LIKE '%${work_location}%'
+		</if>
+		)INTERSECT 
+		SELECT OPN_NUM FROM (SELECT * FROM TABLE_RECRUITMENT_AREA
+			<choose>
+				<when test="recruitment_area!=''">
+					WHERE RECRUITMENT_AREA LIKE '%${recruitment_area}%')
+						<choose>
+							<when test="keyword!=''">
+								OPN_TITLE LIKE '%${keyword}%')
+							</when>
+							<otherwise>
+								)
+							</otherwise>
+						</choose>
+				</when>
+				<otherwise>
+					<choose>
+						<when test="keyword!=''">
+							)WHERE OPN_TITLE LIKE '%${keyword}%')
+						</when>
+						<otherwise>
+							))
+						</otherwise>
+					</choose>
+				</otherwise>
+			</choose>	
+	</select>
+	
+	<!-- 기업 검색 개수 -->
+	<select id="searchCompCount" parameterType="String" resultType="int">
+		SELECT COUNT(*) FROM
+		(SELECT COMP_USER_ID, COMP_NAME FROM TABLE_COMP_USER
+		<choose>
+			<when test="keyword!=''">
+				WHERE COMP_NAME LIKE '%${keyword}%')
+			</when>
+			<otherwise>
+				WHERE COMP_NAME IS NULL)
+			</otherwise>
+		</choose>
+	</select>
+	
+	<!-- 기업 정보 가져오기 -->
+	<select id="getCompInfo" parameterType="String" resultType="CompVO">
+		SELECT * FROM TABLE_COMP_USER WHERE COMP_USER_ID='${comp_id}'
+	</select>
+	<select id="getCompOpening" parameterType="String" resultType="OpeningVO">
+		SELECT tr.*,twl.WORK_LOCATION1,twl.WORK_LOCATION2,twl.WORK_LOCATION3 FROM(
+		SELECT * FROM TABLE_OPN WHERE OPN_COMP_ID='${comp_id}'
+		)tr, TABLE_WORK_LOCATION twl WHERE tr.OPN_NUM = twl.OPN_NUM(+)
+	</select>
+ 	
+ 	<!-- 기업의 공고 개수 가져오기 -->
+	<select id="getOpeningCnt" parameterType="String" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_OPN WHERE OPN_COMP_ID = '${comp_user_id}'
+	</select>
+	
+	
+	<!-- 스크랩 -->
+	<insert id="insertScrap" parameterType="map">
+		INSERT INTO TABLE_USER_SCRAP VALUES(SCRAP_SEQ.NEXTVAL, '${user_id}', ${opn_num})
+	</insert>
+	<!-- 스크랩 중복 검사 -->
+	<select id="isScrapDup" parameterType="map" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_USER_SCRAP WHERE USER_ID='${user_id}' AND JOBS_NUM='${opn_num}'
+	</select>
+	<!-- 스크랩 리스트 가져오기 -->
+	<select id="getScrapList" parameterType="map" resultType="userScrapVO">
+		SELECT * FROM (SELECT ROWNUM R, D.* FROM 
+		(SELECT * FROM TABLE_USER_SCRAP WHERE USER_ID='${user_id}') D) B
+		WHERE B.R BETWEEN ${start} AND ${end}
+	</select>
+	<!-- 전체 스크랩 개수 가져오기 -->
+	<select id="getScrapCount" parameterType="String" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_USER_SCRAP WHERE USER_ID='${user_id}'
+	</select>
+	<!-- 스크랩 삭제 -->
+	<delete id="deleteScrap" parameterType="map">
+		DELETE FROM TABLE_USER_SCRAP WHERE USER_ID='${user_id}' AND JOBS_NUM = ${opn_num}
+	</delete>
+	
+</mapper>

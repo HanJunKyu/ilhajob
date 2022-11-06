@@ -1,0 +1,392 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+<html>
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+<title>일하잡 :: 스크랩 공고</title>
+
+<style>
+	table table{
+		margin:0 !important;
+	}
+	
+	.info-type {	
+	    width: fit-content !important;
+	}
+	
+	.opening{
+		border: none !important;
+	}
+	
+/* pagination */
+.bbsListTbl {
+	width: 100%;
+	border-top: 2px solid #384d75;
+}
+
+.bbsListTbl th, .bbsListTbl td {
+	padding: 10px;
+	box-sizing: border-box;
+	height: 55px;
+}
+
+.bbsListTbl th {
+	border-bottom: 1px solid #ccc;
+	background-color: #f0f3fa;
+}
+
+.bbsListTbl td {
+	text-align: center;
+	line-height: 1.3;
+	border-bottom: 1px solid #ccc;
+}
+
+.pagination {
+	padding: 0;
+	text-align: center;
+	margin-top: -40px;
+}
+
+.pagination a {
+	display: inline-block;
+}
+
+.pagination a.pbtn {
+	display: inline-block;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 0;
+	padding: 7px;
+}
+
+.pagination a .pagenum {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	vertical-align: top;
+	font-size: 100%;
+	font-family: '맑은 고딕', 'Malgun Gothic', sans-serif;
+}
+
+.pagination a .currentPage {
+	border-radius: 3px;
+	background: #384d75;
+	color: #fff;
+}
+
+.pagination a:hover .pagenum {
+	border-radius: 3px;
+	background-color: #ddd;
+}
+
+.pagination .a:active .pagenum {
+	border-radius: 3px;
+	background: #384d75;
+	color: #fff;
+}
+
+.pagination .a:visited .pagenum {
+	border-radius: 3px;
+	background: #384d75;
+	color: #fff;
+}
+
+.currentPage{
+	border-radius: 3px !important;
+    background: #384d75 !important;
+    color: #fff !important;
+}
+
+.pagination img{
+		width:12px;
+		height:12px;
+	}
+	
+	.pagination a .pagenum {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    line-height: 25px;
+    text-align: center;
+    vertical-align: top;
+    font-size: 20px;
+    font-family: '맑은 고딕', 'Malgun Gothic', sans-serif;
+	}
+	
+
+@media (max-width: 480px) {
+.pagination a.pbtn {
+		padding: 13px 0px 0px 5px;
+	}
+}	
+
+.pagination a {
+    display: inline !important; 
+}
+.pagination{
+	margin-top: 30px !important;
+}
+
+a#recommend_title{
+    font-weight: bold;
+    font-size: 1.2em;
+}
+a#recommend_company{
+	padding-left: 15px;
+}
+
+</style>
+</head>
+<body class="is-preload">
+	<c:set var="openingList" value="${requestScope.scrap_opening_list}"/>
+	<c:set var="nowPage" value="${requestScope.nowPage}"/>
+	<c:set var="startPage" value="${requestScope.startPage}"/>
+	<c:set var="endPage" value="${requestScope.endPage}"/>
+	<c:set var="totalCnt" value="${requestScope.totalCnt}"/>
+	<c:set var="realEndPage" value="${requestScope.realEndPage}"/>
+	
+
+	<!-- Header -->
+	<jsp:include page="header.jsp" flush="true"/>
+	
+	<div class="my-menu-container">
+		<ul class="my-menu">
+			<li><a href="${pageContext.request.contextPath}/user/MyMain.us" class="menu">홈</a></li>
+			<li><a href="${pageContext.request.contextPath}/user/MyInfo.us" class="menu">내 정보</a></li>
+			<li><a href="${pageContext.request.contextPath}/user/MyResume.us" class="menu">이력서</a></li>
+			<li><a href="${pageContext.request.contextPath}/user/MyApply.us" class="menu">내 지원</a></li>
+			<li><a href="${pageContext.request.contextPath}/user/MyScrap.us" class="menu-on">스크랩 공고</a></li>
+		</ul>
+	</div>
+
+	<div class="typeAntBtn" style="margin-top: 70px;padding-bottom:20px;">
+		<p class="info-type">스크랩 공고</p>
+		<p style="margin: 10px;">총 ${totalCnt} 건</p>
+	</div>
+	<table id="current-opening" style="width: 75vw;margin: 0 auto;">
+		<tbody class="opening_scroll">
+			<p style="display:none;" id="totalCnt">${totalCnt}</p>
+			<c:choose>
+				<c:when test="${totalCnt==0 }">
+					<!-- 공고가 없습니다 -->
+					<tr class="each-opening">
+           		    	<td id="no-scrap" style="padding:0;display:block;padding:30px;text-align:center;" class="each_sum">
+           		    		스크랩한 공고가 없습니다.
+           		    		<br><a style="margin-top:20px;"href="${pageContext.request.contextPath}/index.jsp" class="button primary">공고 둘러보기</a>
+           		    	</td>
+           		    </tr>	
+				</c:when>
+				<c:otherwise>
+					<!-- 반복문 시작 -->
+					<c:forEach var="opening" items="${openingList}">
+           		    	<tr class="each-opening">
+           		    		<td style="padding:0;display:block;" class="each_sum">
+           		    			<table style="width: 100%;">
+           		    	    		<tr class="opening">
+           		    	    			<!-- 체크박스 -->
+           		    	    			<td class='check-td'><div class='col-6 col-12-medium' style='width: 32px; margin-bottom: 10px;'><input type='checkbox' id='${opening.getOpn_num()}' name='delete_check'><label for='${opening.getOpn_num()}'></label></div></td>
+            	    		       	  	<td>
+            	    		       	  		<c:choose>
+    											<c:when test="${opening.getIs_recruiting()=='T'}">
+		            	    		       	  		채용중
+    											</c:when>
+    											<c:otherwise>
+													채용마감
+    											</c:otherwise>
+    										</c:choose>
+            	    		       	  	</td>
+            	    		       	  	<td><a id="recommend_company" href="${pageContext.request.contextPath}/opening/OpeningCompInfo.opn?comp_id=${opening.getOpn_comp_id()}">${opening.getOpn_comp_name()}</a></td>
+            	    		      	  	<td><a id="recommend_title" href="${pageContext.request.contextPath}/opening/OpeningView.opn?opn_num=${opening.getOpn_num()}" target="_blank">${opening.getOpn_title()}</a></td>
+            	    		       	    <td>
+            	    		       	    	<c:if test="${opening.getWork_location1() != null || opening.getWork_location2() != null || opening.getWork_location3() != null}"> 
+    											<span><i class="fas fa-map-marker-alt" ></i>
+    												<c:if test="${opening.getWork_location1() != null}">
+	    												${opening.getWork_location1()}
+    												</c:if>
+    												<c:if test="${opening.getWork_location2() != null}">
+	    												${opening.getWork_location2()}
+    												</c:if>
+    												<c:if test="${opening.getWork_location3() != null}">
+	    												${opening.getWork_location3()}
+    												</c:if>
+    											</span>
+    										</c:if>
+            	    		       	    </td>
+            	    		       	    <td>~ ${opening.getOpn_recruit_end()} </td>
+            	    		       	    <td>
+											<c:choose>
+    											<c:when test="${opening.getIs_recruiting()=='T'}">
+	    											<a href="${pageContext.request.contextPath}/opening/OpeningApply.opn?opn_num=${opening.getOpn_num()}" onclick="return check_user(${sessionScope.type == 'company' },${sessionScope.session_id == null});" class="button primary">즉시 지원</a>
+    											</c:when>
+    											<c:otherwise>
+    												<a href="javascript:void(0);" onclick="alert('모집 기간이 아닌 공고는 지원할 수 없습니다');" class="button primary" style="background-color: gray !important;">즉시 지원</a>
+    											</c:otherwise>
+    										</c:choose>
+            	    		       	    </td>
+            	    		   		</tr>
+            	    	   		</table>
+            	    	   	</td>
+          		    	 </tr>
+            		</c:forEach>
+            	</c:otherwise>
+            </c:choose>
+         </tbody>
+     </table>
+     
+     <div class="login-edit" style="margin-bottom:50px;">
+		<li><input type="button" class="button primary" value="삭제" id="delete_button"></li>
+	</div>
+     
+     <!-- pagination -->
+     <div class="pagination" id="search_opening_pagination" style="margin-top: 10px;text-align:center;">
+		<div style="display:inline-block; margin: 0 auto;">
+											
+		<!-- 가장 처음, 이전 페이지 -->
+		<c:choose>
+			<c:when test="${nowPage > 1}">
+			<a href="${pageContext.request.contextPath}/user/MyScrap.us?page=1" class="firstpage pbtn"><img src="${pageContext.request.contextPath}/images/btn_firstpage.png" alt="첫 페이지로 이동"></a> 
+			<a href="${pageContext.request.contextPath}/user/MyScrap.us?page=${nowPage - 1}" class="prevpage pbtn"><img src="${pageContext.request.contextPath}/images/btn_prevpage.png" alt="이전 페이지로 이동"></a> 
+			</c:when>
+		</c:choose>
+											
+		<!-- 1~5페이지 : 요청 받은 페이지에 currentPage 클래스 주기 -->
+		<c:forEach var="i" begin="${startPage}" end="${endPage}">
+			<a href="${pageContext.request.contextPath}/user/MyScrap.us?page=${i}"><span class="pagenum">${i}</span></a> 
+		</c:forEach>
+											
+		<!-- 다음, 가장 마지막 페이지 -->
+		<c:choose>
+			<c:when test="${nowPage != realEndPage}">
+				<a href="${pageContext.request.contextPath}/user/MyScrap.us?page=${nowPage + 1}" class="nextpage pbtn"><img src="${pageContext.request.contextPath}/images/btn_nextpage.png" alt="다음 페이지로 이동"></a> 
+				<a href="${pageContext.request.contextPath}/user/MyScrap.us?page=${realEndPage}" class="lastpage pbtn"><img src="${pageContext.request.contextPath}/images/btn_lastpage.png" alt="마지막 페이지로 이동"></a>
+			</c:when>
+		</c:choose>
+											
+		<p id="selected-page" style="display:none;">${nowPage}</p>
+		<p id="realEndPage" style="display:none;">${realEndPage}</p>
+		</div>
+	</div>
+     
+     <div class="push" ></div>
+		<!-- Footer -->
+		<jsp:include page="footer.jsp" flush="true"/>
+		
+		<form method="post" id="hidden_form">
+			<input type="hidden" name="context" value="${pageContext.request.contextPath}">
+		</form>
+                
+      <!-- Scripts -->
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+			<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+               
+</body>
+<script>
+
+//현재페이지 효과 주기
+var selected_page=$('#selected-page').text();
+var totalCnt=$('#realEndPage').text();
+for(var i=1;i<=totalCnt;i++){
+	var target_index;
+	if(i==selected_page){
+		target_index=i-1;
+		if(selected_page>5){
+			console.log(i-1-(5*parseInt((selected_page/5))) )
+			console.log($('span.pagenum').eq(i-1-(5*parseInt((selected_page/5)))) )
+			target_index=i-1-(5*parseInt((selected_page/5)));
+		}
+		$('span.pagenum').eq(target_index).addClass('currentPage');
+	}
+}
+
+//공고 없으면 삭제버튼, 페이징 제거
+console.log($('#totalCnt').text())
+if($('#totalCnt').text()==0){
+	$('#delete_button').remove();
+	$('.pagenum').remove();
+}
+
+//지원하기 이동 전 검사
+function check_user(is_company, is_null){
+	//비로그인 상태 검사
+	if(is_null==true){
+		alert("로그인 후 이용하세요.");
+		//로그인 페이지로 이동
+		location.href="/ilhajob/login.jsp";
+		return false;
+	}
+	//기업회원 검사
+	else if(is_company==true){
+		alert("기업회원은 지원할 수 없습니다.");
+		return false;
+	}
+}
+
+//삭제
+		var opn_num_array=[];
+		var delete_array=[];
+		var delete_result_array=[];
+		var final_check=true;
+		
+		$('#delete_button').on('click', function () {
+			//스크랩된 공고 번호를 배열에 저장
+			for(var i=0;i<$('.each-opening').length;i++){
+				opn_num_array.push($('.each-opening input:checkbox').eq(i).attr('id'));
+			}
+			
+			//선택된 공고 번호를 배열에 저장함
+			//check 개수만큼 반복 돈다
+			for(var i=0;i<$('.each-opening').length;i++){
+				
+				if($("input:checkbox[name=delete_check]#"+opn_num_array[i]).is(":checked")==true){
+					var selected_opn_num=opn_num_array[i];
+					delete_array.push(selected_opn_num);
+				}
+			}
+			
+			//삭제
+			for(var j=0;j<delete_array.length;j++){
+				$.ajax({
+			        url : $('input[name="context"]').val()+"/user/MyScrapDelete.us",
+			        type : "post",
+			        data : {"opn_num":delete_array[j]},
+			        success : function() {
+			        	delete_result_array.push(true);
+			        },
+			        error : function(){
+			        	delete_result_array.push(false);
+			        }
+				})
+
+			}
+			for(var t=0;t<delete_result_array.length;t++){
+				if(delete_result_array[i]==false){
+					final_check=false;
+				}else{
+					alert('잠시후 다시 시도해주세요');
+					return false;
+				}
+			}
+			delete_array=[];
+			delete_result_array=[];
+			
+			if(final_check){
+				location.reload();
+			}
+		})
+
+</script>
+</html>

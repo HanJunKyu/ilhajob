@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Comp">
+	<insert id="join" parameterType="compVO">
+		INSERT INTO TABLE_COMP_USER(COMP_USER_ID, COMP_USER_PW, COMP_USER_NAME, 
+		COMP_USER_PHONE, COMP_USER_EMAIL, COMP_USER_TYPE, COMP_USER_LOCATION, 
+		COMP_USER_CEO, COMP_NAME, COMP_USER_CRN,COMP_JOIN_DATE) VALUES(#{comp_user_id},
+		#{comp_user_pw}, #{comp_user_name}, #{comp_user_phone}, #{comp_user_email},
+		#{comp_user_type}, #{comp_user_location}, #{comp_user_ceo}, #{comp_name},
+		#{comp_user_crn},SYSDATE)
+	</insert>
+	
+	<select id="checkId" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_COMP_USER WHERE COMP_USER_ID = #{comp_user_id}
+	</select>
+	
+	<select id="login" parameterType="map" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_COMP_USER
+		WHERE COMP_USER_ID = #{comp_id} AND COMP_USER_PW = #{comp_pw}
+	</select>
+	
+	<!-- 아이디 찾기 -->
+	<select id="findId" parameterType="map" resultType="compVO">
+		SELECT * FROM TABLE_COMP_USER WHERE COMP_USER_NAME = #{comp_name} AND COMP_USER_PHONE = #{comp_phone}
+	</select>
+	
+	<!-- 비번 찾기 -->
+	<select id="findPw" parameterType="map" resultType="string">
+		SELECT COMP_USER_PW FROM TABLE_COMP_USER WHERE COMP_USER_ID = #{comp_id} AND COMP_USER_NAME = #{comp_name} AND COMP_USER_PHONE = #{comp_phone}
+	</select>
+	
+	
+	<!-- 기업정보 수정 -->
+	<update id="editCompInfo" parameterType="compVO">
+		UPDATE TABLE_COMP_USER
+		SET COMP_USER_TYPE = #{comp_user_type}, COMP_NAME = #{comp_name}, COMP_USER_CEO = #{comp_user_ceo},COMP_USER_LOCATION = #{comp_user_location},COMP_USER_CRN = #{comp_user_crn},COMP_USER_INCOME = #{comp_user_income},COMP_USER_DOE = #{comp_user_doe},COMP_USER_CAPITAL = #{comp_user_capital},COMP_USER_WORKERCNT = #{comp_user_workercnt}
+		WHERE COMP_USER_ID = #{comp_user_id}
+	</update>
+	
+	<!-- 기업 인사담당자 정보 수정 -->
+	<update id="editCompUserInfo" parameterType="compVO">
+		UPDATE TABLE_COMP_USER
+		SET COMP_USER_NAME = #{comp_user_name}, COMP_USER_PHONE = #{comp_user_phone},COMP_USER_EMAIL = #{comp_user_email}
+		WHERE COMP_USER_ID = #{comp_user_id}
+	</update>
+	
+	<!-- 내 사진 삭제 -->
+	<update id="deleteCompPhoto" parameterType="string">
+		UPDATE TABLE_COMP_USER
+		SET COMP_PHOTO = NULL
+		WHERE COMP_USER_ID = #{comp_user_id}
+	</update>
+	
+	<!-- 내 사진 수정 -->
+	<update id="editCompPhoto" parameterType="compVO">
+		UPDATE TABLE_COMP_USER
+		SET COMP_PHOTO = #{comp_photo}
+		WHERE COMP_USER_ID = #{comp_user_id}
+	</update>
+	
+	<!-- 기업 정보 가져오기 -->
+	<select id="getCompInfo" parameterType="string" resultType="compVO">
+		SELECT * FROM TABLE_COMP_USER WHERE COMP_USER_ID = #{comp_user_id}
+	</select>
+	
+	<!-- 기업 지원현황 개수 가져오기 -->
+	<select id="getResumeCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_COMP_APPLY WHERE COMP_USER_ID = #{comp_user_id}
+	</select>
+	
+	<!-- 기업 지원현황 필터링된 개수 가져오기 -->
+	<select id="getStatusResumeCnt" parameterType="map" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_COMP_APPLY WHERE COMP_USER_ID = #{comp_user_id} AND APPLY_STATUS = #{status}
+	</select>
+	
+	
+	<!-- 지원목록 -->
+	<select id="getCompApply" parameterType="map" resultType="compApplyVO">
+		SELECT * FROM
+			(SELECT ROWNUM R, D.* FROM 
+				(SELECT * FROM TABLE_COMP_APPLY ORDER BY NUM DESC) D) B
+		WHERE B.R BETWEEN ${startRow} AND ${endRow} AND COMP_USER_ID = #{comp_user_id}
+	</select>
+	
+	<!-- 필터링 지원목록 -->
+	<select id="getStatusCompApply" parameterType="map" resultType="compApplyVO">
+		SELECT * FROM
+			(SELECT ROWNUM R, D.* FROM 
+				(SELECT * FROM TABLE_COMP_APPLY WHERE APPLY_STATUS = #{status} ORDER BY NUM DESC) D) B
+		WHERE B.R BETWEEN ${startRow} AND ${endRow} AND COMP_USER_ID = #{comp_user_id}
+	</select>
+	
+	<!-- 지원정보 가져오기 -->
+	<select id="getCompApplyInfo" parameterType="_int" resultType="compApplyVO">
+		SELECT * FROM TABLE_COMP_APPLY WHERE NUM = #{num}
+	</select>
+	
+	<!-- 지원완료 -->
+	<insert id="compApply" parameterType="compApplyVO">
+		INSERT INTO TABLE_COMP_APPLY
+		VALUES(
+			COMP_APPLY_SEQ.NEXTVAL, #{comp_user_id}, #{jobs_num}, #{apply_name}, SYSDATE, #{apply_status}, #{apply_area}, #{apply_id}, NULL
+		)
+	</insert>
+	
+	<!-- 열람상태 변경 -->
+	<update id="editStatus" parameterType="_int">
+		UPDATE TABLE_COMP_APPLY
+		SET APPLY_STATUS = '열람완료', READ_DATE = SYSDATE
+		WHERE NUM = #{num}
+	</update>
+	
+	<!-- 지원자 수 -->
+	<select id="getApplyCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_COMP_APPLY WHERE comp_user_id = #{comp_user_id}
+	</select>
+	
+	<!-- 미열람 개수 -->
+	<select id="getReadCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_COMP_APPLY WHERE comp_user_id = #{comp_user_id} AND APPLY_STATUS = '열람하기'
+	</select>
+	
+	<!-- 오늘 마감 공고 개수 -->
+	<select id="getEndOpnCnt" parameterType="map" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_OPN WHERE OPN_COMP_ID = #{comp_user_id} AND TO_CHAR(OPN_RECRUIT_END, 'yyyy-mm-dd') = #{date}
+	</select>
+	
+	<select id="getDoe" parameterType="java.lang.String" resultType="string">
+		SELECT TO_CHAR(COMP_USER_DOE, 'yyyy-mm-dd') FROM TABLE_COMP_USER WHERE COMP_USER_ID = #{comp_user_id}
+	</select>
+
+	
+</mapper>

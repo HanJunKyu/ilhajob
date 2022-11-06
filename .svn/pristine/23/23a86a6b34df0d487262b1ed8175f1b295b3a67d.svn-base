@@ -1,0 +1,118 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>일하잡 :: 아이디/비밀번호찾기</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+	</head>
+	<style>
+		
+	</style>
+	<body class="is-preload">
+
+		<!-- Header -->
+			<%@ include file="header.jsp" %>
+
+			<header class="major find-title">
+				<h2>아이디/비밀번호 찾기</h2>
+				<p style="color: rgb(230, 104, 66);">가입한 아이디와 비밀번호를 잊으셨나요?</p>
+			</header>
+			<div class="find-container">
+				<div class="find-wrapper">
+					<p>개인회원</p>
+					<div style="display: flex; width: 100%; text-align: center;">
+						<div style="border-right: 1px solid rgb(219, 219, 219); width: 50%;  padding: 15px 0;">
+							<a href="find_id.jsp" >아이디 찾기</a>
+						</div>
+						<div style="width: 50%; padding: 15px 0;">
+							<a href="find_pw.jsp">비밀번호 찾기</a>
+						</div>
+					</div>
+				</div>
+				<div class="find-wrapper">
+					<p>기업회원</p>
+					<div style="display: flex; width: 100%; text-align: center;">
+						<div style="border-right: 1px solid rgb(219, 219, 219); width: 50%;  padding: 15px 0;">
+							<a href="find_comp_id.jsp" >아이디 찾기</a>
+						</div>
+						<div style="width: 50%; padding: 15px 0;">
+							<a href="find_comp_pw.jsp">비밀번호 찾기</a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div class="find-btn">
+				<div>
+					<a href="login.jsp" style="margin-right: 10px;">로그인</a>
+					<a href="join.jsp">회원가입</a>
+				</div>
+				<p><i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i>위 방법으로 계정을 찾을수 없다면, 일하잡 고객센터로 직접 문의 주시기 바랍니다.</p>
+			</div>
+			
+		<!-- <div class="push" style="height: 189px; margin-top: 50px;"></div>
+
+	<div class="footer">
+		<div class="footer-menu">
+				<ul class="labeled-icons">
+					<li>
+						<span>회사소개</span>
+					</li>
+					<li>
+						<span>광고문의</span>
+					</li>
+					<li>
+						<span>이용약관</span> 
+					</li>
+					<li>
+						<span>개인정보처리방침</span> 
+					</li>
+					<li>
+						<span>고객센터</span> 
+					</li>
+				</ul>
+		</div>
+		<div class="footer-info">
+				<ul class="labeled-icons">
+					<li>
+						<span>someone@untitled.tld</span>
+					</li>
+					<li style="padding-left: 0;">
+						<span >(000) 000-0000 x12345</span>
+					</li>
+					<li style="padding-left: 0; margin-right: 15px;">
+						<span>서울시 강남구 ooo - oo</span> 
+					</li>
+					<li style="margin-left: 10px;">
+						<a href="#"><h4 class="icon brands fa-twitter"><span class="label">Twitter</span></h4></a>
+					</li>
+					<li>
+						
+						<a href="#"><h4 class="icon brands fa-facebook-f"><span class="label">Facebook</span></h4></a>
+					</li>
+				</ul>
+		</div>
+		<div class="copyright">
+			Copyright ⓒ ILHAJOB Corp. All Right Reserved.
+		</div>
+	</div> 
+-->
+		<!-- Scripts -->
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+
+	</body>
+</html>

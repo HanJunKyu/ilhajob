@@ -1,0 +1,141 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+
+<head>
+	<title>일하잡 :: 기업메인</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+
+</head>
+<style>
+	@media (max-width: 970px) {
+		
+
+		.list-container {
+			margin-top: 30px;
+		}
+
+		.list-div {
+			flex-direction: row;
+			height: 300px;
+		}
+
+		.list {
+			width: 200px;
+			margin: 0 20px;
+		}
+
+	
+	}
+
+	@media (max-width: 736px) {
+		.list-container {
+			margin-top: 30px;
+		}
+
+		.list-div {
+			flex-direction: row;
+			height: 300px;
+		}
+
+		.list {
+			width: 150px;
+			margin: 0 20px;
+		}
+
+		.circle,
+		.circle-image {
+			width: 150px;
+			height: 150px;
+		}
+
+		.list-div>div {
+			justify-content: center;
+		}
+	}
+
+	@media (max-width: 480px){
+		.list-div {
+			flex-direction: column;
+			height: 700px;
+			margin-top: 20px;
+		}
+
+		.list {
+			margin: 0 auto;
+			margin-bottom: 20px;
+		}
+
+		.comp-message {
+			font-size: 17px;
+			margin-top: 10px;
+			margin-bottom: 20px;
+		}
+
+		.comp-message #comp-name, .comp-message #job_apply_count {
+			font-size: 23px;
+		}
+	}
+</style>
+
+<body class="is-preload">
+	<!-- Header -->
+	<%@ include file="header.jsp" %>
+
+	<!-- Main -->
+	<div class="my-menu-container">
+			<ul class="my-menu">
+				<li><a href="${pageContext.request.contextPath}/comp/CompMain.co" class="menu-on">홈</a></li>
+				<li><a href="${pageContext.request.contextPath}/comp/CompInfo.co" class="menu">기업 정보</a></li>
+				<li><a href="${pageContext.request.contextPath}/comp/CompResume.co" class="menu">지원 현황</a></li>
+				<li><a href="${pageContext.request.contextPath}/comp/CompOpn.co" class="menu">나의 공고</a></li>
+			</ul>
+		</div>
+	<p class="comp-message"><span id="comp-name">${comp_name}</span> 님의 진행중인 채용은 <a href="comp_apply.jsp" id="job_apply_count"> ${opn_cnt} </a>건 입니다</p>
+	<div class="list-container">
+		<div class="list-div" style="margin: 0 auto; justify-content: center;">
+			<div class="list comp-list">
+				<div class="circle">
+					<p id="applied_cnt"><a href="${pageContext.request.contextPath}/comp/CompResume.co">${apply_cnt}</a></p>
+				</div>
+				<p>지원자 수</p>
+			</div>
+			<div class="list comp-list">
+				<div class="circle">
+					<p id="open_resume_cnt"><a href="comp_apply.jsp">${endOpnCnt}</a></p>
+				</div>
+				<p>오늘마감 채용공고</p>
+			</div>
+			<div class="list comp-list">
+				<div class="circle">
+					<p id="liked_cnt"><a href="${pageContext.request.contextPath}/comp/compResume.co">${read_cnt}</a></p>
+				</div>
+				<p>미열람 이력서</p>
+			</div>
+		</div>
+	</div>
+
+
+	<%@ include file="footer.jsp" %>
+
+	<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+
+</body>
+
+</html>

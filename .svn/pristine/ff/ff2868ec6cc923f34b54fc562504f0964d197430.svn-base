@@ -1,0 +1,873 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+
+
+<html>
+	<head>
+		<title>일하잡 :: [${openingBean.getOpn_comp_name()}] ${openingBean.getOpn_title()}</title>
+		<meta charset="utf-8" />
+		<!-- <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" /> -->
+		<meta name="viewport" content="initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0, user-scalable=no" /> 
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/header.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/footer.css" />
+	</head>
+
+	<style>
+		body{
+			margin: 0 auto;
+			padding-top: 0px !important;
+			/*min-width:1260px;*/
+		}
+		
+		/*
+		#scrolled_myheader, #myheader, #header, #mymain, .footer,  #recruit_sum .col-3.col-6-large.col-12-medium
+		{
+			min-width:900px;
+		}
+		
+		.gtr-200{
+			width:90%;
+			min-width?:900px;
+		}
+		*/
+			
+		#main_wrap{
+			
+			/*margin:30px;
+			position:relative;*/
+			height:fit-content;
+		}
+		#myheader{
+			width:90%;
+			min-height: 170px;
+    		max-height: 300px;
+			position: relative;
+			margin:0 auto;
+			padding:0 20px;
+			border-bottom:darkgrey solid 0.5px;
+			background: white;
+			top:0px;
+			left: 0px;
+			right: 0px;
+			z-index: 100;
+		}
+		#myheader>*{
+			position:absolute;
+			display: inline-block;
+		}
+		#myheader>h4{
+			top:25px;
+			font-size: 1.0em;
+			color:darkgrey;
+		}
+		#myheader h1{
+			line-height: 1.3;
+			top:60px;
+			bottom:0;
+			font-size: 1.5em;
+			padding: auto 0;
+			line-height: 130%;
+			
+		}
+		#myheader>.button{
+			right:100px;
+			top:55px;
+		}
+		#myheader>.button.primary.small{
+			right:10px;
+		}
+
+		#myheader>.button.alt.small{
+			right:120px;
+		}
+
+		#myheader>.views{
+			position: absolute;
+        	margin: 0 !important;
+    		display: inline-block;
+    		bottom: 15px;
+    		right: 40%;
+		}
+
+		#scrolled_myheader{
+			width:100%;
+			min-height: 170px;
+			position: fixed;
+			margin:0 auto;
+			padding:0 20px;
+			border-bottom:darkgrey solid 0.5px;
+			background: white;
+			top:0px;
+			left: 0px;
+			right: 0px;
+			z-index: 1000;
+			display:none;
+		}
+		#scrolled_myheader>*{
+			position:absolute;
+			display: inline-block;
+		}
+		#scrolled_myheader>h4{
+			top:25px;
+			font-size: 1.0em;
+			color:darkgrey;
+		}
+		#scrolled_myheader>h1{
+			/*34자 미만*/
+			width:60%;
+			top:60px;
+			bottom:0;
+			font-size: 1.4em;
+			padding: auto 0;
+			line-height: 130%;
+		}
+		#scrolled_myheader>.button{
+			right:23%;
+			top:55px;
+		}
+		#scrolled_myheader>.button.primary.small{
+			right:10px;
+		}
+		#scrolled_myheader>.button.alt.small{
+			right:120px;
+		}
+		#scrolled_myheader #login{
+			top:10px;
+			right:100px;
+		}
+		#scrolled_myheader #join{
+			top:10px;
+			right:30px;
+		}
+		.scrolled_up{
+			display:inline-block;
+		}
+
+		#mymain{
+			width:90%;
+			margin:0 auto;
+			position: relative;
+			top:10px;
+			padding-top: 5px;
+			padding-bottom: 60px;
+		}
+
+		.row>.col-3.col-6-large.col-12-medium{
+			width:50%;
+			background-color: rgb(245, 245, 245);
+			padding: 10px 0;
+			display:inline-block;
+		}
+
+		.row>.col-3.col-6-large.col-12-medium>ul{
+			list-style: none;
+		}
+
+		.cont_box{
+			position:relative;
+		}
+		
+		.cont_box>div{
+			display: inline-block;
+			position:absolute;
+			/*height:150px;*/
+		}
+
+		.cont_box>#date_start{
+			width:40%;
+			background-color: rgb(245, 245, 245);
+			left:0;
+			border-right: darkgrey solid 0.5px;
+			border-top: darkgrey solid 1px;
+		}
+		.cont_box>#date_end{
+			width:60%;
+			right:0;
+			border-top: darkgrey solid 1px;
+		}
+
+		#recruit_sum table{
+			margin-bottom: 0;
+			max-height: 150px;
+		}
+
+		#recruit_sum tr{
+			background-color:rgb(245, 245, 245);
+			border:none;
+		}
+
+		#recruit_sum th{
+			min-width: 75px;
+		}
+
+		#recruit_sum .col-3.col-6-large.col-12-medium{
+			padding: 15px;
+			width:50%;
+		}
+
+		#content{
+			margin-top:20px;
+		}
+
+		#recruit_table tr{
+			background-color: white;
+			border-top:darkgrey solid 0.5px;
+		}
+
+		#recruit_table td{
+			padding:10px;
+		}
+
+		#recruit_table .inner-table tr{
+			background-color: rgb(245, 245, 245);
+		}
+
+		#recruit_table .inner-table tr:first-child{
+			background-color: darkgrey;
+		}
+
+		#recruit_table .inner-table tr th:first-child{
+			padding-top:9.9px;
+		}
+
+		#recruit_table .inner-table tr th:first-child,#recruit_table .inner-table tr td:first-child,
+		#recruit_sum .col-3.col-6-large.col-12-medium:first-child,#howto .row>.col-3.col-6-large.col-12-medium:first-child{
+			border-right: white solid 0.5px;
+		}
+
+		#recruit_table .inner-table tr{
+			text-align: center;
+		}
+		
+		#recruit_table .inner-table th{
+			color:white;
+			/*min-width: 200px;*/
+			text-align: center;
+		}
+
+		#recruit_table .inner-table .detail{
+			text-align: left;
+		}
+
+		#recruit_table .inner-table .text-thick{
+			font-weight: bold;
+		}
+
+		#recruit_table h3{
+			margin-top: 20px;
+		}
+
+		.recruit_info{
+			margin:0 auto;
+			padding-top:10px;
+			padding-left: 0;
+		}
+
+		.recruit_info>li{
+			/*display: inline;*/
+			font-size: 0.8em;
+		}
+		
+		.recruit_info.cont>li{
+			/*display: block;*/
+			text-align: left;
+		}
+
+		.footer{
+         position:relative !important;
+	  }
+
+		.recruit_info ul,ol{
+			  list-style:circle;
+		  }
+
+		#howto tr{
+			background-color: rgb(245, 245, 245);
+			border: none;
+		}
+
+		#howto th{
+			min-width: 75px;
+		}
+		
+		#howto .row.gtr-200.align-center{
+			margin-left: 0;
+		}
+
+		#howto .row>.col-3.col-6-large.col-12-medium:first-child{
+			width:40%;
+		}
+
+		#howto .row>.col-3.col-6-large.col-12-medium:last-child{
+			width:60%;
+		}
+		
+		#howto .col-3.col-6-large.col-12-medium{
+			padding: 15px;
+		}
+		
+		#howto td{
+			text-align:left;
+		}
+		
+		#title_banner{
+			background-image : url('images/pic01.jpg');
+			background-repeat : no-repeat;
+			background-size : cover;
+			width:100%;
+			min-height: 400px;
+    		max-height: 800px;
+			position:relative;
+		}
+		#title_banner h1{
+			font-size: xxx-large;
+			color: white;
+			padding:15px;
+			margin:0;
+			position:absolute;
+			bottom:0;
+			width: 70% !important;
+    		min-width: 50%;
+    		line-height: 1.3;
+		}
+		
+		table.table-in-mobile{
+			display:none;
+		}
+		
+       .announce-box{
+       		margin-top:50px;
+       		border:solid 1px rgba(144, 144, 144, 0.25)
+       		
+       }
+       .announce-box>*{
+       		border:none !important;
+       }
+        
+        .show{
+            	display:block !important;
+            }
+            
+            #header{
+            	position:static !important;
+            }
+
+		@media screen and (max-width: 980px){
+			.row {
+    		margin-left: 0;
+			}
+			
+			body{
+				padding-top:44px !important;
+			}
+		}
+
+		@media (min-width: 0px) and (max-width: 768px) {
+			#header{
+				display: none;
+			}
+			#titleBar{
+				display: none;
+			}
+			#header>nav>*{
+				position: absolute;
+			}
+			#header>nav{
+				left:0;
+			}
+			#header>nav>ul{
+				right:0;
+			}
+			#howto .row>.col-3.col-6-large.col-12-medium:first-child,#howto .row>.col-3.col-6-large.col-12-medium:last-child, 
+			#recruit_sum .col-3.col-6-large.col-12-medium, #howto .col-3.col-6-large.col-12-medium{
+				width:100%;
+			}
+
+			#myheader>.button.primary.small{
+				top:100px;
+				right:10%;
+				width:25%;
+			}
+			#myheader>.button.alt.small{
+				bottom:40px;
+				right:10%;
+				margin-right:0px;
+				width:25%;
+			}
+			#myheader>.views{
+				right:17%;
+			}
+
+			#scrolled_myheader{
+				display:none;
+			}
+			
+			#howto .col-3:first-child {
+				margin-bottom:20px;
+			}
+		} 
+
+		@media (min-width: 0) and (max-width: 480px) {
+			
+			#myheader h1{
+				font-size:1.0em;
+			}
+			#myheader h4{
+				font-size:0.8em;
+				color:#888;
+			}
+			p.views{
+				font-size:0.5em;
+				margin:0;
+				position:absolute;
+				bottom: 0;
+    			right: 5%;
+			}
+			#myheader>.button.primary.small{
+				top:110px;
+				right:5%;
+			}
+			#myheader>.button.alt.small{
+				right:5%;
+			}
+			#myheader>.views{
+				right:10%;
+				font-size: 0.8em;
+			}
+			
+			#recruit_sum{
+				width: 100%;
+    			margin: 0 auto;
+			}
+			#recruit_sum>*{
+				font-size:0.7em;
+			}
+			#recruit_sum .col-3{
+    			margin-top:15px;
+			}
+			
+			#title_banner h1{
+				font-size: xx-large;
+			}
+			
+			#recruit_table .inner-table tr th:first-child{
+			
+			}
+			
+			#recruit_table>*{
+				font-size:0.8em;
+			}
+			
+			.button{
+				padding:0 10%;
+			}
+			
+			table.table-in-pc{
+				display:none !important;
+			}
+			table.table-in-mobile{
+				display:block !important;
+			}
+			table.table-in-mobile>*{
+				font-size: 0.8em;
+			}
+		}
+		
+		.inner-table tr:first-child, .inner-table tr:first-child td{
+			color:white !important;
+			text-align: center !important;
+		}
+	  
+	</style>
+
+	<body class="is-touch">
+	
+	<c:set var="openingBean" value="${requestScope.openingBean}"/>
+	<c:set var="recruitmentAreaBeans" value="${requestScope.recruitmentAreaBeans}"/>
+	<c:set var="preferenceBeans" value="${requestScope.preferenceBeans}"/>
+	<c:set var="recruitmentInfoBean" value="${requestScope.recruitmentInfoBean}"/>
+	<c:set var="workLocationBean" value="${requestScope.workLocationBean}"/>
+	<c:set var="openingDetailBeans" value="${requestScope.openingDetailBeans}"/>
+	<c:set var="openingDetailTableBeans" value="${requestScope.openingDetailTableBeans}"/>
+	<c:set var="openingDetailTableColumnBeans" value="${requestScope.openingDetailTableColumnBeans}"/>
+	<c:set var="openingFilesBeans" value="${requestScope.openingFilesBeans}"/>
+	<c:set var="saveFolder" value="C:\\web\\temp\\workspace\\ilhajob\\WebContent\\app"/>
+	
+	<div>	
+	<%-- <form action="do_apply.jsp" method="post" id="apply_form">
+		<input type="hidden" name="opn_num" value="${openingBean.getOpn_num()}">
+	</form> --%>
+	
+		<!-- Header -->
+	<jsp:include page="header.jsp" flush="true"/>
+	
+		<div id="scrolled_myheader" style="display:none;">
+			<div style="top: 10px;">
+				<a href="show_comp_info.jsp"><h4 style="color:#37b37f !important">${openingBean.getOpn_comp_name()}</h4></a>
+				<h1>${openingBean.getOpn_title()}</h1>
+				<div>
+					<a href="javascript:void(0);" onclick="do_scrap(${sessionScope.type == 'company' },${sessionScope.session_id == null},${openingBean.getOpn_num()})" class="button alt small scrap">스크랩</a>
+					<a href="${pageContext.request.contextPath}/opening/OpeningApply.opn?opn_num=${openingBean.getOpn_num()}" onclick="return check_user(${sessionScope.type == 'company' },${sessionScope.session_id == null});" class="button primary small do_apply">지원하기</a>
+				</div>
+			</div>
+		</div>
+
+		<div id="myheader">
+			<div style="top: 10px;">
+				<a href="show_comp_info.jsp"><p style="color:#37b37f !important;">${openingBean.getOpn_comp_name()}</p></a>
+				<h1>${openingBean.getOpn_title()}</h1>
+				<div>
+					<a href="javascript:void(0);" onclick="do_scrap(${sessionScope.type == 'company' },${sessionScope.session_id == null},${openingBean.getOpn_num()})" class="button alt small scrap">스크랩</a>
+					<a href="${pageContext.request.contextPath}/opening/OpeningApply.opn?opn_num=${openingBean.getOpn_num()}" onclick="return check_user(${sessionScope.type == 'company' },${sessionScope.session_id == null});" class="button primary small do_apply">지원하기</a>
+					<p class="views" style="margin:0;display: inline-block;">조회수 <span style="font-weight: bold;">${openingBean.getOpn_views()}</span></p>
+				</div>
+			</div>
+		</div> 
+ 
+		<div id="mymain">
+			<div class="container">
+				<div id="recruit_sum" class="row">
+					<div class="col-3 col-6-large col-12-medium">
+					<table>
+						<c:if test="${not empty openingBean.getOpn_career()}">
+							<tr>
+								<th>경력</th>
+								<td>${openingBean.getOpn_career()}</td>
+							</tr>
+						</c:if>
+						
+						<c:if test="${not empty openingBean.getOpn_edu()}">
+							<tr>
+								<th>학력</th>
+								<td>${openingBean.getOpn_edu()}</td>
+							</tr>
+						</c:if>
+						
+						<c:if test="${not empty openingBean.getOpn_work_type()}">
+							<tr>
+								<th>근무형태</th>
+								<td>${openingBean.getOpn_work_type()}</td>
+							</tr>
+						</c:if>
+					</table>
+					</div>
+					
+					<div class="col-3 col-6-large col-12-medium">
+					<table>
+						<c:if test="${not empty openingBean.getOpn_salary()}">
+							<tr>
+								<th>급여</th>
+								<td>${openingBean.getOpn_salary()}</td>
+							</tr>
+						</c:if>
+						
+						<c:if test="${not empty openingBean.getOpn_work_time()}">
+							<tr>
+								<th>근무일시</th>
+								<td>${openingBean.getOpn_work_time()}</td>
+							</tr>
+						</c:if>
+						
+						<tr>
+							<th>근무지역</th>
+							<td>
+								<c:if test="${not empty workLocationBean.getWork_location1()}">${workLocationBean.getWork_location1()} </c:if>
+								<c:if test="${not empty workLocationBean.getWork_location2()}">${workLocationBean.getWork_location2()} </c:if>
+								<c:if test="${not empty workLocationBean.getWork_location3()}">${workLocationBean.getWork_location3()}</c:if>
+							</td>
+						</tr>
+					</table>
+					</div>
+				</div>      
+					<!-- 모집 분야 recruitmentAreaBeans -->
+					<c:if test="${not empty recruitmentAreaBeans}">
+						<table class="announce-box">
+							<tr><th>모집 분야</th></tr>
+							<c:forEach var="data" items="${recruitmentAreaBeans}">
+								<tr><td>${data.getRecruitment_area()}</td></tr>
+							</c:forEach>
+						</table>
+					</c:if>
+					<!-- 우대 사항 preferenceBeans -->
+					<c:if test="${not empty preferenceBeans}">
+						<table class="announce-box">
+							<tr><th>우대 사항</th></tr>
+							<c:forEach var="data" items="${preferenceBeans}">
+								<tr><td>${data.getPreference()}</td></tr>
+							</c:forEach>
+						</table>
+					</c:if>
+					
+				
+				<div class="gtr-200">
+					<div class="col-8 col-12-medium">			
+						<section id="content">
+							<div id="title_banner" style="background-image : url('${pageContext.request.contextPath}/images/pic01.jpg');margin-bottom:30px;">
+								<h1>${openingBean.getOpn_title()}</h1>
+							</div>
+							<!-- 이미지 추가 -->
+							<c:if test="${openingDetailBeans!=null}">
+								<c:forEach var="file" items="${openingFilesBeans}">
+									<div style="text-align:center;">
+										<img src="${pageContext.request.contextPath}/app/upload/${file.getOpn_file_name()}"/>									
+									</div>
+								</c:forEach>
+							</c:if>
+							
+							<table id="recruit_table">
+								<!-- 상세조건과 상세테이블 -->
+								<tbody>
+									<!-- 상세 내용 -->
+									<c:if test="${not empty openingDetailBeans}">
+										<c:forEach var="detail" items="${openingDetailBeans}">
+											<tr class="recruit_p">
+												<td>
+													<h3>${detail.getOpn_detail_title()}</h3>
+													<p>${detail.getOpn_detail_content()}</p>
+												</td>
+											</tr>
+										</c:forEach>
+									</c:if>
+									
+									<!-- 상세 테이블 -->
+									<c:if test="${not empty openingDetailTableBeans}">
+										<c:forEach var="table" items="${openingDetailTableBeans}">
+											<tr class="recruit_innertable">
+												<td>
+													<h3>${table.getopn_detail_table_title()}</h3>
+													<table class="inner-table table-in-pc">
+														<c:forEach var="column" items="${openingDetailTableColumnBeans}">
+															<c:forEach var="cell" items="${column}">
+																<tr>
+																	<td class="text-thick">${cell.getColumn1()}</td>
+																	<td class="detail">${cell.getColumn2()}</td>
+																</tr>
+															</c:forEach>
+														</c:forEach>
+													</table>
+												</td>
+												
+												
+											</tr>
+											
+										</c:forEach>
+									</c:if>
+									
+								</tbody>
+							</table>
+
+							<div id="howto">
+								<h3>접수 기간 및 방법</h3>
+								<div class="row gtr-200 align-center">
+									<div class="col-3 col-6-large col-12-medium">	
+										<table>
+											<tr>
+												<th>시작일</th>
+												<td>${openingBean.getOpn_recruit_start()}</td>
+											</tr>
+											<tr>
+												<th>마감일</th>
+												<td>${openingBean.getOpn_recruit_end()}</td>
+											</tr>
+											<tr id="is_outOfDate">
+												<td colspan="2" style="text-align: center;color: red;font-weight: bold;">현재 모집 상태가 아닙니다</th>
+											</tr>
+										
+										</table>
+										<a href="javascript:void(0);" class="button primary small do_apply">지원하기</a>
+									</div>
+									<div class="col-3 col-6-large col-12-medium">
+										<table>
+											<tr>
+												<th>접수방법</th>
+												<td>${openingBean.getOpn_recruit_method()}</td>
+											</tr>
+											<c:if test="${not empty openingBean.getOpn_url()}">
+												<tr>
+													<th>지원링크</th>
+													<td><a href="${openingBean.getOpn_url()}" target="_blank">${openingBean.getOpn_url()}</a></td>
+												</tr>
+											</c:if>
+											<tr>
+												<th>담당자</th>
+												<td>${openingBean.getOpn_recruit_name()}</td>
+											</tr>
+											<tr>
+												<th>연락처</th>
+												<td>${openingBean.getOpn_recruit_contact()}</td>
+											</tr>
+										</table>
+									</div>	
+								</div>
+							</div>
+							
+						</section>
+
+					</div>
+				</div> 
+			</div>
+		</div>
+	
+		 
+		 
+	</div>	 
+		<!-- Footer -->
+		<jsp:include page="footer.jsp" flush="true"/>
+		
+		<form method="post" id="hidden_form">
+			<input type="hidden" name="session_id" value="${sessionScope.session_id}">
+			<input type="hidden" name="context" value="${pageContext.request.contextPath}">
+			<input type="hidden" name="is_recruiting" value="${openingBean.getIs_recruiting()}">
+		</form>
+		
+	</body>
+
+<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/pagination.js"></script>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+<script>
+
+//스크롤
+var didScroll; // 스크롤시에 사용자가 스크롤했다는 것을 알림
+var lastScrollTop = 0; 
+var delta = 5; 
+var navbarHeight = $('#scrolled_myheader').outerHeight();
+
+$(window).scroll(function(event){ didScroll = true; }); // hasScrolled()를 실행하고 didScroll 상태를 재설정 
+
+setInterval(function() {
+	if (didScroll) { 
+		hasScrolled(); 
+		didScroll = false; 
+	}
+}, 250); 
+
+function hasScrolled() { 
+	// 동작을 구현 
+	var st = $(this).scrollTop();
+	if(Math.abs(lastScrollTop - st) <= delta) return; // Make sure they scroll more than delta
+	if (st > lastScrollTop && st > navbarHeight){ // Scroll Down 
+		$('#scrolled_myheader').show(); 
+	}else { // Scroll Up 
+		if(st + $(window).height() < $(document).height()) { 
+			$('#scrolled_myheader').show();
+		}
+		if(st==0){
+			$('#scrolled_myheader').hide();
+		}
+	}
+	lastScrollTop = st;
+
+	$(document).ready(function(){
+		var windowWidth = $( window ).width();
+		if(windowWidth<=480){
+			$('#scrolled_myheader').hide();
+		}
+	});
+}
+
+//스크랩 scrap
+/*
+ * 넘겨야하는 것
+ 1. 아이디
+ 2. 공고 번호
+ */
+
+ 	var check_dup=false;
+	function do_scrap(is_company, is_null, opn_num){
+		//비로그인, 기업회원 검사
+		if(!check_user(is_company, is_null)){
+			return false;
+		}
+		
+		//중복 스크랩 검사
+		var session_id=$('input[name="session_id"]').val();
+		//조회
+		$.ajax({
+		    url : $('input[name="context"]').val()+"/opening/OpeningScrapDup.opn",
+		    type : "post",
+		    async:false,
+		    data : {"user_id":session_id,"opn_num":opn_num},
+		    dataType : "json",
+			success : function(data) {
+				var isScrapDup = data.isScrapDup;
+				if(isScrapDup){
+					alert("이미 스크랩한 공고입니다");
+					check_dup=true;
+				}
+			},
+		    error : function(data){
+		    	alert("다시 시도해주세요");
+		    	return false;
+		    }
+		})
+		
+		if(check_dup){
+			return false;
+		}
+		
+		
+		//스크랩 실행 ajax
+		$.ajax({
+		    url : $('input[name="context"]').val()+"/opening/OpeningScrap.opn",
+	        type : "post",
+	        data : {"user_id":session_id,"opn_num":opn_num},
+	        success : function() {
+	        	alert("스크랩 되었습니다");
+	        },
+	        error : function(){
+	        	alert("다시 시도해주세요");
+	        }
+		})
+	}
+
+	//지원하기 버튼 출력 여부
+	//채용중인 공고라면 마감안내글 없애기
+	console.log($('input[name="is_recruiting"]').val())
+	if($('input[name="is_recruiting"]').val()=='T'){
+		$('#is_outOfDate').remove();		
+	}else{
+		//채용마감된 공고라면 지원버튼 없애기
+		$('.do_apply').remove();
+	}
+	
+	//지원하기 버튼
+	$('.do_apply').on('click', function(){
+		$('#apply_form').action="do_apply.jsp";
+		$('#apply_form').submit();
+	})
+	
+	//비로그인, 기업회원 검사
+	function check_user(is_company, is_null){
+		//비로그인 상태 검사
+		if(is_null==true){
+			alert("로그인 후 이용하세요.");
+			//로그인 페이지로 이동
+			location.href="/ilhajob/login.jsp";
+			return false;
+		}
+		//기업회원 검사
+		else if(is_company==true){
+			alert("기업회원은 이용할 수 없는 서비스입니다.");
+			return false;
+		}
+		return true;
+	}
+	
+	
+
+
+</script>
+</html>

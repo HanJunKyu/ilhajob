@@ -1,0 +1,89 @@
+<%@page import="java.net.URLDecoder"%>
+<%@page import="org.apache.catalina.util.URLEncoder"%>
+<%@page import="java.beans.Encoder"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<jsp:include page="header.jsp" />
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+	<head>
+		<title>일하잡 :: 내정보</title>
+		<meta charset="utf-8" />
+		<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+		<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+	</head>
+	<body class="is-preload">
+	<c:if test="${session_id eq null}">
+			<script>
+				alert("로그인 후 이용해주세요");
+				location.replace("${pageContext.request.contextPath}/user/UserLogin.us");
+			</script>
+		</c:if>
+		<!-- Header -->
+
+		<!-- Main -->
+		<div class="my-menu-container">
+			<ul class="my-menu">
+				<li><a href="${pageContext.request.contextPath}/user/MyMain.us" class="menu">홈</a></li>
+				<li><a href="${pageContext.request.contextPath}/user/MyInfo.us" class="menu-on">내 정보</a></li>
+				<li><a href="${pageContext.request.contextPath}/user/MyResume.us" class="menu">이력서</a></li>
+				<li><a href="${pageContext.request.contextPath}/user/MyApply.us" class="menu">내 지원</a></li>
+				<li><a href="${pageContext.request.contextPath}/user/MyScrap.us" class="menu">스크랩 공고</a></li>
+			</ul>
+		</div>
+
+		<div class="my-info-container">
+			<div class="my-info-prof">
+			<c:if test="${user_photo != null}">
+				<img src="${pageContext.request.contextPath}/app/upload/${user_photo}" width= "170px" height= "200px"  alt="">
+			</c:if>
+			<c:if test="${user_photo == null}">
+				<img src="${pageContext.request.contextPath}/images/noimg.gif" width= "170px" height= "200px" alt="">
+			</c:if>
+			
+			</div>
+			<div class="my-info-div">
+				<div class="name">
+					<span id="name">${user_name}</span>
+				</div>
+				<div>
+					<div class="my-info-content">
+						<div>
+							<span class="my-info-title">아이디</span>
+							<span>${user_id}</span>
+							
+						</div>
+						<div>
+							<span class="my-info-title">휴대폰</span>
+							<span>${user_phone}</span>
+						</div>
+						<div >
+							<div>
+								<span class="my-info-title">Email</span>
+								<span>${user_email}</span>
+							</div>
+						</div>
+					</div>					
+				</div>
+			</div>
+		</div>
+		<div class="my-info-edit">
+				<li><a href="${pageContext.request.contextPath}/user/MyInfoEdit.us" class="button primary" style="width: 130px;">수정</a></li>
+		</div>		
+		<!-- Scripts -->
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+			<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+	</body>
+</html>

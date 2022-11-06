@@ -1,0 +1,55 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+
+<head>
+	<title>일하잡담 :: 메인</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="assets/css/main.css" />
+    <link rel="stylesheet" href="assets/css/main2.css">
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link rel="preconnect" href="https://fonts.gstatic.com"> 
+    <link href="https://fonts.googleapis.com/css2?family=Do+Hyeon&family=Gothic+A1&family=Jua&family=Sunflower:wght@300&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/3087aeb32d.js" crossorigin="anonymous"></script>
+</head>
+
+<body class="is-preload">
+
+	<!-- Header -->
+	<%@include file="header.jsp" %>
+    <section class="commynity-section">
+        
+        <div class="community-banner">
+            <div>
+                <span class="hashtag"># 취업 꿀팁을 한눈에</span>
+                <p class="community-title">일하잡담</p>
+            </div>
+            <img src="images/community.gif" alt="">
+        </div>
+        <div class="community-btns">
+            <div>
+                <a href="${pageContext.request.contextPath}/bbs/BbsList.bo" style="background-color: white;"><img src="images/ask.png" alt="" id="ask"></a>
+                <a href="${pageContext.request.contextPath}/bbs/BbsList.bo">취업질문 게시판</a>
+            </div>
+            <div>
+                <a href="" style="background-color: white;"><img src="images/!.png" alt="" id="review"></a>
+                <a href="">면접후기 게시판</a>
+            </div>
+        </div>
+    </section>
+    <script src="assets/js/jquery.min.js"></script>
+			<script src="assets/js/jquery.dropotron.min.js"></script>
+			<script src="assets/js/jquery.poptrox.min.js"></script>
+			<script src="assets/js/browser.min.js"></script>
+			<script src="assets/js/breakpoints.min.js"></script>
+			<script src="assets/js/util.js"></script>
+			<script src="assets/js/main.js"></script>
+</body>
+</html>

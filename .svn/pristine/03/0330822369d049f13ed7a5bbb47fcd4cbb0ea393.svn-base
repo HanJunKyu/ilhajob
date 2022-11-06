@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE configuration PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http://mybatis.org/dtd/mybatis-3-config.dtd">
+
+<configuration>
+	<typeAliases>
+		<typeAlias type="com.ilhajob.app.user.vo.UserVO" alias="userVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.UserApplyVO" alias="applyVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumeInfoVO" alias="infoVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumeEduVO" alias="eduVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumeCareerVO" alias="careerVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumeActivityVO" alias="activityVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumeLisenseVO" alias="lisenseVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumeIntroduceVO" alias="introduceVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumeMilitaryVO" alias="militaryVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumePortfolioVO" alias="portfolioVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.ResumeUrlVO" alias="urlVO"/>
+		<typeAlias type="com.ilhajob.app.comp.vo.CompVO" alias="compVO"/>
+		<typeAlias type="com.ilhajob.app.comp.vo.CompApplyVO" alias="compApplyVO"/>
+		<typeAlias type="com.ilhajob.app.reviews.vo.ReviewVO" alias="reviewVO"/>
+		<typeAlias type="com.ilhajob.app.bbs.vo.BbsVO" alias="bbsVO"/>
+		<typeAlias type="com.ilhajob.app.bbs.vo.BbsReplyVO" alias="bbsReplyVO"/>
+		<typeAlias type="com.ilhajob.app.bbs.vo.FilesVO" alias="filesVO"/>
+		<typeAlias type="com.ilhajob.app.comp.vo.CompVO" alias="compVO"/>
+		<typeAlias type="com.ilhajob.app.message.vo.MessageVO" alias="messageVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.OpeningVO" alias="openingVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.RecruitmentAreaVO" alias="recruitmentAreaVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.PreferenceVO" alias="preferenceVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.RecruitmentInfoVO" alias="recruitmentInfoVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.WorkLocationVO" alias="workLocationVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.OpeningDetailVO" alias="openingDetailVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.OpeningDetailTableVO" alias="openingDetailTableVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.OpeningDetailTableColumnVO" alias="openingDetailTableColumnVO"/>
+		<typeAlias type="com.ilhajob.app.opening.vo.OpeningFilesVO" alias="openingFilesVO"/>
+		<typeAlias type="com.ilhajob.app.user.vo.UserScrapVO" alias="userScrapVO"/>
+	</typeAliases>
+	<environments default="development">
+		<environment id="development">
+			<transactionManager type="JDBC"/>
+			<dataSource type="POOLED">
+				<property name="driver" value="oracle.jdbc.OracleDriver"/>
+				<property name="url" value="jdbc:oracle:thin:@localhost:1521:XE"/>
+				<property name="username" value="hr"/>
+				<property name="password" value="hr"/>
+			</dataSource>
+		</environment>
+	</environments>
+	
+	<mappers>
+		<mapper resource="com/ilhajob/mybatis/sql/user.xml"/>
+		<mapper resource="com/ilhajob/mybatis/sql/review.xml"/>
+		<mapper resource="com/ilhajob/mybatis/sql/bbs.xml"/>
+		<mapper resource="com/ilhajob/mybatis/sql/files.xml"/>
+		<mapper resource="com/ilhajob/mybatis/sql/company.xml"/>
+		<mapper resource="com/ilhajob/mybatis/sql/message.xml"/>
+		<mapper resource="com/ilhajob/mybatis/sql/opening.xml"/>
+		<mapper resource="com/ilhajob/mybatis/sql/opening_files.xml"/>
+	</mappers>
+</configuration>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

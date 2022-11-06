@@ -1,0 +1,162 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+
+<head>
+	<title>일하잡 :: 아이디찾기</title>
+	<meta charset="utf-8" />
+	<meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no" />
+	<link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main.css" />
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/main2.css">
+</head>
+<style>
+	@media (max-width: 480px) {
+		.find-title p {
+			font-size: 13px;
+		}
+
+		.find-table {
+			width: 95vw;
+		}
+
+		.find-table td {
+			font-size: 13px;
+			padding: 10px 0;
+		}
+
+		.find-table td:first-child {
+			width: 25% !important;
+		}
+
+		.find-table td input {
+			height: 40px !important;
+			width: 95%;
+		}
+
+		.certify-btn {
+			width: 95vw !important; 
+		}
+
+		.certify-btn input {
+			font-size: 15px;
+		}
+
+		.find-table .email-btn{
+			font-size: 10px;
+			padding: 0 10px;
+			width: 120px;
+		}
+
+		.find-btn {
+			margin-top: 20px;
+		}
+
+		form {
+			margin-bottom: 0;
+		}
+
+		.find-title {
+			margin-top: 30px !important;
+		}
+
+	}
+
+	.certify-btn {
+		width: 700px;
+		margin: 0 auto;
+		text-align: center;
+		margin-top: 20px;
+		list-style: none;
+	}
+</style>
+
+<body class="is-preload">
+
+	<!-- Header -->
+	<%@ include file="header.jsp" %>
+
+	<header class="major find-title" style="margin-bottom: 20px !important;">
+		<h2>개인회원 아이디 찾기</h2>
+		<p style="color: rgb(230, 104, 66);">회원정보에 등록된 정보로 아이디를 찾을 수 있습니다.</p>
+	</header>
+	<form name="form" method="post" action="${pageContext.request.contextPath}/user/UserFindIdOkAction.us">
+		<table class="find-table">
+			<tr>
+				<td>이름</td>
+				<td><input type="text" name="name"></td>
+			</tr>
+			<tr>
+				<td>휴대폰</td>
+				<td style="display: flex;">
+					<input type="text" id="phone" name="phone">
+					<button type="button" class="email-btn alt" onclick="sendSMS()">인증번호 발송</button>
+				</td>
+			</tr>
+			<tr>
+				<td>인증번호</td>
+				<td><input type="text" id="cert_num" name="cert_num"></td>
+			</tr>
+		</table>
+		<div class="certify-btn">
+			<li><input type="button" id="smsCheck" class="button primary" style="width: 150px; border-radius: 0; " value="인증확인"></li>
+		</div>
+	</form>
+	<div class="find-btn">
+		<div>
+			<a href="${pageContext.request.contextPath}/login.jsp" style="margin-right: 10px;">로그인</a>
+			<a href="${pageContext.request.contextPath}/join.jsp">회원가입</a>
+		</div>
+		<p><i class="fas fa-exclamation-circle" style="margin-right: 5px;"></i>위 방법으로 계정을 찾을수 없다면, 일하잡 고객센터로 직접 문의 주시기
+			바랍니다.</p>
+	</div>
+
+
+	<!-- Scripts -->
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+
+</body>
+<script>var contextPath = "${pageContext.request.contextPath}";</script>
+<script type="text/javascript">
+function sendSMS(){
+	var phoneNumber = $("#phone").val();
+	var form = document.form;
+	
+	if(phoneNumber == ""){
+		alert("인증받을 휴대폰 번호를 작성해주세요!")
+	}else{
+		alert("인증번호 발송 완료!");
+		$.ajax({
+			url:contextPath + "/user/SendSMS.us?phone="+phoneNumber,
+			type:"get",
+			dataType:"text",
+			success:
+				function(result){
+				$("#smsCheck").click(function(){
+				if($.trim(result) == $("#cert_num").val()){
+					form.submit();
+
+				}else{
+					alert("인증번호가 올바르지 않습니다")
+				}
+			})},
+			error:function(){
+				console.log("오류");
+			}
+		});
+	}
+	
+}
+</script>
+</html>

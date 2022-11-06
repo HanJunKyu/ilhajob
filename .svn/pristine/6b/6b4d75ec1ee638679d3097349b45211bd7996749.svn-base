@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Message">
+	<select id="getMessageSendList" parameterType="map" resultType="messageVO">
+		SELECT * FROM
+		(SELECT ROWNUM R, D.* FROM
+		(SELECT * FROM TABLE_SEND_MESSAGE WHERE MESSAGE_SEND_ID = #{session_id} ORDER BY MESSAGE_NUM DESC) D) M
+		WHERE M.R BETWEEN ${startRow} AND ${endRow}
+	</select>
+	
+	<select id="getMessageRcvList" parameterType="map" resultType="messageVO">
+		SELECT * FROM
+		(SELECT ROWNUM R, D.* FROM
+		(SELECT * FROM TABLE_RCV_MESSAGE WHERE MESSAGE_RCV_ID = #{session_id} ORDER BY MESSAGE_NUM DESC) D) M
+		WHERE M.R BETWEEN ${startRow} AND ${endRow}
+	</select>
+	
+	<select id="getSendMessageCnt" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_SEND_MESSAGE
+	</select>
+
+	<select id="getRcvMessageCnt" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_RCV_MESSAGE
+	</select>
+
+	<select id="getSendMessageSeq" resultType="_int">
+		SELECT SENDMESSAGE_NUM_SEQ.CURRVAL FROM	DUAL
+	</select>
+
+	<select id="getRcvMessageSeq" resultType="_int">
+		SELECT RCVMESSAGE_NUM_SEQ.CURRVAL FROM DUAL
+	</select>
+
+	<insert id="insertSendMessage" parameterType="messageVO">
+		INSERT INTO
+		TABLE_SEND_MESSAGE VALUES (SENDMESSAGE_NUM_SEQ.NEXTVAL,	#{message_send_id},
+		#{message_rcv_id}, #{message_title}, #{message_content}, SYSDATE)
+	</insert>
+
+	<insert id="insertRcvMessage" parameterType="messageVO">
+		INSERT INTO
+		TABLE_RCV_MESSAGE VALUES (RCVMESSAGE_NUM_SEQ.NEXTVAL, #{message_send_id},
+		#{message_rcv_id}, #{message_title}, #{message_content}, SYSDATE)
+	</insert>
+
+	<select id="getSendDetail" parameterType="_int"
+		resultType="messageVO">
+		SELECT * FROM TABLE_SEND_MESSAGE WHERE
+		MESSAGE_NUM = #{message_num}
+	</select>
+
+	<select id="getRcvDetail" parameterType="_int"
+		resultType="messageVO">
+		SELECT * FROM TABLE_RCV_MESSAGE WHERE
+		MESSAGE_NUM = #{message_num}
+	</select>
+	
+	<delete id="deleteSendMessage" parameterType="_int">
+		DELETE FROM TABLE_SEND_MESSAGE WHERE MESSAGE_NUM = #{message_num}
+	</delete>
+
+	<delete id="deleteRcvMessage" parameterType="_int">
+		DELETE FROM TABLE_RCV_MESSAGE WHERE MESSAGE_NUM = #{message_num}
+	</delete>
+
+</mapper>
+
+

@@ -1,0 +1,244 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="User">
+	<!-- 회원가입 --> 
+	<insert id="join" parameterType="userVO">
+		INSERT INTO TABLE_USER 
+		VALUES(
+			#{user_id}, #{user_pw}, #{user_name}, #{user_phone}, #{user_email}, NULL, SYSDATE
+		)
+	</insert>
+	
+	<!-- 내정보 수정 -->
+	<update id="editInfo" parameterType="userVO">
+		UPDATE TABLE_USER
+		SET USER_NAME = #{user_name}, USER_EMAIL = #{user_email}, USER_PHONE = #{user_phone}
+		WHERE USER_ID = #{user_id}
+	</update>
+	
+	<!-- 아이디중복검사 -->
+	<select id="checkId" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_USER WHERE USER_ID = #{user_id}
+	</select>
+
+	<!-- 아이디 찾기 -->
+	<select id="findId" parameterType="map" resultType="userVO">
+		SELECT * FROM TABLE_USER WHERE USER_NAME = #{user_name} AND USER_PHONE = #{user_phone}
+	</select>
+	
+	<!-- 비번 찾기 -->
+	<select id="findPw" parameterType="map" resultType="string">
+		SELECT USER_PW FROM TABLE_USER WHERE USER_ID = #{user_id} AND USER_NAME = #{user_name} AND USER_PHONE = #{user_phone}
+	</select>
+	
+	<!-- 로그인 -->
+	<select id="login" parameterType="map" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_USER
+		WHERE USER_ID = #{user_id} AND USER_PW = #{user_pw}
+	</select>
+	
+	<!-- 내정보 가져오기 -->
+	<select id="getUser" parameterType="string" resultType="userVO">
+		SELECT * FROM TABLE_USER WHERE USER_ID = #{user_id}
+	</select>
+	
+	<!-- 지원완료 -->
+	<insert id="apply" parameterType="applyVO">
+		INSERT INTO TABLE_USER_APPLY
+		VALUES(
+			APPLY_SEQ.NEXTVAL, #{user_id}, #{jobs_num}, SYSDATE, #{apply_status}, #{apply_area}, NULL
+		)
+	</insert>
+	
+	<!-- 열람상태 변경 -->
+	<update id="editStatus" parameterType="applyVO">
+		UPDATE TABLE_USER_APPLY
+		SET APPLY_STATUS = '열람', READ_DATE = SYSDATE
+		WHERE JOBS_NUM = #{jobs_num} AND APPLY_AREA = #{apply_area}
+	</update>
+	
+	<!-- 지원목록 -->
+	<select id="getApply" parameterType="string" resultType="applyVO">
+		SELECT * FROM TABLE_USER_APPLY WHERE USER_ID = #{user_id}
+	</select>
+	
+	<!-- 지원개수 -->
+	<select id="getApplyCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_USER_APPLY WHERE USER_ID = #{user_id}
+	</select>
+	
+	<!-- 이력서 열람 개수 -->
+	<select id="getReadCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_USER_APPLY WHERE USER_ID = #{user_id} AND SUBSTR(APPLY_STATUS,1,2) = '열람'
+	</select>
+	
+	<!-- 스크랩 개수 -->
+	<select id="getScrapCnt" parameterType="string" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_USER_SCRAP WHERE USER_ID = #{user_id}
+	</select>
+	
+	<!-- 내 사진 삭제 -->
+	<update id="deleteUserPhoto" parameterType="string">
+		UPDATE TABLE_USER
+		SET USER_PHOTO = NULL
+		WHERE USER_ID = #{user_id}
+	</update>
+	
+	<!-- 내 사진 수정 -->
+	<update id="editUserPhoto" parameterType="userVO">
+		UPDATE TABLE_USER
+		SET USER_PHOTO = #{user_photo}
+		WHERE USER_ID = #{user_id}
+	</update>
+	
+	<!-- 이력서 사진 삭제 -->
+	<update id="deleteUserResumePhoto" parameterType="string">
+		UPDATE TABLE_RESUME_INFO
+		SET USER_RESUME_PHOTO = NULL
+		WHERE USER_ID = #{user_id}
+	</update>
+	
+	<!-- 이력서 사진 수정 -->
+	<update id="editUserResumePhoto" parameterType="infoVO">
+		UPDATE TABLE_RESUME_INFO
+		SET USER_RESUME_PHOTO = #{user_resume_photo}
+		WHERE USER_ID = #{user_id}
+	</update>
+	
+	<!-- 이력서 인적사항 수정 -->
+	<update id="editResumeInfo" parameterType="infoVO">
+		UPDATE TABLE_RESUME_INFO
+		SET USER_NAME = #{user_name},USER_BIRTH = #{user_birth}, USER_EMAIL = #{user_email}, USER_PHONE = #{user_phone},USER_GENDER = #{user_gender},USER_ADDRESS = #{user_address},USER_ADDRESS_DETAIL = #{user_address_detail}
+		WHERE USER_ID = #{user_id}
+	</update>
+	
+	<!-- 이력서 인적사항 삽입 -->
+	<insert id="insertResumeInfo" parameterType="infoVO">
+		INSERT INTO TABLE_RESUME_INFO
+		VALUES(#{user_id}, #{user_name}, #{user_birth}, #{user_email}, #{user_phone}, #{user_gender}, #{user_address}, #{user_address_detail}, #{user_resume_photo, jdbcType=VARCHAR}, #{user_resume_title})
+	</insert>
+	
+	<!-- 이력서 학력사항 삽입 -->
+	<insert id="insertResumeEdu" parameterType="eduVO">
+		INSERT INTO TABLE_RESUME_EDU 
+		VALUES(RESUME_EDU_SEQ.NEXTVAL, #{id}, #{edu_name}, #{edu_status}, #{edu_start_date}, #{edu_end_date}, #{edu_major}, #{edu_grade})
+	</insert>
+	
+	<!-- 이력서 경력사항 삽입 -->
+	<insert id="insertResumeCareer" parameterType="careerVO">
+		INSERT INTO TABLE_RESUME_CAREER 
+		VALUES(RESUME_CAREER_SEQ.NEXTVAL, #{id}, #{career_name}, #{career_start_date}, #{career_end_date}, #{career_rank}, #{career_position}, #{career_detail})
+	</insert>
+	
+	<!-- 이력서 대외활동 삽입 -->
+	<insert id="insertResumeActivity" parameterType="activityVO">
+		INSERT INTO TABLE_RESUME_ACTIVITY 
+		VALUES(RESUME_ACTIVITY_SEQ.NEXTVAL, #{id}, #{activity_place}, #{activity_type}, #{activity_start_date}, #{activity_end_date}, #{activity_detail})
+	</insert>
+	
+	<!-- 이력서 자격증 삽입 -->
+	<insert id="insertResumeLisense" parameterType="lisenseVO">
+		INSERT INTO TABLE_RESUME_LISENSE 
+		VALUES(RESUME_LISENSE_SEQ.NEXTVAL, #{id}, #{lisense_name}, #{lisense_type}, #{lisense_publisher}, #{lisense_date}, #{lisense_result})
+	</insert>
+	
+	<!-- 이력서 자소서 삽입 -->
+	<insert id="insertResumeIntroduce" parameterType="introduceVO">
+		INSERT INTO TABLE_RESUME_INTRODUCE 
+		VALUES(#{id}, #{introduce})
+	</insert>
+	
+	<!-- 이력서 병역사항 삽입 -->
+	<insert id="insertResumeMilitary" parameterType="militaryVO">
+		INSERT INTO TABLE_RESUME_MILITARY 
+		VALUES(#{id}, #{military_name}, #{military_type}, #{military_rank}, #{military_start_date}, #{military_end_date}, #{military_reason})
+	</insert>
+	
+	<insert id="insertResumePortfolio" parameterType="portfolioVO">
+		INSERT INTO TABLE_RESUME_PORTFOLIO
+		VALUES(#{id}, #{portfolio_type}, #{portfolio_name})
+	</insert>
+	
+	<insert id="insertResumeUrl" parameterType="urlVO">
+		INSERT INTO TABLE_RESUME_URL
+		VALUES(#{id}, #{url}, #{url_type})
+	</insert>
+	<select id="getAge" parameterType="string" resultType="_int">
+		SELECT MONTHS_BETWEEN(TRUNC(SYSDATE,'YEAR'), TRUNC(TO_DATE(#{user_birth},'YYYY-MM-DD') ,'YEAR')) /12 +1 FROM DUAL
+	</select>
+	<select id="getResumeInfo" parameterType="java.lang.String" resultType="infoVO">
+		SELECT USER_ID,USER_NAME,TO_CHAR(USER_BIRTH, 'yyyy-mm-dd') "USER_BIRTH",USER_EMAIL,USER_PHONE,USER_GENDER,USER_ADDRESS,USER_ADDRESS_DETAIL, USER_RESUME_PHOTO, USER_RESUME_TITLE FROM TABLE_RESUME_INFO WHERE USER_ID = #{id}
+	</select>
+	<select id="getResumeEdu" parameterType="string" resultType="eduVO">
+		SELECT * FROM TABLE_RESUME_EDU WHERE USER_ID = #{id}
+	</select>
+	<select id="getResumeCareer" parameterType="string" resultType="careerVO">
+		SELECT * FROM TABLE_RESUME_CAREER WHERE USER_ID = #{id}
+	</select>
+	<select id="getResumeActivity" parameterType="string" resultType="activityVO">
+		SELECT * FROM TABLE_RESUME_ACTIVITY WHERE USER_ID = #{id}
+	</select>
+	<select id="getResumeLisense" parameterType="string" resultType="lisenseVO">
+		SELECT * FROM TABLE_RESUME_LISENSE WHERE USER_ID = #{id}
+	</select>
+	<select id="getResumeIntroduce" parameterType="string" resultType="string">
+		SELECT INTRODUCE FROM TABLE_RESUME_INTRODUCE WHERE USER_ID = #{id}
+	</select>
+	<select id="getResumeMilitary" parameterType="string" resultType="militaryVO">
+		SELECT * FROM TABLE_RESUME_MILITARY WHERE USER_ID = #{id}
+	</select>
+	<select id="getResumePortfolio" parameterType="string" resultType="portfolioVO">
+		SELECT * FROM TABLE_RESUME_PORTFOLIO WHERE USER_ID = #{id}
+	</select>
+	<select id="getResumeUrl" parameterType="string" resultType="urlVO">
+		SELECT * FROM TABLE_RESUME_URL WHERE USER_ID = #{id}
+	</select>
+	<delete id="deleteResumePortfolio" parameterType="string">
+		DELETE FROM TABLE_RESUME_PORTFOLIO WHERE USER_ID = #{id}
+	</delete>
+	<delete id="deleteResumeInfo" parameterType="string">
+		DELETE FROM TABLE_RESUME_INFO WHERE USER_ID = #{id}
+	</delete>
+	<delete id="deleteResumeCareer" parameterType="string">
+		DELETE FROM TABLE_RESUME_CAREER WHERE USER_ID = #{id}
+	</delete>
+	<delete id="deleteResumeActivity" parameterType="string">
+		DELETE FROM TABLE_RESUME_ACTIVITY WHERE USER_ID = #{id}
+	</delete>
+	<delete id="deleteResumeLisense" parameterType="string">
+		DELETE FROM TABLE_RESUME_LISENSE WHERE USER_ID = #{id}
+	</delete>
+	<delete id="deleteResumeEdu" parameterType="string">
+		DELETE FROM TABLE_RESUME_EDU WHERE USER_ID = #{id}
+	</delete>
+	<delete id="deleteResumeUrl" parameterType="string">
+		DELETE FROM TABLE_RESUME_URL WHERE USER_ID = #{id}
+	</delete>
+	<delete id="deleteResumeMilitary" parameterType="string">
+		DELETE FROM TABLE_RESUME_MILITARY WHERE USER_ID = #{id}
+	</delete>
+	<delete id="deleteResumeIntroduce" parameterType="string">
+		DELETE FROM TABLE_RESUME_INTRODUCE WHERE USER_ID = #{id}
+	</delete>
+		
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

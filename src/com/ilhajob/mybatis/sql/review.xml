@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="Review">
+	<insert id="insertReview" parameterType="reviewVO">
+		INSERT INTO TABLE_INTERVIEW_REVIEW_BOARD 
+		VALUES(
+			#{user_id}, REVIEW_NUM_SEQ.NEXTVAL, SYSDATE, #{review_interview_date}, #{review_company_name}, #{review_job}, #{review_career}, #{review_level}, #{review_result}, #{review_type}, #{review_evaluation}, #{review_num_of_people}, #{review_review}, #{review_interview_q1}, #{review_interview_q2}, #{review_interview_q3}, #{review_tip}
+		)
+	</insert>
+	
+	<select id="getReview" parameterType="map" resultType="reviewVO">
+		SELECT * FROM
+			(SELECT ROWNUM R, D.* FROM 
+				(SELECT * FROM TABLE_INTERVIEW_REVIEW_BOARD ORDER BY REVIEW_NUM DESC) D) B
+		WHERE B.R BETWEEN ${startRow} AND ${endRow}
+	</select>
+	
+	<select id="getReviewSearch" parameterType="map" resultType="reviewVO">
+		SELECT * FROM
+			(SELECT ROWNUM R, D.* FROM 
+				(SELECT * FROM TABLE_INTERVIEW_REVIEW_BOARD ORDER BY REVIEW_NUM DESC) D) B
+		<if test="review_career.equals('경력 전체') and review_job.equals('직종 전체')">
+		WHERE (B.R BETWEEN ${startRow} AND ${endRow})
+		</if>
+		<if test="review_career != '경력 전체' and review_job.equals('직종 전체')">
+		WHERE (B.R BETWEEN ${startRow} AND ${endRow}) AND REVIEW_CAREER = #{review_career}
+		</if>
+		<if test="review_career.equals('경력 전체') and review_job != '직종 전체'">
+		WHERE (B.R BETWEEN ${startRow} AND ${endRow}) AND REVIEW_JOB = #{review_job}
+		</if>
+		<if test="review_career != '경력 전체' and review_job != '직종 전체'">
+		WHERE (B.R BETWEEN ${startRow} AND ${endRow}) AND REVIEW_CAREER = #{review_career} AND REVIEW_JOB = #{review_job}
+		</if>
+		<if test="search != null">
+		AND REVIEW_COMPANY_NAME LIKE('%' || #{search} || '%')
+		</if>
+		
+	</select>
+	
+	<select id="getReviewCnt" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_INTERVIEW_REVIEW_BOARD
+	</select>
+	
+	<select id="getReviewSearchCnt" parameterType="map" resultType="_int">
+		SELECT COUNT(*) FROM TABLE_INTERVIEW_REVIEW_BOARD		
+		<if test="review_career.equals('경력 전체') and review_job.equals('직종 전체')">
+		<if test="search != null">
+		WHERE REVIEW_COMPANY_NAME LIKE('%' || #{search} || '%')
+		</if>
+		</if>
+		<if test="review_career != '경력 전체' and review_job.equals('직종 전체')">
+		WHERE REVIEW_CAREER = #{review_career}
+		<if test="search != null">
+		AND REVIEW_COMPANY_NAME LIKE('%' || #{search} || '%')
+		</if>
+		</if>
+		<if test="review_career.equals('경력 전체') and review_job != '직종 전체'">
+		WHERE REVIEW_JOB = #{review_job}
+		<if test="search != null">
+		AND REVIEW_COMPANY_NAME LIKE('%' || #{search} || '%')
+		</if>
+		</if>
+		<if test="review_career != '경력 전체' and review_job != '직종 전체'">
+		WHERE REVIEW_CAREER = #{review_career} AND REVIEW_JOB = #{review_job}
+		<if test="search != null">
+		AND REVIEW_COMPANY_NAME LIKE('%' || #{search} || '%')
+		</if>
+		</if>
+	
+	</select>
+</mapper>

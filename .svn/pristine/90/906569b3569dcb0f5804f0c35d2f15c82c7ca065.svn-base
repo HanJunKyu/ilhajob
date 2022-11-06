@@ -1,0 +1,280 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="assets/css/main.css" />
+    <title>Document</title>
+    <style>
+     
+    	<!-- css -->
+        body{
+            padding-top: 0;
+            min-width: 960px;
+        }
+
+        .recommend-table-wrapper{
+            border: 0.5px solid rgba(144, 144, 144, 0.25);
+            padding: 25px;
+        }
+        
+        .search-company{
+				padding: 0 !important;
+			}
+			
+		.search-company table tr{
+			border-bottom : none !important;
+		}
+
+        #recruit_sum table{
+            margin-bottom: 0;
+            max-height: 150px;
+        }
+
+        #recruit_sum tr{
+            background-color:rgb(245, 245, 245);
+            border:none !important;
+        }
+
+        #recruit_sum th{
+            min-width: 75px;
+        }
+        
+        #recruit_sum hr{
+        padding-top:20px;
+        }
+
+        #recruit_sum>.col-3.col-6-large.col-12-medium{
+            padding: 15px;
+            width:100% !important;
+        }
+
+        .row>.col-3.col-6-large.col-12-medium{
+            width:100% !important;
+            background-color: rgb(245, 245, 245);
+            padding: 10px 0;
+            display:inline-block;
+        }
+
+        .row>.col-3.col-6-large.col-12-medium>ul{
+            list-style: none;
+        }
+
+        .opening{
+            background-color: white !important;
+            border: none !important;
+        }
+        .opening td{
+            font-size: 0.9em;
+        }
+
+        .opening>td:first-child{
+            color: #37b37f;
+        }
+        .opening>td:nth-child(2)>a{
+            color: #888888;
+            text-decoration: none !important;
+        }
+        
+        #recruit_sum tr{
+	    	background-color: rgb(245, 245, 245) !important;
+		}
+		
+		.table_wrapper{
+			padding:15px !important;
+			width:50%;
+		}
+		.left{
+			padding-right:7px !important;
+			width:100% !important;
+		}
+		.right{
+			padding-left:7px !important;
+		}
+		
+		.recommend-table-wrapper .button-div {
+		  text-align: right;
+		}
+
+		.recommend-table-wrapper .primary {
+		  min-width: 130px;
+		  background-color: rgb(230, 104, 66) !important;
+		}
+		
+		.open_full{
+			    height: 58px;
+    			background-color: white;
+    			border: 0.5px solid rgba(144, 144, 144, 0.25);
+    			border-top: none !important;
+    			text-align: right;
+    			position: relative;
+		}
+		.open_full a{
+			position: absolute;
+    		right: 15px;
+    		top: 14px;
+		}
+		
+		.opening_scroll{
+			max-height:150px !important;
+			overflow-y:auto;
+			overflow-x:hidden;
+			float: left;
+   			width: 100%;
+   			border-bottom: 1px solid black;
+		}
+		
+		/*.opening_scroll tr{
+			display:table;
+			width:100%;
+		}*/
+		
+		.pagination {
+	padding: 0;
+	text-align: center;
+	margin-top: -40px;
+}
+
+.pagination a {
+	display: inline-block;
+}
+
+.pagination a.pbtn {
+	display: inline-block;
+	padding: 7px;
+	text-align: center;
+	vertical-align: middle;
+	font-size: 0;
+}
+
+.pagination a .pagenum {
+	display: inline-block;
+	width: 25px;
+	height: 25px;
+	line-height: 25px;
+	text-align: center;
+	vertical-align: top;
+	font-size: 20px;
+	font-family: '맑은 고딕', 'Malgun Gothic', sans-serif;
+}
+
+
+.pagination a:hover .pagenum {
+	border-radius: 3px;
+	background-color: #ddd;
+}
+
+
+
+.opening_scroll>*{
+	display:block;
+}
+
+.opening_scroll .each_sum{
+	display:block;
+}
+
+.opening_scroll .each_sum>*{
+	line-height: 1.3;
+}
+
+.recommend-table-wrapper.search-company.container{
+	border: 0.5px solid rgba(144, 144, 144, 0.25) !important;
+}
+
+.company_info span.keyword, .company_info h4{
+	padding-left:20px;
+	font-size: 20px;
+	color:#37b37f;
+}
+.company_info h4{
+	color:#888;
+}
+
+
+.start{
+	padding-left:15px !important;
+}
+.start h2{
+	display: inline-block;
+	margin-top: 10px;
+    margin-bottom: 0px;
+}
+.start p{
+	margin-bottom: 0;
+}
+
+.recommend-table-wrapper.search-company.container{
+	width:100%;
+}	
+
+.table_wrapper {
+    width: 100%;
+    display: block;
+    padding: 10px !important;
+}
+
+.table_wrapper>*{
+	font-size:14px;
+}
+
+.table_wrapper.left{
+	padding-bottom:0 !important;
+}
+
+@media (min-width: 0px) and (max-width: 480px) {
+	.company_info h4{
+	    font-size: 3vw !important;
+	}
+	.company_info .keyword{
+		font-size: 3vw !important;
+	}
+}
+
+    </style>
+
+</head>
+
+<body>
+    <div class="recommend-table-wrapper search-company container">
+        <table>
+        	<tr style="border-top:0;">
+        		<td class="start" style="border:none;">
+                	<h2>기업 정보</h2><p style="display:inline-block;margin-left: 15px;">총 15건</p>
+                </td>
+        	</tr>
+        	
+        	
+        	<tbody class="company_info_wrap">
+        		<tr class="company_info" style="height:fit-content">
+        	        <td style="width:100%;">
+        	            <a href="show_comp_info.jsp"><h4><span class="keyword">현대</span>자동차(주)</h4></a>
+        	        </td>
+        	    </tr>
+                    
+        	  	<tr class="company_info" style="height:fit-content">
+        	        <td style="width:100%;">
+        	            <a href="show_comp_info.jsp"><h4><span class="keyword">현대</span>자동차(주)</h4></a>
+        	        </td>
+        	    </tr>
+            
+        	    <tr class="company_info" style="height:fit-content">
+        	        <td style="width:100%;">
+        	            <a href="show_comp_info.jsp"><h4><span class="keyword">현대</span>자동차(주)</h4></a>
+        	        </td>
+        	    </tr>
+            
+           	 	<tr class="company_info" style="height:fit-content">
+           	 	    <td style="width:100%;">
+                	    <a href="show_comp_info.jsp"><h4><span class="keyword">현대</span>자동차(주)</h4></a>
+                	</td>
+            	</tr>
+        	</tbody>
+                
+        </table>
+    </div>
+    
+</body>
+</html>

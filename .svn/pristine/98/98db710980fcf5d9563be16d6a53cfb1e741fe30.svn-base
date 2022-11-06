@@ -1,0 +1,301 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!DOCTYPE html>
+<html>
+<head>
+<title>일하잡 :: 기업지원현황</title>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/main.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/main2.css">
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/pagination1.css">
+</head>
+<body class="is-preload">
+	<c:set var="resume" value="${requestScope.resume}" />
+	<c:set var="title" value="${requestScope.title}" />
+	<c:set var="opn_numList" value="${requestScope.opn_numList}"/>
+	<c:set var="nowPage" value="${requestScope.nowPage}" />
+	<c:set var="startPage" value="${requestScope.startPage}" />
+	<c:set var="endPage" value="${requestScope.endPage}" />
+	<c:set var="totalCnt" value="${requestScope.totalCnt}" />
+	<c:set var="realEndPage" value="${requestScope.realEndPage}" />
+	<!-- Header -->
+	<%@ include file="header.jsp"%>
+
+	<!-- Main -->
+	<div class="my-menu-container">
+		<ul class="my-menu">
+			<li><a href="${pageContext.request.contextPath}/comp/CompMain.co"
+				class="menu">홈</a></li>
+			<li><a
+				href="${pageContext.request.contextPath}/comp/CompInfo.co"
+				class="menu">기업 정보</a></li>
+			<li><a
+				href="${pageContext.request.contextPath}/comp/CompResume.co"
+				class="menu-on">지원 현황</a></li>
+			<li><a href="${pageContext.request.contextPath}/comp/CompOpn.co"
+				class="menu">나의 공고</a></li>
+		</ul>
+	</div>
+	<div class="body"></div>
+	<c:if test="${resume != null and fn:length(resume) > 0}">
+		<div
+			style="display: flex; width: 85vw; margin: 0 auto; justify-content: flex-end;">
+			<div style="margin-right: 20px">
+				<input type="checkbox" id="read" class="status" name="status" value="열람완료" checked
+					style="height: 13px;"> <label for="read">열람</label>
+			</div>
+			<div style="">
+				<input type="checkbox" id="not-read" class="status" name="status" value="열람하기"
+					checked style="height: 13px;"> <label for="not-read">미열람</label>
+			</div>
+		</div>
+		<div class="apply-table-wrapper">
+			<table class="apply-table">
+				<tbody id="tbody">
+					<tr class="apply-menu">
+						<td width="12%">지원일</td>
+						<td width="12%">지원자</td>
+						<td width="48%">지원내역</td>
+						<td width="14%">지원분야</td>
+						<td width="">이력서</td>
+					</tr>
+					<c:forEach var="resume" items="${resume}" varStatus="status">
+						<tr class="apply-tr">
+							<td>
+								<p id="apply_date">${resume.getApply_date()}</p>
+							</td>
+							<td id="apply_company">${resume.getApply_name()}</td>
+							<td><a href="${pageContext.request.contextPath}/opening/OpeningView.opn?opn_num=${opn_numList[status.index]}" id="apply_title">${title[status.index]}</a></td>
+							<td id="apply_company">${resume.getApply_area()}</td>
+							<td id="resume"><a class="status"
+								href="${pageContext.request.contextPath}/comp/ResumeView.co?id=${resume.getApply_id()}&&num=${resume.getNum()}"
+								target="_blank">${resume.getApply_status()}</a></td>
+						</tr>
+					</c:forEach>
+				</tbody>
+			</table>
+		</div>
+	</c:if>
+	<c:if test="${resume == nul}">
+		<div style="text-align: center; margin-top: 100px">
+			<p style="font-size: 30px">지원 내역이 없습니다.</p>
+		</div>
+	</c:if>
+	<c:if test="${resume != null}">
+			<div class="pagination" id="search_company_pagination"
+							style="margin-top: 10px; text-align: center; margin-bottom: 50px">
+							<div id="pagination_div">
+								<c:choose>
+									<c:when test="${nowPage > 1}">
+										<a href="${pageContext.request.contextPath}/comp/CompResume.co?page=${nowPage -1}" class="page"><img
+											src="${pageContext.request.contextPath}/images/btn_prevpage.png" alt="이전 페이지로 이동"></a>
+									</c:when>
+								</c:choose>
+								<c:forEach var="i" begin="${startPage}" end="${endPage}">
+									<c:choose>
+										<c:when test="${i eq nowPage}">
+											<a href="${i}" class="page"><span
+												class="pagenum one currentPage">${i}</span></a>
+										</c:when>
+										<c:otherwise>
+											<a
+												href="${i}" class="page"><span
+												class="pagenum two">${i}</span></a>
+										</c:otherwise>
+									</c:choose>
+								</c:forEach>
+								<c:choose>
+									<c:when test="${nowPage != realEndPage}">
+										<a
+											href="${pageContext.request.contextPath}/comp/CompResume.co?page=${nowPage + 1}"><img
+											src="${pageContext.request.contextPath}/images/btn_nextpage.png" alt="다음 페이지로 이동"></a>
+									</c:when>
+								</c:choose>
+							</div>
+						</div>
+		</c:if>
+	<%@ include file="footer.jsp"%>
+
+	<!-- Scripts -->
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+
+</body>
+<script type="text/javascript">
+		
+	$(".status").each(function(e) {
+		if($(this).text() == '열람완료'){
+			$(this).css("color", "rgb(61,61,61)")
+		}
+	})
+	
+	// 열람 미열람 버튼 클릭시 실행
+	 $(".status").change( function(e) {
+		 
+		 
+		 var list = new Array();
+		  $("input[name='status']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
+		   list.push($(this).val());
+		  });
+
+		  jQuery.ajaxSettings.traditional = true;
+			e.preventDefault();
+			setTimeout(function() {
+		// 사용자가 클릭한 버튼의 값 저장
+		var addListHtml = "";
+		var addPageHtml = "";
+		$.ajax({
+			url : "${pageContext.request.contextPath}/comp/CompStatusResume.co",
+			type : "POST",
+			data : {"status" : list, "page" : 1},
+			dataType : "json", 
+			success : function(data) {
+				if(data.length != 0 && data != null && data[0] != null){
+					addListHtml += "<tr class='apply-menu'><td width='12%'>지원일</td><td width='12%'>지원자</td><td width='48%'>지원내역</td><td width='14%'>지원분야</td><td>이력서</td></tr>";
+					
+					for (var i = 0; i < data.length-1; i++) {
+						
+					addListHtml += "<tr class='apply-tr'>";
+					addListHtml += "<td><p id='apply_date'>"+data[i].apply_date+"</p></td>";
+					addListHtml += "<td id='apply_company'>"+data[i].apply_name+"</td>";
+					addListHtml += "<td><a href='job-opening-page.jsp' id='apply_title'>"+data[i].title+"</a></td>";
+					addListHtml += "<td id='apply_company'>"+data[i].apply_area+"</td>";
+					addListHtml += "<td id='resume'><a class='status'href='${pageContext.request.contextPath}/comp/ResumeView.co?id="+data[i].apply_id+"&&num="+data[i].num+"' target='_blank'>"+data[i].status+"</a></td>";
+					addListHtml += "</tr>";
+					}
+				var index = data.length - 1;
+				var prev = data[index].nowPage-1;
+				var next = data[index].nowPage+1;	
+
+				if(data[index].nowPage > 1){
+					addPageHtml += "<a href='"+prev+"'class='page'><img src='${pageContext.request.contextPath}/images/btn_prevpage.png' alt='이전 페이지로 이동'></a>";
+					
+				}
+					for (var i = data[index].startPage; i <= data[index].endPage; i++) {
+						if(i == data[index].nowPage){
+							addPageHtml += "<a href='"+i+"' class='page'><span class='pagenum one currentPage'>"+i+"</span></a>";
+						}else {
+							addPageHtml += "<a href='' class='page'><span class='pagenum two'>"+i+"</span></a>";
+						}
+					}
+				if(data[index].nowPage != data[index].realEndPage){
+					addPageHtml += "<a href='"+next+"'><img src='${pageContext.request.contextPath}/images/btn_nextpage.png' alt='다음 페이지로 이동'></a>";
+					
+				}
+				}else {
+					addListHtml += "<tr class='apply-menu'><td width='12%'>지원일</td><td width='12%'>지원자</td><td width='48%'>지원내역</td><td width='14%'>지원분야</td><td>이력서</td></tr>";
+					addListHtml += "<tr class='apply-tr'></tr>";
+				}
+				$("#tbody").html(addListHtml);
+				$("#pagination_div").html(addPageHtml);
+				$(".status").each(function(e) {
+					if($(this).text() == '열람완료'){
+						$(this).css("color", "rgb(61,61,61)")
+					}
+				})
+	
+				 
+			},
+			error : function(a, b, e){
+				console.log("오류" + e);
+			}
+		});
+			}, 2000)
+	});
+	
+	 $(".page").click( function(e) {
+		 console.log("Ddd")
+		 var list = new Array();
+		  $("input[name='status']:checked").each(function(i){   //jQuery로 for문 돌면서 check 된값 배열에 담는다
+		   list.push($(this).val());
+		  });
+			var pageNum = $(this).attr("href");
+
+		  jQuery.ajaxSettings.traditional = true;
+			e.preventDefault();
+			setTimeout(function() {
+				
+			
+		// 사용자가 클릭한 버튼의 값 저장
+		var addListHtml = "";
+		var addPageHtml = "";
+		$.ajax({
+			url : "${pageContext.request.contextPath}/comp/CompStatusResume.co",
+			type : "POST",
+			data : {"status" : list, "page" : pageNum},
+			dataType : "json", 
+			success : function(data) {
+				if(data.length != 0 && data != null && data[0] != null){
+					addListHtml += "<tr class='apply-menu'><td width='12%'>지원일</td><td width='12%'>지원자</td><td width='48%'>지원내역</td><td width='14%'>지원분야</td><td>이력서</td></tr>";
+					
+					for (var i = 0; i < data.length-1; i++) {
+						
+					addListHtml += "<tr class='apply-tr'>";
+					addListHtml += "<td><p id='apply_date'>"+data[i].apply_date+"</p></td>";
+					addListHtml += "<td id='apply_company'>"+data[i].apply_name+"</td>";
+					addListHtml += "<td><a href='job-opening-page.jsp' id='apply_title'>"+data[i].title+"</a></td>";
+					addListHtml += "<td id='apply_company'>"+data[i].apply_area+"</td>";
+					addListHtml += "<td id='resume'><a class='status'href='${pageContext.request.contextPath}/comp/ResumeView.co?id="+data[i].apply_id+"&&num="+data[i].num+"' target='_blank'>"+data[i].status+"</a></td>";
+					addListHtml += "</tr>";
+					}
+				var index = data.length - 1;
+				var prev = data[index].nowPage-1;
+				var next = data[index].nowPage+1;	
+
+				if(data[index].nowPage > 1){
+					addPageHtml += "<a href='${pageContext.request.contextPath}/comp/CompStatusResume.co?page="+prev+"'class='page'><img src='${pageContext.request.contextPath}/images/btn_prevpage.png' alt='이전 페이지로 이동'></a>";
+					
+				}
+					for (var i = data[index].startPage; i <= data[index].endPage; i++) {
+						if(i == data[index].nowPage){
+							addPageHtml += "<a href=''><span class='pagenum one currentPage page'>"+i+"</span></a>";
+						}else {
+							addPageHtml += "<a href=''><span class='pagenum two page'>"+i+"</span></a>";
+						}
+					}
+				if(data[index].nowPage != data[index].realEndPage){
+					addPageHtml += "<a href='${pageContext.request.contextPath}/comp/CompStatusResume.co?page="+next+"'><img src='${pageContext.request.contextPath}/images/btn_nextpage.png' alt='다음 페이지로 이동'></a>";
+					
+				}
+				}else {
+					addListHtml += "<tr class='apply-menu'><td width='12%'>지원일</td><td width='12%'>지원자</td><td width='48%'>지원내역</td><td width='14%'>지원분야</td><td>이력서</td></tr>";
+					addListHtml += "<tr class='apply-tr'></tr>";
+				}
+				$("#tbody").html(addListHtml);
+				$("#pagination_div").html(addPageHtml);
+				$(".status").each(function(e) {
+					if($(this).text() == '열람완료'){
+						$(this).css("color", "rgb(61,61,61)")
+					}
+				})
+	
+				 
+			},
+			error : function(a, b, e){
+				console.log("오류" + e);
+			}
+		});
+			}, 2000)
+	});
+
+	
+
+</script>
+</html>

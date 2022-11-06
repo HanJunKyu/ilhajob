@@ -1,0 +1,624 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>일하잡 :: 공고 작성</title>
+<style>
+
+	input{
+		border: 0.5px solid black !important;
+    	background: white !important;
+	}
+	
+	input.button.primary{
+		background-color: #37b37f !important;
+		border:none !important;
+	}
+
+	.part-title{
+		margin-bottom: 30px; margin-top: 30px;
+		border-bottom: 1px solid rgb(219, 219, 219);
+	}
+	.part-title p{
+		font-size: 25px;
+    	font-weight: 400;
+    	margin-bottom: 15px;
+    	color: rgb(55, 179, 127);
+	}
+	ul{
+		list-style: none !important;
+	}
+	
+	.plus-input{
+		width: 80% !important;
+    	display: inline-block !important;
+    	margin-left: 15px;
+    	margin-bottom:20px;
+	}
+	
+	.write-opening-wrap{
+		padding-top:30px;
+	}
+	
+	.small-title{
+    	color: rgb(61, 61, 61);
+    	font-size: 20px;
+	}
+	
+	.remove_it{
+		margin-left:20px;
+		cursor: pointer;
+	}
+	
+	ul.menu-bar{
+		width: fit-content;
+    	margin: 0 auto;
+	}
+	
+	p.manage-column,.remove_all,.menu-bar li,.remove_table,.remove_detail{
+		cursor: pointer;
+	}
+	
+	.menu-bar li{
+		display:inline-block;
+	}
+	
+	.menus{
+		margin-left:10px;
+	}
+	
+	.input-title{
+		margin-bottom:15px;
+	}
+	
+	.detail-table-cell{
+		width:44% !important;
+		display:inline-block !important;
+		border-radius:0 !important;
+	}
+	
+	.content-wrap .input-title,.content-wrap textarea{
+		width: 90%;
+    	margin: 15px auto;
+	}
+	
+	.manage-column{
+		padding-left: 1em;
+	}
+	.manage-column span{
+		font-size:1.0em !important;
+	}
+	
+	.detail-wrap,.table-wrap,.headerimg-wrap,.img-wrap{
+		border: 1px solid black;
+		margin-bottom: 50px;
+		display:none;
+	}
+	
+	.drag-drop { 
+  		border: 5px dashed #ccc; 
+  		width: 90%;
+  		min-height: 200px;
+		margin: 0 auto;
+		margin-bottom: 25px;
+		text-align: center;
+	}
+	.drag-drop.hover { 
+  		border: 5px dashed #333; 
+	}
+	
+	.drag-drop img{
+		width:100%;
+	}
+	
+	#preview{
+		width: 100% !important; 
+		overflow: hidden;
+		height:100%;
+	}
+	
+	input.img, input.header_img{
+		border:none !important;
+	}
+		.footer{
+		position:relative !important;
+	}
+
+</style>
+</head>
+<body>
+	
+	<!-- Header -->
+		<jsp:include page="header.jsp" flush="true"></jsp:include>
+	
+	<!-- Main -->
+	<div class="write-opening-wrap">
+		<div class="cont-wrap" style="width:75vw;margin:0 auto;">
+			<form action="${pageContext.request.contextPath}/opening/OpeningWriteOk.opn" method="post" enctype="multipart/form-data" name="write-opening-form" id="write-opening-form">
+				<input type="hidden" name="comp_id" value="${session_id}"/>
+				<input type="text" name="opening_title" placeholder="공고 제목을 입력하세요" class="resume-title-input" style="border-radius:0 !important">
+				
+				<div class="part-title" style="border-radius:0;">
+					<p>모집 부문</p>
+				</div>
+				<div id="recruitment-area">
+					<p style="font-size:0.8em;margin-bottom:10px !important;">※반드시 하나 이상의 모집 부문을 작성해야 합니다.</p>
+					<ul class="recruitment-area">
+						<li class="removeable"><i class="fas fa-plus" onclick="add_area()"></i><input type="text" name="recruitment_area" placeholder="모집 부문을 입력하세요" class="plus-input recruitment-area"></li>					
+					</ul>	
+				</div>
+				
+				<div class="part-title" style="border-radius:0;">
+					<p>지원 자격</p>
+				</div>
+				<div id="apply-condition">
+					<p style="font-size:0.8em;margin-bottom:10px !important;">※작성이 생략된 항목은 공고에서 보이지 않습니다.</p>
+					<ul class="apply-condition">
+						<li><span class="small-title give-margin">학력</span><input type="text" name="education" placeholder="학력을 입력하세요" class="plus-input"></li>					
+						<li><span class="small-title give-margin">경력</span><input type="text" name="career" placeholder="경력을 입력하세요" class="plus-input"></li>	
+					</ul>	
+				</div>
+				
+				
+				<div class="part-title" style="border-radius:0;">
+					<p>우대 사항</p>
+				</div>
+				<div id="recruitment-condition">
+					<p style="font-size:0.8em;margin-bottom:10px !important;">※작성이 생략된 항목은 공고에서 보이지 않습니다.</p>
+					<ul class="recruitment-condition">
+						<li><i class="fas fa-plus" onclick="add_condition()"></i><input name="preference" type="text" placeholder="우대 사항을 입력하세요" class="plus-input"></li>					
+					</ul>	
+				</div>
+				
+			<input type="hidden" name="writedate" id="todayDate"/>
+				<div class="part-title" style="border-radius:0;">
+					<p>채용 정보</p>
+				</div>
+				<div id="recruitment-info">
+					<p style="font-size:0.8em;margin-bottom:10px !important;">※작성이 생략된 항목은 공고에서 보이지 않습니다.</p>
+					<ul class="recruitment-info">
+						<li><span class="small-title">채용 분야</span>
+							<input type="text" name="recruitment_inf1" placeholder="채용 분야를 입력하세요" name="hire-field" class="plus-input" style="width:25% !important;">
+							<input type="text" name="recruitment_inf2" placeholder="채용 분야를 입력하세요" name="hire-field" class="plus-input" style="width:25% !important;">
+							<input type="text" name="recruitment_inf3" placeholder="채용 분야를 입력하세요" name="hire-field" class="plus-input" style="width:25% !important;">
+						</li>	
+						<li>
+							<span class="small-title">근무 지역</span>
+							<input type="text" name="work_location1" placeholder="근무 지역을 입력하세요" class="plus-input" style="width:25% !important;">
+							<input type="text" name="work_location2" placeholder="근무 지역을 입력하세요" class="plus-input" style="width:25% !important;">
+							<input type="text" name="work_location3" placeholder="근무 지역을 입력하세요" class="plus-input" style="width:25% !important;">
+						</li>	
+						<li><span class="small-title">근무 형태</span><input type="text" name="work_form" placeholder="근무 형태를 입력하세요" class="plus-input"></li>					
+						<li><span class="small-title" style="margin-right: 45px;">급여</span><input name="salary" type="text" placeholder="예상 급여을 입력하세요" class="plus-input"></li>	
+						<li><span class="small-title">근무 일시</span><input type="text" name="work_date" placeholder="근무 일시를 입력하세요" class="plus-input"></li>	
+					</ul>	
+				</div>
+				
+				<div class="part-title" style="border-radius:0;">
+					<p>지원 정보</p>
+				</div>
+				<div id="apply-info">
+					<p style="font-size:0.8em;margin-bottom:10px !important;">※작성이 생략된 항목은 공고에서 보이지 않습니다.</p>
+					<ul class="apply-info">
+						<li><span class="small-title">지원 시작일</span><input type="datetime-local" name="recruit_start_date" placeholder="지원 시작일을 입력하세요" class="plus-input recruit-start-date"><input type="hidden" name="real_start_time" class="real-start-time"/></li>
+						<li><span class="small-title">지원 마감일</span><input type="datetime-local" name="recruit_end_date" placeholder="지원 마감일을 입력하세요" class="plus-input recruit-end-date"><input type="hidden" name="real_end_time" class="real-end-time"/></li>		
+						<li>
+							<span class="small-title" style="margin-right:20px;">지원 방법</span>
+							<select name="apply_method" class="plus-input" id="apply-method" onchange="chageSelect()">
+								<option value="0">지원 방법 선택</option>
+								<option value="1">일하잡 자체 지원</option>
+								<option value="2">홈페이지 지원</option>
+							</select>
+						</li>
+					</ul>	
+				</div>
+				
+				<div class="part-title" style="border-radius:0;">
+					<p>담당자 정보</p>
+				</div>
+				<div id="manager-info">
+					<p style="font-size:0.8em;margin-bottom:10px !important;">※작성이 생략된 항목은 공고에서 보이지 않습니다.</p>
+					<ul class="manager-info">
+						<li><span class="small-title" style="margin-right:20px;">담당자 이름</span><input type="text" name="manager_name" placeholder="담당자 이름을 입력하세요" class="plus-input manager-name"></li>					
+						<li><span class="small-title">담당자 이메일</span><input type="email" name="manager_email" placeholder="담당자 이메일을 입력하세요" class="plus-input manager-email"></li>	
+						<li><span class="small-title">담당자 연락처</span><input type="text" name="manager_contact" placeholder="담당자 연락처를 입력하세요" class="plus-input manager-contact"></li>	
+					</ul>	
+				</div>
+			
+				
+				<div class="part-title" style="border-radius:0;">
+					<p>공고 내용 구성하기</p>
+				</div>
+				<div class="content-wrap">
+				
+					<!-- 상세내용 -->				
+					<!-- <div class="detail-wrap">
+						<div class="part-title" style="border-radius:0;padding-left:15px;">
+							<p style="width:80%;display:inline-block;">상세내용</p>
+							<span class="remove_all">상세내용 삭제</span>
+						</div>
+						
+						<ul>
+							<li><input name="detail_title[]" type="text" class="input-title" placeholder="상세 내용의 제목을 입력하세요  ex)근무조건,복리후생"/></li>
+							<li><textarea name="detail_content[]" style="resize: none;height: 350px;" placeholder="상세내용을 입력하세요"></textarea></li>
+						</ul>
+					</div> -->
+					
+					<!-- 상세내용 테이블 -->	
+					<!-- <div class="table-wrap">
+						<div class="part-title" style="border-radius:0;padding-left:15px;">
+							<p style="width:80%;display:inline-block;">상세내용 테이블</p>
+							<span class="remove_table">상세내용 테이블 삭제</span>
+						</div>
+						
+						<input type="text" class="input-title" placeholder="표의 제목을 입력하세요  ex)모집분야" style="padding-left:15px;">
+						<ul class="each-column">
+							<li>
+								<input type="text" class="detail-table-cell" placeholder=""/>
+								<input type="text" class="detail-table-cell" placeholder=""/>
+								<span class="remove_it">행 삭제</span>
+							</li>
+						</ul>
+						<p class="manage-column" onclick="add_table_column()" style="display:inline-block;"><i class="fas fa-plus"></i><span class="small-title menus">새로운 행 추가</span></p>
+					</div> -->
+					
+					<!-- 헤더 이미지 -->	
+					<!-- <div class="headerimg-wrap" style="display:block;">
+						<div class="part-title" style="border-radius:0;padding-left:15px;">
+							<p style="width:50%;display:inline-block;">헤더 이미지</p>
+							<span>헤더 이미지는 한 개만 업로드할 수 있습니다</span>
+						</div>
+						<div class="header_img drag-drop">
+							<img id="header-img">
+						</div> 				
+						<div style="text-align:center;padding: 10px 0;">	
+							<input type="file" name="header_img" class="header_img" required accept="img/*" onchange="getPreview(this)">
+						</div>
+					</div> -->
+					
+					<!-- 이미지 -->
+					<div class="img-wrap" style="display:block;">
+						<div class="part-title" style="border-radius:0;padding-left:15px;">
+							<p style="width:80%;display:inline-block;">이미지</p>
+							<!-- <span class="remove_all">이미지 삭제</span> -->
+						</div>
+						<div class="just-img drag-drop">
+							
+						</div>
+						<div style="text-align:center;padding: 10px 0;">
+							<input type="file" name="img" id="img" class="img" accept="img/*">
+						</div>
+					</div>
+				
+				</div>			
+					
+					<div class="menu-bar-wrap">
+						<ul class="menu-bar">
+							<li onclick="add_detail()"><i class="fas fa-plus"></i><span class="small-title menus">상세 내용</span></li><br>
+							<li onclick="add_table()"><i class="fas fa-plus"></i><span class="small-title menus">표</span></li><br>
+							<!-- <li onclick="add_headerimg()"><i class="fas fa-plus"></i><span class="small-title menus">헤더 이미지</span></li><br>
+							<li onclick="add_img()"><i class="fas fa-plus"></i><span class="small-title menus">이미지</span></li> -->
+						</ul>
+					</div>
+				
+					<div style="text-align:center;margin-top:50px;">
+						<a href="javascript:formSubmit()" class="button primary" id="submit_btn">작성 완료</a>
+					</div>
+					<input type="hidden" name="detail_count" value=""/>
+					<input type="hidden" name="table_count" value=""/>
+				</form>	
+		</div>
+	</div>
+	
+	<!-- Footer -->
+		<%@ include file="footer.jsp" %>
+		
+		
+	<!-- Scripts -->
+		<script src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+		<script src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+		<script src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+		<script src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+		<script src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+		<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+		<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+		<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+	
+	
+</body>
+
+<script>
+
+$(document).on('change','.recruit-start-date',function() {
+	//db에 보낼 값
+	var start_time=''+$('.recruit-start-date').val();
+	var real_start_date=start_time.replace("T","-");
+	$('.real-start-time').val(real_start_date);
+	
+	//공고 시작일 검사1 : 공고 작성일자보다 커야함
+	var start_date = getStartDate();
+	var today=getDate();
+	if(parseInt(start_date)<parseInt(today)){
+		alert('공고 시작일이 작성일자보다 느립니다');
+	}
+	//공고 시작일 검사2 : 공고 마감일보다 작아야함
+	var end_date = getEndDate();
+	if(parseInt(start_date)>parseInt(end_date)){
+		alert('공고 마감일은 시작일보다 나중이어야 합니다'); 
+	}
+})
+$(document).on('change','.recruit-end-date',function() {
+	var end_time=''+$('.recruit-end-date').val();
+	var real_end_date=end_time.replace("T","-");
+	$('.real-end-time').val(real_end_date);
+	
+	//공고 마감일 검사 : 공고 시작일보다 커야함
+	var start_date = getStartDate();
+	var endDateArr = real_end_date.split('-');
+	var end_date = endDateArr[0]+endDateArr[1]+endDateArr[2];
+	if(parseInt(start_date)>parseInt(end_date)){
+		alert('공고 마감일은 시작일보다 나중이어야 합니다'); 
+	}
+})
+function getStartDate(){
+	var start_time=''+$('.recruit-start-date').val();
+	var real_start_date=start_time.replace("T","-");
+	var startDateArr = real_start_date.split('-');
+	var startDate = startDateArr[0]+startDateArr[1]+startDateArr[2];
+	return startDate;
+}
+function getEndDate(){
+	var end_time=''+$('.recruit-end-date').val();
+	var real_end_date=end_time.replace("T","-");
+	var endDateArr = real_end_date.split('-');
+	var endDate = endDateArr[0]+endDateArr[1]+endDateArr[2];
+	return endDate;
+}
+
+	//작성일자
+	function getDate(){
+	    var today = new Date();
+	    var dd = today.getDate();
+	    var mm = today.getMonth()+1; //January is 0!
+	    var yyyy = today.getFullYear();
+	    if(dd<10){dd='0'+dd} if(mm<10){mm='0'+mm}
+	    today = yyyy+""+mm+""+dd;
+	    document.getElementById("todayDate").value = today;
+	    return today;
+	}
+	//모집 부문 : +버튼을 누르면 입력 코드를 동적 생성함
+	function add_area(){
+		var ra = '<li class="removeable"><i class="fas fa-plus" onclick="add_area()"></i><input type="text" name="recruitment_area" placeholder="모집 부문을 입력하세요" class="plus-input"><span class="remove_it">삭제</span></li>';
+		$('.recruitment-area').append(ra);
+	};
+	
+	//우대 조건 : +버튼을 누르면 입력 코드를 동적 생성함
+	function add_condition(){
+		var re='<li class="removeable"><i class="fas fa-plus" onclick="add_condition()"></i><input type="text" name="preference" placeholder="우대 사항을 입력하세요" class="plus-input"><span class="remove_it">삭제</span></li>';
+		$('.recruitment-condition').append(re);
+	};
+
+
+	//상세정보 이름 주기
+	var detail_count=new Array();
+	var detail_start=1;
+	
+	//상세정보 : +버튼을 누르면 입력 코드를 동적 생성함
+	function add_detail(){
+		$('.detail-wrap.new').removeClass('new');
+		var detail='<div class="detail-wrap new"><div class="part-title" style="border-radius:0;padding-left:15px;"><p style="width:80%;display:inline-block;">상세내용</p><span class="remove_detail">상세내용 삭제</span></div><ul><li><input type="text" class="input-title" placeholder="상세 내용의 제목을 입력하세요  ex)근무조건,복리후생"/></li><li><textarea style="resize: none;height: 350px;" placeholder="상세내용을 입력하세요"></textarea></li></ul></div>';
+		$('.content-wrap').append(detail);
+		$('.detail-wrap.new').show();
+		$('.detail-wrap.new input').attr('name','d'+detail_start);
+		$('.detail-wrap.new textarea').attr('name','d'+detail_start+'_text');
+		detail_count.push(detail_start);
+		detail_start=detail_start+1;
+	}
+
+	
+	//상세정보 테이블 이름 주기
+	var table_count=new Array();
+	var start=1;
+	
+	//상세정보 테이블 : +버튼을 누르면 입력 코드를 동적 생성함
+	function add_table(){
+		var table='<div class="table-wrap new"><div class="part-title" style="border-radius:0;padding-left:15px;"><p style="width:80%;display:inline-block;">상세내용 테이블</p><span class="remove_table">상세내용 테이블 삭제</span></div><input type="text" class="input-title" placeholder="표의 제목을 입력하세요  ex)모집분야" style="padding-left:15px;"><ul class="each-column"><li class="line new"><input type="text" class="detail-table-cell"/><input type="text" class="detail-table-cell"/><span class="remove_it">행 삭제</span></li></ul><p class="manage-column" style="display:inline-block;"><i class="fas fa-plus"></i><span class="small-title menus">새로운 행 추가</span></p></div>';
+		$('.content-wrap').append(table);
+		$('.table-wrap.new').show();
+		$('.table-wrap.new .input-title').attr('name','t'+start);
+		$('.table-wrap.new .detail-table-cell').attr('name','t'+start+'_cell');
+		$('.table-wrap.new').removeClass('new');
+		//테이블 순서
+		table_count.push(start);
+		start=start+1;
+	}
+	
+	//테이블 행 추가
+	$(document).on('click','.manage-column',function() {
+		$(this).parent().children('.each-column').children('.line.new').removeClass('new');
+		var column='<li class="line new"><input type="text" class="detail-table-cell"/><input type="text" class="detail-table-cell" placeholder=""/><span class="remove_it">행 삭제</span></li>';		
+		$(this).parent().children('.each-column').append(column);
+		//this를 써서 input-title의 name을 셀에 붙여줌
+		var table_name=$(this).parent().children('.input-title').attr('name');
+		$('.line.new input').attr('name',table_name+'_cell');
+	})
+	
+	//삭제 버튼을 누르면 입력 코드를 삭제함
+	$(document).on('click','.remove_it',function() {
+	    $(this).parent().remove();
+	  });
+	 
+	//삭제 버튼을 누르면 입력 코드를 삭제함
+	$(document).on('click','.remove_all',function() {
+	    $(this).parent().parent().remove();
+	  });
+	
+	//상세정보 삭제시 
+	$(document).on('click','.remove_detail',function() {
+	    //삭제할 정보의 순서 가져오기
+	    var detail_name=$(this).parent().parent().children('.input-title').attr('name');
+	    var detail_num=detail_name.substring('1','2');
+	    detail_count.splice(detail_num-1,1);
+	    detail_count.forEach(function(value){
+	    	if(value>detail_num){
+	    		detail_count.splice(detail_count.indexOf(value),1,value-1);
+	    		$("[name=d"+value+"]").attr('name','d'+(value-1));
+	    		$("[name=d"+value+"_text]").attr('name','d'+(value-1)+'_text');
+	    	}
+	    })
+		//삭제
+	    $(this).parent().parent().remove();
+	  });
+	
+	//테이블 삭제시 해당 테이블 번호를 지우고 숫자를 1 감소시킨 다음 name 수정
+	$(document).on('click','.remove_table',function() {
+		var table_name=$(this).parent().parent().children('.input-title').attr('name');
+		var table_num=table_name.substring('1','2');
+		table_count.splice(table_num-1,1);
+		table_count.forEach(function(value){
+			if(value>table_num){
+				table_count.splice(table_count.indexOf(value),1,value-1);
+				//t+value인 name을 가진 태그의 name을 t+value-1로 바꿔줘야함
+				$("[name=t"+value+"]").attr('name','t'+(value-1));
+				//그 밑에 속한 셀의 이름도 바꿔줌 
+				$("[name=t"+value+"_cell]").attr('name','t'+(value-1)+'_cell');
+			}
+		})
+		$(this).parent().parent().remove();
+	  });
+
+	
+	
+	//공고 링크 받기
+	function chageSelect(){
+		if($("#apply-method option:selected").val()=="1"){
+			$('#url-li').remove();
+		}
+		if($("#apply-method option:selected").val()=="2"){
+			var url_code='<li id="url-li"><span class="small-title" style="margin-right:20px;">공고 링크</span><input type="text" name="page_url" placeholder="지원  url 링크를 입력하세요" class="plus-input page-url"></li>';
+			$('.apply-info').append(url_code);
+		}
+	}
+	
+	var realFileName;
+	//파일 이름 구하기
+	$(function() {
+		$("input:file").change(function (){
+    	   	var fileValue = $(this).val().split("\\");
+    	   	var fileName = fileValue[fileValue.length-1]; // 파일명
+    	   	realFileName=fileName;
+    	   	console.log(realFileName);
+    	});
+  	});
+
+	//이미지 미리보기
+	/*function getPreview(value) {
+	    if (value.files && value.files[0]) {
+	        var reader = new FileReader();
+	        reader.onload = function (e) {
+	            $("#header-img").attr('src',e.target.result);
+	        }
+	        reader.readAsDataURL(value.files[0]);
+	    }
+	}*/
+	
+	//이미지 미리보기(여러개) just-img drag-drop
+	$("#img").on('change', function () {
+
+     	//Get count of selected files
+     	var countFiles = $(this)[0].files.length;
+
+     	var image_holder = $(".just-img.drag-drop");
+     	image_holder.empty();
+
+             //loop for each file selected for uploaded.
+             for (var i = 0; i < countFiles; i++) {
+
+                 var reader = new FileReader();
+                 reader.onload = function (e) {
+                     $("<img />", {
+                         "src": e.target.result,
+                             "class": "thumb-image"
+                     }).appendTo(image_holder);
+                 }
+
+                 image_holder.show();
+                 reader.readAsDataURL($(this)[0].files[i]);
+             }
+ 	});
+
+
+	function formSubmit(){
+		var form = $("[name=write-opening-form]");
+
+		//데이터 검사
+		//제목 resume-title-input
+		if($(".resume-title-input").val() == "" ){
+			alert("제목을 입력해주세요.");
+			$(".resume-title-input").focus();
+			return false;
+		}
+		
+		//모집 부문 recruitment-area
+		if($(".plus-input.recruitment-area").val() == "" ){
+			alert("모집 부문을 입력해주세요.");
+			$(".plus-input.recruitment-area").focus();
+			return false;
+		}
+		
+		//지원 시작일, 마감일 recruit-start-date, recruit-end-date
+		if($(".plus-input.recruit-start-date").val() == "" ){
+			alert("지원 시작일을 입력해주세요.");
+			$(".plus-input.recruit-start-date").focus();
+			return false;
+		}
+		if($(".plus-input.recruit-end-date").val() == "" ){
+			alert("지원 마감일을 입력해주세요.");
+			$(".plus-input.recruit-end-date").focus();
+			return false;
+		}
+		
+		//지원방법 선택
+		if($("#apply-method option:selected").val()=="0"){
+			alert("지원 방법을 입력해주세요.");
+			$("#apply-method").focus();
+			return false;
+		}
+		
+		//지원방법 page-url
+		if($(".plus-input.page-url").val() == "" ){
+			alert("공고 링크를 입력해주세요.");
+			$(".plus-input.page-url").focus();
+			return false;
+		}		
+		
+		//담당자 이름 , 이메일, 연락처  manager-name, manager-email, manager-contact
+		if($(".plus-input.manager-name").val() == "" ){
+			alert("담당자 이름을 입력해주세요.");
+			$(".plus-input.manager-name").focus();
+			return false;
+		}
+		if($(".plus-input.manager-email").val() == "" ){
+			alert("담당자 이메일을 입력해주세요.");
+			$(".plus-input.manager-email").focus();
+			return false;
+		}
+		if($(".plus-input.manager-contact").val() == "" ){
+			alert("담당자 전화번호를 입력해주세요.");
+			$(".plus-input.manager-contact").focus();
+			return false;
+		}
+		
+		$("[name=detail_count]").attr("value",detail_count.length);
+		$("[name=table_count]").attr("value",table_count.length);
+		
+		form.submit();
+	}
+	
+	
+
+</script>
+
+</html>

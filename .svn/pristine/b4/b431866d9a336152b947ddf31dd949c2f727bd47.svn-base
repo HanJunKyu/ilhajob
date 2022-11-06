@@ -1,0 +1,159 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn"%>
+<!DOCTYPE html>
+<!--
+	Gravity by Pixelarity
+	pixelarity.com | hello@pixelarity.com
+	License: pixelarity.com/license
+-->
+<html>
+<head>
+<title>일하잡담 :: 받은 쪽지</title>
+<meta charset="utf-8" />
+<meta name="viewport"
+	content="width=device-width, initial-scale=1, user-scalable=no" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/main.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/message.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/footer1.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/pagination1.css" />
+<link rel="stylesheet"
+	href="${pageContext.request.contextPath}/assets/css/header1.css" />
+</head>
+<body class="is-preload">
+	<c:if test="${session_id eq null}">
+		<script>
+			alert("로그인 후 이용해주세요");
+			location
+					.replace("${pageContext.request.contextPath}/user/UserLogin.us");
+		</script>
+	</c:if>
+	<c:set var="messageBean" value="${requestScope.messageBean}" />
+	<!-- Header -->
+	<jsp:include page="header.jsp" flush="true" />
+
+	<!-- Main -->
+	<section id="main">
+		<div class="container">
+			<header class="major">
+				<h2>받은 쪽지</h2>
+			</header>
+
+			<!-- MESSAGE -->
+			<!-- Table -->
+			<section>
+				<div class="table-wrapper">
+					<ul id="actionlist" class="actions stacked" style="float: left">
+						<c:if test="${messageBean.getMessage_rcv_id() eq session_id}">
+							<li><span><a href="javascript:deleteRcvMessage()"
+									class="button alt small">삭 제</a></span></li>
+						</c:if>
+					</ul>
+					<ul id="actionlist" class="actions stacked" style="float: right">
+						<li><span><a
+								href="${pageContext.request.contextPath}/message/Message_RcvList.ms"
+								class="button alt small" style="margin-right: 1em">받은 쪽지함</a> <a
+								href="${pageContext.request.contextPath}/message/Message_SendList.ms"
+								class="button alt small">보낸 쪽지함</a></span></li>
+					</ul>
+					<form
+						action="${pageContext.request.contextPath}/message/MessageReturn.ms"
+						method="post" name="messageform">
+						<table id="message_write" style="table-layout: fixed">
+							<tbody>
+								<tr class="write_tr_col-1">
+									<td class="write_col-1"><strong>보낸 사람</strong></td>
+									<td><input type="text" id="table_col-1" name="message_send_id"
+										value="${messageBean.getMessage_send_id()}" readonly /></td>
+								</tr>
+								<tr>
+									<td class="write_col-1"><strong>제목</strong></td>
+									<td>${messageBean.getMessage_title()}</td>
+								</tr>
+								<tr>
+									<td class="text_col-1"><strong>내용</strong></td>
+									<td height="400px">
+										<div style="width: 100%; height: 100%; overflow: auto">${messageBean.getMessage_content()}</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+						<div class="col-12">
+							<ul class="actions">
+								<li style="margin: 0 auto"><input type="submit" value="답장하기"
+									class="primary" /></li>
+							</ul>
+						</div>
+					</form>
+				</div>
+				<form
+					action="${pageContext.request.contextPath}/message/Message_RcvDeleteOk.ms"
+					method="post" name="messageForm">
+					<input type="hidden" name="seq"
+						value="${messageBean.getMessage_num()}" />
+				</form>
+			</section>
+		</div>
+	</section>
+
+	<!-- Footer -->
+	<div class="push">
+		<div class="footer">
+			<div class="footer-menu">
+				<ul class="labeled-icons">
+					<li><span>회사소개</span></li>
+					<li><span>광고문의</span></li>
+					<li><span>이용약관</span></li>
+					<li><span>개인정보처리방침</span></li>
+					<li><span>고객센터</span></li>
+				</ul>
+			</div>
+			<div class="footer-info">
+				<ul class="labeled-icons">
+					<li><span>someone@untitled.tld</span></li>
+					<li style="padding-left: 0;"><span>(000) 000-0000
+							x12345</span></li>
+					<li style="padding-left: 0; margin-right: 15px;"><span>서울시
+							강남구 ooo - oo</span></li>
+					<li class="icon_li" style="margin-left: 10px;"><a href="#"><h4
+								class="icon brands fa-twitter">
+								<span class="label">Twitter</span>
+							</h4></a></li>
+					<li class="icon_li"><a href="#"><h4
+								class="icon brands fa-facebook-f">
+								<span class="label">Facebook</span>
+							</h4></a></li>
+				</ul>
+			</div>
+			<div class="copyright">Copyright ⓒ ILHAJOB Corp. All Right
+				Reserved.</div>
+		</div>
+	</div>
+
+	<!-- Scripts -->
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.dropotron.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/jquery.poptrox.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/browser.min.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/breakpoints.min.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/util.js"></script>
+	<script src="${pageContext.request.contextPath}/assets/js/main.js"></script>
+	<script
+		src="${pageContext.request.contextPath}/assets/js/pagination.js"></script>
+</body>
+<script>
+	function deleteRcvMessage() {
+		messageForm.submit();
+	}
+</script>
+</html>

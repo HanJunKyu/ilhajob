@@ -1,0 +1,18 @@
+@media screen and (max-width: 736px) {
+	/* Header */
+	#logo_img {
+	margin: 0 auto;
+	max-width: 22%;
+	height: auto;
+	vertical-align: middle;
+	}
+	
+/* XSmall */
+@media screen and (max-width: 480px) {
+	/* Header */
+	#logo_img {
+	margin: 0 auto;
+	max-width: 30%;
+	height: auto;
+	vertical-align: middle;
+	}

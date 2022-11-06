@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "http//mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="Files">
+	<insert id="insertFile" parameterType="filesVO">
+		INSERT INTO TABLE_BBS_FILES VALUES(#{bbs_file_name}, ${bbs_num})
+	</insert>
+	
+	<select id="getDetail" parameterType="_int" resultType="filesVO">
+		SELECT * FROM TABLE_BBS_FILES WHERE BBS_NUM = ${bbs_num}
+	</select>
+	
+	<delete id="deleteFiles" parameterType="_int">
+		DELETE FROM TABLE_BBS_FILES WHERE BBS_NUM = ${bbs_num}
+	</delete>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
